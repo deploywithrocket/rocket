@@ -15,7 +15,7 @@
                             <div class="flex items-center justify-center w-10 h-8 mr-4 text-sm font-bold bg-gray-200 rounded" :class="{
                                 'text-gray-300': currentStep < k,
                                 'text-gray-600 bg-gray-300': currentStep > k,
-                                'bg-orange-500 text-white': currentStep == k
+                                'bg-pink-500 text-white': currentStep == k
                             }">{{ k+1 }}</div>
                             <div class="w-full text-gray-300" :class="{ 'text-gray-600': currentStep >= k, 'font-semibold': currentStep == k }">
                                 <p class="text-sm">{{ step }}</p>
@@ -80,7 +80,7 @@
                                 {{ campaign.total }} / {{ campaign.directory_total }} ({{ campaign.directory_percent }}%)
                             </div>
                             <div class="w-full max-w-xs mx-auto mt-2 bg-gray-100 rounded">
-                                <div class="h-2 bg-orange-500 rounded" :style="{width: campaign.directory_percent + '%'}"></div>
+                                <div class="h-2 bg-pink-500 rounded" :style="{width: campaign.directory_percent + '%'}"></div>
                             </div>
                         </template>
 
@@ -89,7 +89,7 @@
                                 {{ campaign.sent }} / {{ campaign.total }} ({{ campaign.percent }}%)
                             </div>
                             <div class="w-full max-w-xs mx-auto mt-2 bg-gray-100 rounded" >
-                                <div class="h-2 bg-orange-500 rounded" :style="{width: campaign.percent + '%'}"></div>
+                                <div class="h-2 bg-pink-500 rounded" :style="{width: campaign.percent + '%'}"></div>
                             </div>
                         </template>
                     </div>
@@ -97,12 +97,12 @@
                     <div class="flex flex-row justify-between">
                         <template v-if="currentStep == 0">
                             <inertia-link :href="$route('next.campaigns.edit', campaign)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200">Edit</inertia-link>
-                            <inertia-link :href="$route('next.campaigns.prepare', campaign)" class="inline-block px-4 py-2 text-sm font-bold text-white bg-orange-500 rounded hover:bg-orange-600">Prepare campaign</inertia-link>
+                            <inertia-link :href="$route('next.campaigns.prepare', campaign)" class="inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600">Prepare campaign</inertia-link>
                         </template>
 
                         <template v-if="campaign.status == 'ready'"> <!-- Ready -->
                             <inertia-link :href="$route('next.campaigns.edit', campaign)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200">Edit</inertia-link>
-                            <inertia-link :href="$route('next.campaigns.send', campaign)" class="inline-block px-4 py-2 text-sm font-bold text-white bg-orange-500 rounded hover:bg-orange-600">Send campaign</inertia-link>
+                            <inertia-link :href="$route('next.campaigns.send', campaign)" class="inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600">Send campaign</inertia-link>
                         </template>
 
                         <template v-if="campaign.status == 'finished'"> <!-- Finished -->

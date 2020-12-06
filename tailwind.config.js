@@ -24,6 +24,7 @@ module.exports = {
       colors: {
         gray: colors.trueGray,
         orange: colors.orange,
+        pink: colors.pink,
       },
       screens: {
         xl: "1140px",

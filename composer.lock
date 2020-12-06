@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fac753ae2702317b354e7eb283f28cbc",
+    "content-hash": "579e23d25feb339407a70a92dbf71aed",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -893,6 +893,70 @@
             "time": "2020-09-30T07:37:11+00:00"
         },
         {
+            "name": "inertiajs/inertia-laravel",
+            "version": "v0.2.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/inertiajs/inertia-laravel.git",
+                "reference": "3db77cb928a2b8373ebb863fbdc6345883f13b61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/3db77cb928a2b8373ebb863fbdc6345883f13b61",
+                "reference": "3db77cb928a2b8373ebb863fbdc6345883f13b61",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^5.4|^6.0|^7.0|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Inertia\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Inertia\\": "src"
+                },
+                "files": [
+                    "./helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Reinink",
+                    "email": "jonathan@reinink.ca",
+                    "homepage": "https://reinink.ca"
+                }
+            ],
+            "description": "The Laravel adapter for Inertia.js.",
+            "keywords": [
+                "inertia",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/inertiajs/inertia-laravel/issues",
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v0.2.15"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/reinink",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-10-02T12:53:20+00:00"
+        },
+        {
             "name": "laravel/framework",
             "version": "v8.17.2",
             "source": {
@@ -1060,6 +1124,83 @@
             "time": "2020-12-03T13:47:59+00:00"
         },
         {
+            "name": "laravel/horizon",
+            "version": "v5.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/horizon.git",
+                "reference": "4e21779357d1f1abc0282a940855be635bf4f1be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/4e21779357d1f1abc0282a940855be635bf4f1be",
+                "reference": "4e21779357d1f1abc0282a940855be635bf4f1be",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-pcntl": "*",
+                "ext-posix": "*",
+                "illuminate/contracts": "^8.0",
+                "illuminate/queue": "^8.0",
+                "illuminate/support": "^8.0",
+                "nesbot/carbon": "^2.17",
+                "php": "^7.3|^8.0",
+                "ramsey/uuid": "^4.0",
+                "symfony/error-handler": "^5.0",
+                "symfony/process": "^5.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.0",
+                "predis/predis": "^1.1"
+            },
+            "suggest": {
+                "ext-redis": "Required to use the Redis PHP driver.",
+                "predis/predis": "Required when not using the Redis PHP driver (^1.1)."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Horizon\\HorizonServiceProvider"
+                    ],
+                    "aliases": {
+                        "Horizon": "Laravel\\Horizon\\Horizon"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Horizon\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Dashboard and code-driven configuration for Laravel queues.",
+            "keywords": [
+                "laravel",
+                "queue"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/horizon/issues",
+                "source": "https://github.com/laravel/horizon/tree/v5.6.0"
+            },
+            "time": "2020-12-01T15:13:23+00:00"
+        },
+        {
             "name": "laravel/tinker",
             "version": "v2.5.0",
             "source": {
@@ -1126,6 +1267,65 @@
                 "source": "https://github.com/laravel/tinker/tree/v2.5.0"
             },
             "time": "2020-10-29T13:07:12+00:00"
+        },
+        {
+            "name": "laravel/ui",
+            "version": "v2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/ui.git",
+                "reference": "2ccaa3b821ea8ac7e05393b946d0578bdb46099b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/2ccaa3b821ea8ac7e05393b946d0578bdb46099b",
+                "reference": "2ccaa3b821ea8ac7e05393b946d0578bdb46099b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^7.0|^8.0",
+                "illuminate/filesystem": "^7.0|^8.0",
+                "illuminate/support": "^7.0|^8.0",
+                "php": "^7.2.5"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Ui\\UiServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Ui\\": "src/",
+                    "Illuminate\\Foundation\\Auth\\": "auth-backend/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel UI utilities and presets.",
+            "keywords": [
+                "laravel",
+                "ui"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/ui/issues",
+                "source": "https://github.com/laravel/ui/tree/v2.3.0"
+            },
+            "time": "2020-09-09T12:07:59+00:00"
         },
         {
             "name": "league/commonmark",
@@ -4586,6 +4786,67 @@
             "time": "2020-11-27T00:39:34+00:00"
         },
         {
+            "name": "tightenco/ziggy",
+            "version": "0.9.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tighten/ziggy.git",
+                "reference": "82ea6ec6cb6ab3545b0245310b2a424316fe48d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/82ea6ec6cb6ab3545b0245310b2a424316fe48d8",
+                "reference": "82ea6ec6cb6ab3545b0245310b2a424316fe48d8",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=5.4@dev"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Tightenco\\Ziggy\\ZiggyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Tightenco\\Ziggy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Coulbourne",
+                    "email": "daniel@tighten.co"
+                },
+                {
+                    "name": "Jake Bathman",
+                    "email": "jake@tighten.co"
+                }
+            ],
+            "description": "Generates a Blade directive exporting all of your named Laravel routes. Also provides a nice route() helper function in JavaScript.",
+            "homepage": "https://github.com/tightenco/ziggy",
+            "keywords": [
+                "Ziggy",
+                "javascript",
+                "laravel",
+                "routes"
+            ],
+            "support": {
+                "issues": "https://github.com/tighten/ziggy/issues",
+                "source": "https://github.com/tighten/ziggy/tree/0.9.4"
+            },
+            "time": "2020-06-05T14:42:41+00:00"
+        },
+        {
             "name": "tijsverkoyen/css-to-inline-styles",
             "version": "2.2.3",
             "source": {
@@ -4637,6 +4898,66 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/2.2.3"
             },
             "time": "2020-07-13T06:12:54+00:00"
+        },
+        {
+            "name": "titasgailius/laravel-moonlight",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TitasGailius/laravel-moonlight.git",
+                "reference": "64ed82a23d8eee0b758e1738258241c659570ab0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TitasGailius/laravel-moonlight/zipball/64ed82a23d8eee0b758e1738258241c659570ab0",
+                "reference": "64ed82a23d8eee0b758e1738258241c659570ab0",
+                "shasum": ""
+            },
+            "require": {
+                "inertiajs/inertia-laravel": "^0.2.5",
+                "laravel/ui": "^1.0|^2.0",
+                "tightenco/ziggy": "^0.9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TitasGailius\\Moonlight\\MoonlightServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TitasGailius\\Moonlight\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Titas Gailius",
+                    "email": "titas.gailius@gmail.com"
+                }
+            ],
+            "description": "An elegant Laravel scaffolding for your next single-page application.",
+            "keywords": [
+                "inertia",
+                "inertiajs",
+                "laravel",
+                "moonlight",
+                "tailwind",
+                "tailwindcss",
+                "ui",
+                "vue",
+                "vuejs"
+            ],
+            "support": {
+                "issues": "https://github.com/TitasGailius/laravel-moonlight/issues",
+                "source": "https://github.com/TitasGailius/laravel-moonlight/tree/1.0.2"
+            },
+            "time": "2020-05-28T11:33:51+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

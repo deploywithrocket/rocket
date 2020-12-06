@@ -4,16 +4,16 @@
 
         <div class="p-8 bg-white rounded-lg shadow">
             <div class="flex justify-between mb-8">
-                <inertia-link :href="$route('next.campaigns.create')" class="px-4 py-2 text-sm font-semibold text-white bg-orange-500 rounded hover:bg-orange-600">
+                <inertia-link :href="$route('next.campaigns.create')" class="px-4 py-2 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600">
                     Create campaign
                 </inertia-link>
                 <ul class='flex text-sm font-semibold cursor-pointer'>
-                    <inertia-link :href="$route('next.campaigns.index')" :class="{ 'text-orange-500': ($route().current('next.campaigns.index') && (!filter)) }" class='px-3 py-2 bg-gray-100 border-r rounded-l hover:bg-gray-200'>All</inertia-link>
-                    <inertia-link :href="$route('next.campaigns.index', { filter: 'draft' })" :class="{ 'text-orange-500': ($route().current('next.campaigns.index') && (filter == 'draft')) }" class='px-3 py-2 bg-gray-100 border-r hover:bg-gray-200'><span class="text-gray-500"><i class="mr-1 fal fa-pencil"></i></span> Drafts</inertia-link>
-                    <inertia-link :href="$route('next.campaigns.index', { filter: 'ready' })" :class="{ 'text-orange-500': ($route().current('next.campaigns.index') && (filter == 'ready')) }" class='px-3 py-2 bg-gray-100 border-r hover:bg-gray-200'><span class="text-blue-500"><i class="mr-1 fal fa-paper-plane"></i></span> Ready</inertia-link>
-                    <!-- <inertia-link href="#" :class="{ 'text-orange-500': ($route().current('next.campaigns.index') && (filter == 'ready')) }" class='px-3 py-2 bg-gray-100 border-r hover:bg-gray-200'><span class="text-indigo-500"><i class="mr-1 fal fa-alarm-clock"></i></span> Programmed</inertia-link> -->
-                    <inertia-link :href="$route('next.campaigns.index', { filter: 'in-progress' })" :class="{ 'text-orange-500': ($route().current('next.campaigns.index') && (filter == 'in-progress')) }" class='px-3 py-2 bg-gray-100 border-r hover:bg-gray-200'><span class="text-orange-500"><i class="mr-1 fal fa-hourglass-end"></i></span> In progress</inertia-link>
-                    <inertia-link :href="$route('next.campaigns.index', { filter: 'finished' })" :class="{ 'text-orange-500': ($route().current('next.campaigns.index') && (filter == 'finished')) }" class='px-3 py-2 bg-gray-100 rounded-r hover:bg-gray-200'><span class="text-green-500"><i class="mr-1 fal fa-check"></i></span> Sent</inertia-link>
+                    <inertia-link :href="$route('next.campaigns.index')" :class="{ 'text-pink-500': ($route().current('next.campaigns.index') && (!filter)) }" class='px-3 py-2 bg-gray-100 border-r rounded-l hover:bg-gray-200'>All</inertia-link>
+                    <inertia-link :href="$route('next.campaigns.index', { filter: 'draft' })" :class="{ 'text-pink-500': ($route().current('next.campaigns.index') && (filter == 'draft')) }" class='px-3 py-2 bg-gray-100 border-r hover:bg-gray-200'><span class="text-gray-500"><i class="mr-1 fal fa-pencil"></i></span> Drafts</inertia-link>
+                    <inertia-link :href="$route('next.campaigns.index', { filter: 'ready' })" :class="{ 'text-pink-500': ($route().current('next.campaigns.index') && (filter == 'ready')) }" class='px-3 py-2 bg-gray-100 border-r hover:bg-gray-200'><span class="text-blue-500"><i class="mr-1 fal fa-paper-plane"></i></span> Ready</inertia-link>
+                    <!-- <inertia-link href="#" :class="{ 'text-pink-500': ($route().current('next.campaigns.index') && (filter == 'ready')) }" class='px-3 py-2 bg-gray-100 border-r hover:bg-gray-200'><span class="text-indigo-500"><i class="mr-1 fal fa-alarm-clock"></i></span> Programmed</inertia-link> -->
+                    <inertia-link :href="$route('next.campaigns.index', { filter: 'in-progress' })" :class="{ 'text-pink-500': ($route().current('next.campaigns.index') && (filter == 'in-progress')) }" class='px-3 py-2 bg-gray-100 border-r hover:bg-gray-200'><span class="text-pink-500"><i class="mr-1 fal fa-hourglass-end"></i></span> In progress</inertia-link>
+                    <inertia-link :href="$route('next.campaigns.index', { filter: 'finished' })" :class="{ 'text-pink-500': ($route().current('next.campaigns.index') && (filter == 'finished')) }" class='px-3 py-2 bg-gray-100 rounded-r hover:bg-gray-200'><span class="text-green-500"><i class="mr-1 fal fa-check"></i></span> Sent</inertia-link>
                 </ul>
             </div>
 
@@ -33,7 +33,7 @@
                         <td class="px-2 py-2 text-center">
                             <span v-if="campaign.status == 'draft'" class="text-gray-500"><i class="fal fa-pencil"></i></span> <!-- Draft -->
                             <span v-if="campaign.status == 'ready'" class="text-blue-500"><i class="fal fa-paper-plane"></i></span> <!-- Ready -->
-                            <span v-if="campaign.status == 'in-progress'" class="text-orange-500"><i class="fal fa-hourglass-end"></i></span> <!-- In progress -->
+                            <span v-if="campaign.status == 'in-progress'" class="text-pink-500"><i class="fal fa-hourglass-end"></i></span> <!-- In progress -->
                             <span v-if="campaign.status == 'finished'" class="text-green-500"><i class="fal fa-check"></i></span> <!-- Sent -->
                             <span v-if="campaign.status == 'programmed'" class="text-indigo-500"><i class="fal fa-alarm-clock"></i></span> <!-- Programmed -->
                         </td>

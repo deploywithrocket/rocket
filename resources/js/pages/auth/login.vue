@@ -20,7 +20,7 @@
                 required
                 autocomplete="current-password" />
 
-        <button class="w-full py-3 text-sm font-semibold text-white bg-orange-500 rounded hover:bg-orange-600 focus:outline-none">Sign In</button>
+        <button class="w-full py-3 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none">Sign In</button>
     </form>
 </template>
 

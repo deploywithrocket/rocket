@@ -20,23 +20,21 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::redirect('/', '/home')->name('index');
 Route::inertia('home', 'home')->name('home')->middleware('auth');
 
-Route::group([
-    'middleware' => ['auth'],
-], function () {
-    Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::group(['middleware' => ['auth'],], function () {
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    Route::group([
-        'prefix' => 'campaigns',
-        'as' => 'next.campaigns.',
-    ], function () {
-        Route::get('/', 'Next\CampaignController@index')->name('index');
-        Route::get('/create', 'Next\CampaignController@create')->name('create');
-        Route::post('/', 'Next\CampaignController@store')->name('store');
-        Route::get('/{id}', 'Next\CampaignController@show')->name('show');
-        Route::get('/{id}/edit', 'Next\CampaignController@edit')->name('edit');
-        Route::put('/{id}', 'Next\CampaignController@update')->name('update');
-        Route::delete('/{id}', 'Next\CampaignController@destroy')->name('destroy');
-        Route::get('/{id}/prepare', 'Next\CampaignController@prepare')->name('prepare');
-        Route::get('/{id}/send', 'Next\CampaignController@send')->name('send');
-    });
+    // Route::group([
+    //     'prefix' => 'campaigns',
+    //     'as' => 'next.campaigns.',
+    // ], function () {
+    //     Route::get('/', 'Next\CampaignController@index')->name('index');
+    //     Route::get('/create', 'Next\CampaignController@create')->name('create');
+    //     Route::post('/', 'Next\CampaignController@store')->name('store');
+    //     Route::get('/{id}', 'Next\CampaignController@show')->name('show');
+    //     Route::get('/{id}/edit', 'Next\CampaignController@edit')->name('edit');
+    //     Route::put('/{id}', 'Next\CampaignController@update')->name('update');
+    //     Route::delete('/{id}', 'Next\CampaignController@destroy')->name('destroy');
+    //     Route::get('/{id}/prepare', 'Next\CampaignController@prepare')->name('prepare');
+    //     Route::get('/{id}/send', 'Next\CampaignController@send')->name('send');
+    // });
 });

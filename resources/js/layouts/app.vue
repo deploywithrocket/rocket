@@ -3,7 +3,7 @@
         <nav class="w-full mb-6 text-white bg-gray-900 shadow md:bg-gray-800">
             <div class="flex flex-wrap items-center">
                 <inertia-link href="/home" class="h-16 bg-gray-900">
-                    <img src="/images/logo_alt.svg" alt="textgrid" class="h-full px-4 py-4">
+                    <img src="/images/logo_alt.svg" alt="Rocket" class="h-full px-4 py-4">
                 </inertia-link>
 
                 <button class="pr-4 ml-auto md:hidden focus:outline-none" @click="toggle">
@@ -14,19 +14,19 @@
                 </button>
 
                 <div :class="open ? 'flex': 'hidden'" class="flex-col flex-grow w-full py-2 bg-gray-800 md:flex md:py-0 md:flex-row md:items-center md:w-auto">
-                    <popper
+                    <!-- <popper
                         trigger="clickToOpen"
                         :options="{ placement: 'right' }"
                     >
                         <div class="w-56 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg">
                             <inertia-link :href="$route('next.campaigns.index')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">All campaigns</inertia-link>
-                            <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">My models</a> -->
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">My models</a>
                         </div>
 
                         <button slot="reference" class="px-4 my-2 text-sm text-gray-200 md:px-0 md:pl-4 hover:text-white focus:outline-none">
                             Campaigns
                         </button>
-                    </popper>
+                    </popper> -->
 
                     <!-- <popper
                         trigger="clickToOpen"
@@ -45,7 +45,6 @@
 
                     <div class="hidden ml-auto md:block"></div>
 
-                    <inertia-link class="px-4 my-2 text-sm text-gray-200 md:px-0 md:pr-4 hover:text-white" :href="$route('dashboard')" target="_blank">Legacy app</inertia-link>
                     <button type="button" class="px-4 my-2 text-sm text-left text-gray-200 md:px-0 md:pr-4 hover:text-white focus:outline-none" @click="$inertia.post($route('logout'))">Sign out</button>
                 </div>
             </div>
@@ -56,7 +55,7 @@
         </div>
 
         <footer class="w-full px-4 py-2 mt-auto text-xs text-center text-gray-400">
-            &copy; 2020 - TextGrid {{ $page.version }}
+            &copy; 2020-2021 - Rocket {{ $page.version }}
         </footer>
     </div>
 </template>

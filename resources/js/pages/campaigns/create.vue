@@ -14,13 +14,13 @@
                             <div class="device-content">
                                 <div class="flex flex-col items-start justify-start w-full h-full bg-white rounded-3xl">
                                     <div class="w-full p-4 pt-10 text-center bg-gray-100 border-b rounded-t-3xl">
-                                        <div class="inline-block p-4 mb-2 text-lg text-white bg-orange-500 rounded-full"><i class="fas fa-paper-plane"></i></div>
+                                        <div class="inline-block p-4 mb-2 text-lg text-white bg-pink-500 rounded-full"><i class="fas fa-paper-plane"></i></div>
                                         <form-input class="bg-white" placeholder="Sender Name" type="text" name="sender_name" v-model="form.sender_name" :errors="$page.errors.sender_name" />
                                     </div>
 
                                     <div class="w-full h-full mt-auto overflow-y-scroll">
                                         <div class="flex flex-col items-end justify-end p-4 ml-auto text-white">
-                                            <div class="px-3 py-2 mb-2 break-normal bg-orange-500 rounded-lg" v-for="(message, k) in messages" v-bind:key="k">
+                                            <div class="px-3 py-2 mb-2 break-normal bg-pink-500 rounded-lg" v-for="(message, k) in messages" v-bind:key="k">
                                                 {{ message }}
                                             </div>
                                         </div>
@@ -53,7 +53,7 @@
                     <form-select class="mb-4" label="Directory" name="directory_id" required v-model="form.directory_id" :errors="$page.errors.directory_id" :options="directories" />
 
                     <div class="flex justify-end mt-8">
-                        <button class="px-4 py-2 text-sm font-semibold text-white bg-orange-500 rounded hover:bg-orange-600 focus:outline-none">Create</button>
+                        <button class="px-4 py-2 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none">Create</button>
                     </div>
                 </div>
             </div>
