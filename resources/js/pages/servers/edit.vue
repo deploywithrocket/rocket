@@ -3,7 +3,9 @@
         <h1 class="my-8 text-2xl font-bold">
             Campaigns
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
-            New Campaign
+            {{ campaign.id }}
+            <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
+            Edit
         </h1>
 
         <form @submit.prevent="submit">
@@ -18,19 +20,19 @@
                                         <form-input class="bg-white" placeholder="Sender Name" type="text" name="sender_name" v-model="form.sender_name" :errors="$page.errors.sender_name" />
                                     </div>
 
-                                    <div class="w-full h-full mt-auto overflow-y-scroll">
+                                    <div class="w-full mt-auto">
                                         <div class="flex flex-col items-end justify-end p-4 ml-auto text-white">
-                                            <div class="px-3 py-2 mb-2 break-normal bg-pink-500 rounded-lg" v-for="(message, k) in messages" v-bind:key="k">
+                                            <div class="px-3 py-2 mb-2 bg-pink-500 rounded-lg" v-for="(message, k) in messages" v-bind:key="k">
                                                 {{ message }}
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="w-full p-4 pt-0">
-                                        <textarea class="w-full px-3 py-3 text-sm text-gray-700 border rounded-lg appearance-none max-h-40 focus:outline-none focus:shadow-outline"
+                                        <textarea class="w-full px-3 py-3 text-sm text-gray-700 border rounded-lg appearance-none focus:outline-none focus:shadow-outline"
                                                 :class="{ 'border-red-500 mb-1': $page.errors && $page.errors.message && $page.errors.message.length }"
                                                 name="message"
-                                                rows="4"
+                                                :rows="4"
                                                 required
                                                 v-model="form.message"
                                                 ref="message"
@@ -53,7 +55,7 @@
                     <form-select class="mb-4" label="Directory" name="directory_id" required v-model="form.directory_id" :errors="$page.errors.directory_id" :options="directories" />
 
                     <div class="flex justify-end mt-8">
-                        <button class="px-4 py-2 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none">Create</button>
+                        <button class="px-4 py-2 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none">Edit</button>
                     </div>
                 </div>
             </div>
@@ -62,52 +64,36 @@
 </template>
 
 <script>
-    import {Howl, Howler} from 'howler';
-
     export default {
         layout: require('../../layouts/app').default,
 
         props: {
-            directories: Object,
+            campaign: Object,
+            directories: Array,
         },
 
         data() {
             return {
-                messages: [],
-                sound: undefined,
                 form: {
                     sender_name: '',
-                    message: '',
+                    mesasge: '',
                     directory_id: 0,
                 }
             }
         },
 
-        mounted () {
-            this.$refs.message.addEventListener('keydown', this.testMessage)
-
-            this.sound = new Howl({
-                src: ['/sounds/imessage.mp3']
-            });
-        },
-
-        destroyed () {
-            this.$refs.message.removeEventListener('keydown', this.testMessage)
+        mounted() {
+            this.form.sender_name = this.campaign.sender_name
+            this.form.message = this.campaign.message
+            this.form.directory_id = this.campaign.directory_id
         },
 
         methods: {
-            testMessage(e) {
-                if (e.ctrlKey && (e.keyCode == 10 || e.keyCode == 13)) {
-                    // Ctrl+Enter pressed
-                    this.messages.push(this.form.message);
-                    this.sound.play();
-                }
-            },
             submit() {
                 this.$page.errors = {}
 
                 this.$inertia.post(
-                    this.$route('next.campaigns.store'), { ...this.form }
+                    this.$route('next.campaigns.update'), { ...this.form }
                 )
             }
         }

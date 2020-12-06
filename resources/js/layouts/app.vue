@@ -13,35 +13,9 @@
                     </svg>
                 </button>
 
-                <div :class="open ? 'flex': 'hidden'" class="flex-col flex-grow w-full py-2 bg-gray-800 md:flex md:py-0 md:flex-row md:items-center md:w-auto">
-                    <!-- <popper
-                        trigger="clickToOpen"
-                        :options="{ placement: 'right' }"
-                    >
-                        <div class="w-56 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg">
-                            <inertia-link :href="$route('next.campaigns.index')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">All campaigns</inertia-link>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">My models</a>
-                        </div>
-
-                        <button slot="reference" class="px-4 my-2 text-sm text-gray-200 md:px-0 md:pl-4 hover:text-white focus:outline-none">
-                            Campaigns
-                        </button>
-                    </popper> -->
-
-                    <!-- <popper
-                        trigger="clickToOpen"
-                        :options="{ placement: 'right' }"
-                    >
-                        <div class="w-56 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">Directories</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">Browse contacts</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">Campaign exclusion list</a>
-                        </div>
-
-                        <button slot="reference" class="px-4 my-2 text-sm text-gray-200 md:px-0 md:pl-4 hover:text-white focus:outline-none">
-                            Contacts
-                        </button>
-                    </popper> -->
+                <div :class="open ? 'flex': 'hidden'" class="flex-col flex-grow w-full py-2 bg-gray-800 md:flex md:py-0 md:flex-row md:items-center md:w-auto md:pl-4">
+                    <inertia-link :href="$route('servers.index')" class="block px-4 my-2 text-sm text-left text-gray-200 md:px-0 md:pr-4 hover:text-white focus:outline-none">Servers</inertia-link>
+                    <inertia-link :href="$route('projects.index')" class="block px-4 my-2 text-sm text-left text-gray-200 md:px-0 md:pr-4 hover:text-white focus:outline-none">Projects</inertia-link>
 
                     <div class="hidden ml-auto md:block"></div>
 
@@ -61,13 +35,7 @@
 </template>
 
 <script>
-    import Popper from 'vue-popperjs';
-
     export default {
-        components: {
-            'popper': Popper
-        },
-
         data() {
             return {
                 open: false,
