@@ -1,13 +1,13 @@
-php:
-  preset: laravel
-  disabled:
-    - no_unused_imports
-  finder:
-    not-name:
-      - index.php
-      - server.php
-js:
-  finder:
-    not-name:
-      - webpack.mix.js
-css: true
+preset: laravel
+risky: true
+enabled:
+  - concat_with_spaces
+disabled:
+  - no_unused_imports
+  - concat_without_spaces
+finder:
+  name: "*.php"
+  not-name:
+    - "*.blade.php"
+    - index.php
+    - server.php
