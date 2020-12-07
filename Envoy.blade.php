@@ -1,18 +1,19 @@
 @setup
-    $deploy      = new Exolnet\Envoy\ConfigDeploy(get_defined_vars());
-    $environment = $deploy->getEnvironment();
-    extract($environment->extractVariables());
+    extract(json_decode(file_get_contents(__DIR__ . '/storage/app/' . $deptrace), true));
 @endsetup
 
-@servers(['web' => $serverString])
+@servers(['web' => $server_string])
 
 @task('assert:commit')
     @if (! $commit)
         echo "Commit not defined." 1>&2
-        exit 1
     @else
-        echo "Deploying release {{ $release }} with tree-ish {{ $commit }} to environment {{ $environment->getName() }}..."
+        echo "Deploying release {{ $release }} with tree-ish {{ $commit }} to {{ $ssh_host }}..."
     @endif
+@endtask
+
+@task('preflight')
+    true
 @endtask
 
 @macro('backups')
@@ -20,10 +21,11 @@
 @endmacro
 
 @task('backups:list')
-    ls -1 "{{ $backupsPath }}"
+    ls -1 "{{ $backups_path }}"
 @endtask
 
 @macro('deploy')
+    preflight
     assert:commit
     deploy:starting
         deploy:check
@@ -55,27 +57,27 @@
 @endtask
 
 @task('deploy:check')
-    if [ ! -d "{{ $repositoryPath }}" ]; then
+    if [ ! -d "{{ $repository_path }}" ]; then
         echo "Repository path not found." 1>&2
         exit 1
     fi
 
-    if [ "$(git --git-dir {{ $repositoryPath }} rev-parse --is-bare-repository)" != "true" ]; then
+    if [ "$(git --git-dir {{ $repository_path }} rev-parse --is-bare-repository)" != "true" ]; then
         echo "Repository is not bare." 1>&2
         exit 1
     fi
 
-    if [ ! -d "{{ $releasesPath }}" ]; then
+    if [ ! -d "{{ $releases_path }}" ]; then
         echo "Releases path not found." 1>&2
         exit 1
     fi
 
-    if [ ! -d "{{ $sharedPath }}" ]; then
+    if [ ! -d "{{ $shared_path }}" ]; then
         echo "Shared path not found." 1>&2
         exit 1
     fi
 
-    if [ ! -d "{{ $backupsPath }}" ]; then
+    if [ ! -d "{{ $backups_path }}" ]; then
         echo "Backups path not found." 1>&2
         exit 1
     fi
@@ -98,16 +100,16 @@
 @task('deploy:fetch')
     export GIT_SSH_COMMAND="ssh -q -o PasswordAuthentication=no -o VerifyHostKeyDNS=yes"
 
-    {{ $cmdGit }} --git-dir "{{ $repositoryPath }}" remote set-url origin "{{ $repositoryUrl }}"
-    {{ $cmdGit }} --git-dir "{{ $repositoryPath }}" fetch origin +refs/heads/*:refs/heads/* +refs/tags/*:refs/tags/* --prune
+    {{ $cmd_git }} --git-dir "{{ $repository_path }}" remote set-url origin "{{ $repository_url }}"
+    {{ $cmd_git }} --git-dir "{{ $repository_path }}" fetch origin +refs/heads/*:refs/heads/* +refs/tags/*:refs/tags/* --prune
 @endtask
 
 @task('deploy:release')
-    mkdir "{{ $releasePath }}"
-    cd "{{ $releasePath }}"
+    mkdir "{{ $release_path }}"
+    cd "{{ $release_path }}"
 
-    {{ $cmdGit }} --git-dir "{{ $repositoryPath }}" --work-tree "{{ $releasePath }}" checkout -f {{ $commit }}
-    {{ $cmdGit }} --git-dir "{{ $repositoryPath }}" --work-tree "{{ $releasePath }}" rev-parse HEAD > "{{ $releasePath }}/REVISION"
+    {{ $cmd_git }} --git-dir "{{ $repository_path }}" --work-tree "{{ $release_path }}" checkout -f {{ $commit }}
+    {{ $cmd_git }} --git-dir "{{ $repository_path }}" --work-tree "{{ $release_path }}" rev-parse HEAD > "{{ $release_path }}/REVISION"
 @endtask
 
 @task('deploy:link')
@@ -116,50 +118,50 @@
 @endtask
 
 @task('deploy:link:dirs')
-    @foreach ($linkedDirs as $dir)
-        echo "Linking directory {{ $releasePath }}/{{ $dir }} to {{ $sharedPath }}/{{ $dir }}"
+    @foreach ($linked_dirs as $dir)
+        echo "Linking directory {{ $release_path }}/{{ $dir }} to {{ $shared_path }}/{{ $dir }}"
 
-        mkdir -p `dirname "{{ $sharedPath }}/{{ $dir }}"`
+        mkdir -p `dirname "{{ $shared_path }}/{{ $dir }}"`
 
-        if [ -d "{{ $releasePath }}/{{ $dir }}" ]; then
-            if [ ! -d "{{ $sharedPath }}/{{ $dir }}" ]; then
-                cp -r "{{ $releasePath }}/{{ $dir }}" "{{ $sharedPath }}/{{ $dir }}"
+        if [ -d "{{ $release_path }}/{{ $dir }}" ]; then
+            if [ ! -d "{{ $shared_path }}/{{ $dir }}" ]; then
+                cp -r "{{ $release_path }}/{{ $dir }}" "{{ $shared_path }}/{{ $dir }}"
             fi
 
-            rm -rf "{{ $releasePath }}/{{ $dir }}"
+            rm -rf "{{ $release_path }}/{{ $dir }}"
         fi
 
-        if [ ! -d "{{ $sharedPath }}/{{ $dir }}" ]; then
-            mkdir "{{ $sharedPath }}/{{ $dir }}"
+        if [ ! -d "{{ $shared_path }}/{{ $dir }}" ]; then
+            mkdir "{{ $shared_path }}/{{ $dir }}"
         fi
 
-        mkdir -p `dirname "{{ $releasePath }}/{{ $dir }}"`
+        mkdir -p `dirname "{{ $release_path }}/{{ $dir }}"`
 
-        ln -srfn "{{ $sharedPath }}/{{ $dir }}" "{{ $releasePath }}/{{ $dir }}"
+        ln -srfn "{{ $shared_path }}/{{ $dir }}" "{{ $release_path }}/{{ $dir }}"
     @endforeach
 @endtask
 
 @task('deploy:link:files')
-    @foreach ($linkedFiles as $file)
-        echo "Linking file {{ $releasePath }}/{{ $file }} to {{ $sharedPath }}/{{ $file }}"
+    @foreach ($linked_files as $file)
+        echo "Linking file {{ $release_path }}/{{ $file }} to {{ $shared_path }}/{{ $file }}"
 
-        mkdir -p `dirname "{{ $sharedPath }}/{{ $file }}"`
+        mkdir -p `dirname "{{ $shared_path }}/{{ $file }}"`
 
-        if [ -f "{{ $releasePath }}/{{ $file }}" ]; then
-            if [ ! -f "{{ $sharedPath }}/{{ $file }}" ]; then
-                cp "{{ $releasePath }}/{{ $file }}" "{{ $sharedPath }}/{{ $file }}"
+        if [ -f "{{ $release_path }}/{{ $file }}" ]; then
+            if [ ! -f "{{ $shared_path }}/{{ $file }}" ]; then
+                cp "{{ $release_path }}/{{ $file }}" "{{ $shared_path }}/{{ $file }}"
             fi
 
-            rm -f "{{ $releasePath }}/{{ $file }}"
+            rm -f "{{ $release_path }}/{{ $file }}"
         fi
 
-        if [ ! -f "{{ $sharedPath }}/{{ $file }}" ]; then
-            touch "{{ $sharedPath }}/{{ $file }}"
+        if [ ! -f "{{ $shared_path }}/{{ $file }}" ]; then
+            touch "{{ $shared_path }}/{{ $file }}"
         fi
 
-        mkdir -p `dirname "{{ $releasePath }}/{{ $file }}"`
+        mkdir -p `dirname "{{ $release_path }}/{{ $file }}"`
 
-        ln -srfn "{{ $sharedPath }}/{{ $file }}" "{{ $releasePath }}/{{ $file }}"
+        ln -srfn "{{ $shared_path }}/{{ $file }}" "{{ $release_path }}/{{ $file }}"
     @endforeach
 @endtask
 
@@ -169,47 +171,47 @@
 @endtask
 
 @task('deploy:copy:dirs')
-    @foreach ($copiedDirs as $dir)
-        echo "Copying directory {{ $currentPath }}/{{ $dir }} to {{ $releasePath }}/{{ $dir }}"
+    @foreach ($copied_dirs as $dir)
+        echo "Copying directory {{ $current_path }}/{{ $dir }} to {{ $release_path }}/{{ $dir }}"
 
-        mkdir -p `dirname "{{ $releasePath }}/{{ $dir }}"`
+        mkdir -p `dirname "{{ $release_path }}/{{ $dir }}"`
 
-        if [ -d "{{ $currentPath }}/{{ $dir }}" ]; then
-            rsync -a "{{ $currentPath }}/{{ $dir ? rtrim($dir, '/') .'/' : '' }}" "{{ $releasePath }}/{{ $dir }}"
+        if [ -d "{{ $current_path }}/{{ $dir }}" ]; then
+            rsync -a "{{ $current_path }}/{{ $dir ? rtrim($dir, '/') .'/' : '' }}" "{{ $release_path }}/{{ $dir }}"
         fi
     @endforeach
 @endtask
 
 @task('deploy:copy:files')
-    @foreach ($copiedFiles as $file)
-        echo "Copying file {{ $currentPath }}/{{ $file }} to {{ $releasePath }}/{{ $file }}"
+    @foreach ($copied_files as $file)
+        echo "Copying file {{ $current_path }}/{{ $file }} to {{ $release_path }}/{{ $file }}"
 
-        mkdir -p `dirname "{{ $releasePath }}/{{ $file }}"`
+        mkdir -p `dirname "{{ $release_path }}/{{ $file }}"`
 
-        if [ -f "{{ $currentPath }}/{{ $file }}" ]; then
-            rsync -a "{{ $currentPath }}/{{ $file }}" "{{ $releasePath }}/{{ $file }}"
+        if [ -f "{{ $current_path }}/{{ $file }}" ]; then
+            rsync -a "{{ $current_path }}/{{ $file }}" "{{ $release_path }}/{{ $file }}"
         fi
     @endforeach
 @endtask
 
 @task('deploy:composer')
-    @foreach (array_unique([$releasePath, $assetsPath]) as $path)
+    @foreach (array_unique([$release_path, $assets_path]) as $path)
         cd "{{ $path }}"
 
         if [ -f "composer.json" ]; then
-            {{ $cmdComposer }} install {{ $cmdComposerOptions }} --prefer-dist --optimize-autoloader --no-progress --no-interaction
+            {{ $cmd_composer }} install {{ $cmd_composer_options }} --prefer-dist --optimize-autoloader --no-progress --no-interaction
         fi
     @endforeach
 @endtask
 
 @task('deploy:npm')
-    cd "{{ $assetsPath }}"
+    cd "{{ $assets_path }}"
 
     if [ -f "package.json" ]; then
         if [ -f "yarn.lock" ]; then
-            {{ $cmdYarn }} install --pure-lockfile --no-progress --non-interactive
+            {{ $cmd_yarn }} install --pure-lockfile --no-progress --non-interactive
         else
-            {{ $cmdNpm }} install
+            {{ $cmd_npm }} install
         fi
     fi
 @endtask
@@ -223,13 +225,13 @@
 @endtask
 
 @task('deploy:build')
-    cd "{{ $assetsPath }}"
+    cd "{{ $assets_path }}"
 
     if [ -f "package.json" ]; then
         if [ -f "yarn.lock" ]; then
-            {{ $cmdYarn }} run production --no-progress
+            {{ $cmd_yarn }} run production --no-progress
         else
-            {{ $cmdNpm }} run production --no-progress
+            {{ $cmd_npm }} run production --no-progress
         fi
     fi
 @endtask
@@ -243,13 +245,24 @@
 @endtask
 
 @task('deploy:symlink')
-    echo "Linking directory {{ $releasePath }} to {{ $currentPath }}"
+    echo "Linking directory {{ $release_path }} to {{ $current_path }}"
 
-    ln -srfn "{{ $releasePath }}" "{{ $currentPath }}"
+    ln -srfn "{{ $release_path }}" "{{ $current_path }}"
 @endtask
 
 @task('deploy:publish')
-    true
+    cd "{{ $releasePath }}"
+
+    php artisan down
+    php artisan migrate --force
+
+    php artisan config:cache
+    php artisan event:cache
+    php artisan route:cache
+    php artisan view:cache
+    php artisan storage:link
+
+    php artisan up
 @endtask
 
 @task('deploy:cronjobs')
@@ -258,12 +271,11 @@
 
     sed -i '/# ROCKET BEGIN {{ $fingerprint }}/,/# ROCKET END {{ $fingerprint }}/d' $FILE
 
-    @if (is_array($cronJobs) && count($cronJobs) > 0)
+    @if (is_array($cron_jobs) && count($cron_jobs) > 0)
         echo '# ROCKET BEGIN {{ $fingerprint }}' >> $FILE
         echo 'SHELL="/bin/bash"' >> $FILE
-        echo 'MAILTO="{{ $cronMailTo }}"' >> $FILE
-        @foreach ($cronJobs as $cronJob)
-            echo {{ escapeshellarg($cronJob) }} >> $FILE
+        @foreach ($cron_jobs as $cron_job)
+            echo {{ escapeshellarg($cron_job) }} >> $FILE
         @endforeach
         echo '# ROCKET END {{ $fingerprint }}' >> $FILE
     @endif
@@ -286,9 +298,9 @@
 @endtask
 
 @task('deploy:cleanup')
-    cd "{{ $releasesPath }}"
+    cd "{{ $releases_path }}"
 
-    for RELEASE in $(ls -1d * | head -n -{{ $keepReleases }}); do
+    for RELEASE in $(ls -1d * | head -n -{{ $keep_releases }}); do
         echo "Deleting old release $RELEASE"
         rm -rf "$RELEASE"
     done
@@ -303,7 +315,7 @@
 @endmacro
 
 @task('releases:list')
-    ls -1 "{{ $releasesPath }}"
+    ls -1 "{{ $releases_path }}"
 @endtask
 
 @macro('rollback')
@@ -324,18 +336,18 @@
     @if (isset($release))
         RELEASE="{{ $release }}"
     @else
-        cd "{{ $releasesPath }}"
+        cd "{{ $releases_path }}"
         RELEASE=`ls -1d */ | head -n -1 | tail -n 1 | sed "s/\/$//"`
     @endif
 
-    if [ ! -d "{{ $releasesPath }}/$RELEASE" ]; then
+    if [ ! -d "{{ $releases_path }}/$RELEASE" ]; then
         echo "Release $RELEASE not found. Could not rollback."
         exit 1
     fi
 
-    echo "Linking directory {{ $releasesPath }}/$RELEASE to {{ $currentPath }}"
+    echo "Linking directory {{ $releases_path }}/$RELEASE to {{ $current_path }}"
 
-    ln -srfn "{{ $releasesPath }}/$RELEASE" "{{ $currentPath }}"
+    ln -srfn "{{ $releases_path }}/$RELEASE" "{{ $current_path }}"
 @endtask
 
 @macro('setup')
@@ -346,28 +358,28 @@
 @task('setup:repository')
     export GIT_SSH_COMMAND="ssh -q -o PasswordAuthentication=no -o VerifyHostKeyDNS=yes"
 
-    if [ -d "{{ $repoPath }}" ]; then
-        echo "Deleting directory {{ $repoPath }}" 1>&2
-        rm -rf "{{ $repoPath }}"
+    if [ -d "{{ $repo_path }}" ]; then
+        echo "Deleting directory {{ $repo_path }}" 1>&2
+        rm -rf "{{ $repo_path }}"
     fi
 
-    if [ ! -d "{{ $repositoryPath }}" ]; then
-        {{ $cmdGit }} clone --bare "{{ $repositoryUrl }}" "{{ $repositoryPath }}"
-        {{ $cmdGit }} --git-dir "{{ $repositoryPath }}" config advice.detachedHead false
+    if [ ! -d "{{ $repository_path }}" ]; then
+        {{ $cmd_git }} clone --bare "{{ $repository_url }}" "{{ $repository_path }}"
+        {{ $cmd_git }} --git-dir "{{ $repository_path }}" config advice.detachedHead false
     fi
 @endtask
 
 @task('setup:directories')
-    if [ ! -d "{{ $releasesPath }}" ]; then
-        mkdir -v "{{ $releasesPath }}"
+    if [ ! -d "{{ $releases_path }}" ]; then
+        mkdir -v "{{ $releases_path }}"
     fi
 
-    if [ ! -d "{{ $sharedPath }}" ]; then
-        mkdir -v "{{ $sharedPath }}"
+    if [ ! -d "{{ $shared_path }}" ]; then
+        mkdir -v "{{ $shared_path }}"
     fi
 
-    if [ ! -d "{{ $backupsPath }}" ]; then
-        mkdir -v "{{ $backupsPath }}"
+    if [ ! -d "{{ $backups_path }}" ]; then
+        mkdir -v "{{ $backups_path }}"
     fi
 @endtask
 
@@ -377,17 +389,6 @@
     } elseif ($task === 'deploy:check') {
         throw new Exception("Unmet prerequisites to deploy. Have you run 'setup' ?");
     } else {
-        throw new Exception('Whoops, looks like something went wrong.');
+        throw new Exception('Whoops, looks like something went wrong with task: ' . $task);
     }
 @enderror
-
-@finished
-    if ($task === 'deploy' && ($environment->has('slack') || $deploy->has('slack'))) {
-        $slack        = $environment->get('slack') ?: $deploy->get('slack');
-        $slackUrl     = $slack['url'];
-        $slackChannel = $slack['channel'] ?? '#deployments';
-        $slackMessage = $deploy->getName() . ' @ ' . $commit .' - Deployed to _'. $environment->getName() .'_ after '. round($deploy->getTimeTotal(), 1) .' sec.';
-
-        @slack($slackUrl, $slackChannel, $slackMessage)
-    }
-@endfinished

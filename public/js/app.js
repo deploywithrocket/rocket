@@ -49711,7 +49711,7 @@ var render = function() {
                   {
                     staticClass:
                       "inline-block px-4 py-2 mr-1 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600",
-                    attrs: { href: _vm.$route("projects.edit", _vm.project) }
+                    attrs: { href: _vm.$route("projects.setup", _vm.project) }
                   },
                   [_vm._v("Setup")]
                 ),
@@ -49721,7 +49721,7 @@ var render = function() {
                   {
                     staticClass:
                       "inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600",
-                    attrs: { href: _vm.$route("projects.edit", _vm.project) }
+                    attrs: { href: _vm.$route("projects.deploy", _vm.project) }
                   },
                   [_vm._v("Deploy")]
                 )

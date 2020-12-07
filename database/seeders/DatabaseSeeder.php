@@ -23,21 +23,21 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Server::firstOrCreate([
-            'name' => 'o2switch/saucisson',
-            'ssh_user' => 'mgkprod',
-            'ssh_host' => 'saucisson.o2switch.net',
-        ]);
-
-        Server::firstOrCreate([
             'name' => 'universe/sc1',
             'ssh_user' => 'sc1mgkprod',
             'ssh_host' => 'sc1mgkprod.universe.wf',
         ]);
 
-        $server = Server::firstOrCreate([
+        Server::firstOrCreate([
             'name' => 'universe/sc2',
             'ssh_user' => 'sc2mgkprod',
             'ssh_host' => 'sc2mgkprod.universe.wf',
+        ]);
+
+        $server = Server::firstOrCreate([
+            'name' => 'o2switch/saucisson',
+            'ssh_user' => 'mgkprod',
+            'ssh_host' => 'saucisson.o2switch.net',
         ]);
 
         $server->projects()->firstOrCreate([

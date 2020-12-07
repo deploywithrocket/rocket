@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\EnvoyDeployJob;
+use App\Jobs\EnvoySetupJob;
 use App\Models\Project;
 use App\Models\Server;
 use Illuminate\Http\Request;
@@ -87,5 +89,33 @@ class ProjectController extends Controller
         $project->delete();
 
         return redirect()->route('projects.index');
+    }
+
+    public function setup(Project $project)
+    {
+        $deployment = $project->deployments()->create([
+            'server_id' => $project->server->id,
+            'type' => 'setup',
+            'release' => '',
+            'commit' => '',
+        ]);
+
+        dispatch(new EnvoySetupJob($deployment));
+
+        return redirect()->route('projects.show', $project);
+    }
+
+    public function deploy(Project $project)
+    {
+        $deployment = $project->deployments()->create([
+            'server_id' => $project->server->id,
+            'type' => 'deploy',
+            'release' => date('YmdHis'),
+            'commit' => 'd88ed2b083e7c418cf238bb5738335adb2a2341a',
+        ]);
+
+        dispatch(new EnvoyDeployJob($deployment));
+
+        return redirect()->route('projects.show', $project);
     }
 }
