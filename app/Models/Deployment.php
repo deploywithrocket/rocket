@@ -43,7 +43,8 @@ class Deployment extends Model
     public function buildServerString()
     {
         $host = $this->server->ssh_user . '@' . $this->server->ssh_host;
-        $options = '-qA'; // Same as '-q -A'
+        $ssh_pem_file = storage_path('app/id_rsa');
+        $options = '-q -A -i ' . escapeshellarg($ssh_pem_file);
 
         if ($this->server->ssh_options) {
             $options .= ' ' . $this->server->ssh_options;

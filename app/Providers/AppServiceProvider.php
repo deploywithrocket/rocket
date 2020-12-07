@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        URL::forceScheme('https');
+        // URL::forceScheme('https');
 
         Carbon::setLocale(config('app.locale'));
         setlocale(LC_TIME, config('app.locale'));

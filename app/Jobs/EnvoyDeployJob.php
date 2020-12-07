@@ -4,17 +4,18 @@ namespace App\Jobs;
 
 use App\Models\Deployment;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Queue\SerializesModels;
+use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class EnvoyDeployJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, RemoteJobTrait;
 
     public $tries = 1;
     public $timeout = 60 * 15;
@@ -28,46 +29,53 @@ class EnvoyDeployJob implements ShouldQueue
 
     public function handle()
     {
-        $this->deployment->status = 'running';
-        $this->deployment->save();
+        $this->beforeHandle();
+        $this->defineConfig();
+        $this->defineTasks();
 
-        $rocket_file = $this->deployment->id . '.rocket';
+        try {
+            $process = $this->ssh->execute([
+                $this->scripts['preflight'],
+                $this->scripts['assert:commit'],
+                $this->scripts['deploy:starting'],
+                $this->scripts['deploy:check'],
+                $this->scripts['deploy:backup'],
+                $this->scripts['deploy:started'],
+                $this->scripts['deploy:provisioning'],
+                $this->scripts['deploy:fetch'],
+                $this->scripts['deploy:release'],
+                $this->scripts['deploy:link'],
+                // $this->scripts['deploy:copy'],
+                $this->scripts['deploy:composer'],
+                $this->scripts['deploy:npm'],
+                $this->scripts['deploy:provisioned'],
+                $this->scripts['deploy:building'],
+                $this->scripts['deploy:build'],
+                $this->scripts['deploy:built'],
+                $this->scripts['deploy:publishing'],
+                $this->scripts['deploy:symlink'],
+                $this->scripts['deploy:publish'],
+                $this->scripts['deploy:cronjobs'],
+                $this->scripts['deploy:published'],
+                $this->scripts['deploy:finishing'],
+                $this->scripts['deploy:cleanup'],
+                $this->scripts['deploy:finished'],
+            ]);
 
-        Storage::put(
-            $rocket_file,
-            json_encode($this->deployment->extractVariables())
-        );
-
-        $process = new Process([
-            base_path('vendor/bin/envoy'),
-            'run',
-            'deploy',
-            '--deptrace=' . $rocket_file,
-        ]);
-
-        $process->setWorkingDirectory(base_path());
-        $process->setEnv(['TEMP' => storage_path('app')]);
-        $process->setTimeout(60 * 15);
-
-        $process->start();
-
-        $process->wait(function ($type, $buffer) {
-            DB::update(
-                'update deployments set raw_output = CONCAT_WS(IFNULL(raw_output, ""), ?), updated_at = ? where id = ?',
-                [$buffer, now()->format('Y-m-d H:i:s'), $this->deployment->id]
-            );
-        });
-
-        Storage::delete($rocket_file);
-
-        if (! $process->isSuccessful()) {
+            if (! $process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+        } catch (\Throwable $th) {
             $this->deployment->status = 'error';
             $this->deployment->save();
 
-            return;
+            dump($this->deployment->raw_output);
+            throw $th;
         }
 
-        $this->deployment->status = 'success';
-        $this->deployment->save();
+        $this->deployment->refresh();
+        dd($this->deployment->raw_output);
+
+        $this->afterHandle();
     }
 }
