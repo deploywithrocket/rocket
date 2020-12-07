@@ -11,10 +11,10 @@
                 <div class="w-full p-8 bg-white rounded-lg shadow">
                     <form-input class="mb-4" label="Name" placeholder="My production server" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
 
-                    <div class="flex flex-row items-center">
-                        <form-input class="mb-4 w-1/4" label="User" type="text" placeholder="rocket" name="user" v-model="form.user" :errors="$page.errors.user" />
+                    <div class="flex flex-row items-center mb-4">
+                        <form-input class="w-1/4" label="User" type="text" placeholder="rocket" name="ssh_user" v-model="form.ssh_user" :errors="$page.errors.ssh_user" />
                         <div class="px-2">@</div>
-                        <form-input class="mb-4 w-3/4" label="Address" type="text" placeholder="sc1.rocket.mgk.dev" name="address" v-model="form.address" :errors="$page.errors.address" />
+                        <form-input class="w-3/4" label="Host" type="text" placeholder="sc1.rocket.mgk.dev" name="ssh_host" v-model="form.ssh_host" :errors="$page.errors.ssh_host" />
                     </div>
 
                     <div class="flex justify-end mt-8">
@@ -40,8 +40,8 @@
             return {
                 form: {
                     name: '',
-                    user: '',
-                    address: '',
+                    ssh_user: '',
+                    ssh_host: '',
                 }
             }
         },

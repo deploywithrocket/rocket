@@ -13,15 +13,15 @@
                 <thead>
                     <tr class="border-b">
                         <th class="w-8 px-2 py-2 text-sm text-center"></th>
-                        <th class="px-2 py-2 text-sm text-left">Server name</th>
-                        <th class="px-2 py-2 text-sm text-left">Address</th>
+                        <th class="px-2 py-2 text-sm text-left">Name</th>
+                        <th class="px-2 py-2 text-sm text-left">User@Host</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="server in servers.data" v-bind:key="server.id" class="border-b cursor-pointer hover:bg-gray-100" @click="show(server.id)">
                         <td class="px-2 py-2 text-center"></td>
                         <td class="px-2 py-2 truncate">{{ server.name }}</td>
-                        <td class="px-2 py-2 truncate">{{ server.user }}@{{ server.address }}</td>
+                        <td class="px-2 py-2 truncate">{{ server.ssh_user }}@{{ server.ssh_host }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -65,7 +65,7 @@
 
         methods: {
             show(server_id) {
-                this.$inertia.visit(this.$route('next.server.show', server_id))
+                this.$inertia.visit(this.$route('servers.show', server_id))
             }
         }
     }

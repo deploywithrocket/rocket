@@ -10,6 +10,13 @@ class Project extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'linked_dirs' => 'json',
+        'linked_files' => 'json',
+        'copied_dirs' => 'json',
+        'copied_files' => 'json',
+    ];
+
     public function server()
     {
         return $this->belongsTo(Server::class);

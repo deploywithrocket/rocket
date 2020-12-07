@@ -65,7 +65,7 @@
 
         methods: {
             show(project_id) {
-                this.$inertia.visit(this.$route('next.project.show', project_id))
+                this.$inertia.visit(this.$route('projects.show', project_id))
             }
         }
     }

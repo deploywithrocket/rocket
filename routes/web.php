@@ -45,9 +45,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/', [ProjectController::class, 'index'])->name('index');
         Route::get('/create', [ProjectController::class, 'create'])->name('create');
         Route::post('/', [ProjectController::class, 'store'])->name('store');
-        Route::get('/{server}', [ProjectController::class, 'show'])->name('show');
-        Route::get('/{server}/edit', [ProjectController::class, 'edit'])->name('edit');
-        Route::put('/{server}', [ProjectController::class, 'update'])->name('update');
-        Route::delete('/{server}', [ProjectController::class, 'destroy'])->name('destroy');
+        Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
+        Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
+        Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
+        Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
     });
 });

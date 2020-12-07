@@ -30,14 +30,18 @@ class ProjectController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'user' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
+            'repository_url' => ['required', 'string', 'max:255'],
+            'health_url' => ['required', 'string', 'max:255'],
+            'server_id' => ['required', 'exists:servers,id'],
+            'deploy_path' => ['required', 'string', 'max:255'],
         ]);
 
         $project = new Project();
         $project->name = $request->name;
-        $project->user = $request->user;
-        $project->address = $request->address;
+        $project->repository_url = $request->repository_url;
+        $project->health_url = $request->health_url;
+        $project->server_id = $request->server_id;
+        $project->deploy_path = $request->deploy_path;
         $project->save();
 
         return redirect()->route('projects.show', $project->id);
@@ -45,38 +49,43 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        $project = $project->load('directory');
+        $project = $project
+            ->load('server');
 
-        return inertia('projects/show', compact('campaign'));
+        return inertia('projects/show', compact('project'));
     }
 
     public function edit(Project $project)
     {
         $servers = Server::pluck('name', 'id');
 
-        return inertia('project/edit', compact('project', 'servers'));
+        return inertia('projects/edit', compact('project', 'servers'));
     }
 
     public function update(Request $request, Project $project)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'user' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
+            'repository_url' => ['required', 'string', 'max:255'],
+            'health_url' => ['required', 'string', 'max:255'],
+            'server_id' => ['required', 'exists:servers,id'],
+            'deploy_path' => ['required', 'string', 'max:255'],
         ]);
 
         $project->name = $request->name;
-        $project->user = $request->user;
-        $project->address = $request->address;
+        $project->repository_url = $request->repository_url;
+        $project->health_url = $request->health_url;
+        $project->server_id = $request->server_id;
+        $project->deploy_path = $request->deploy_path;
         $project->save();
 
-        return redirect()->route('project.show', $project->id);
+        return redirect()->route('projects.show', $project);
     }
 
     public function destroy(Project $project)
     {
         $project->delete();
 
-        return redirect()->route('project.index');
+        return redirect()->route('projects.index');
     }
 }

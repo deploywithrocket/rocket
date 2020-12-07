@@ -22,10 +22,22 @@ class DatabaseSeeder extends Seeder
             'password' => \Hash::make('1234'),
         ]);
 
+        Server::firstOrCreate([
+            'name' => 'o2switch/saucisson',
+            'ssh_user' => 'mgkprod',
+            'ssh_host' => 'saucisson.o2switch.net',
+        ]);
+
+        Server::firstOrCreate([
+            'name' => 'universe/sc1',
+            'ssh_user' => 'sc1mgkprod',
+            'ssh_host' => 'sc1mgkprod.universe.wf',
+        ]);
+
         $server = Server::firstOrCreate([
-            'name' => 'Saucisson',
-            'user' => 'mgkprod',
-            'address' => 'saucisson.o2switch.org',
+            'name' => 'universe/sc2',
+            'ssh_user' => 'sc2mgkprod',
+            'ssh_host' => 'sc2mgkprod.universe.wf',
         ]);
 
         $server->projects()->firstOrCreate([
@@ -33,6 +45,9 @@ class DatabaseSeeder extends Seeder
             'repository_url' => 'git@github.com:mgkprod/rocket.git',
             'deploy_path' => '/home/mgkprod/rocket.mgk.dev',
             'health_url' => 'https://rocket.mgk.dev',
+            'env' => '',
+            'linked_dirs' => ['storage/app', 'storage/framework', 'storage/logs'],
+            'copied_dirs' => ['node_modules', 'vendor'],
         ]);
     }
 }

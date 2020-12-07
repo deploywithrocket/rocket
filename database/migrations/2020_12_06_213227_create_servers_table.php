@@ -16,8 +16,20 @@ class CreateServersTable extends Migration
         Schema::create('servers', function (Blueprint $table) {
             $table->char('id', 26)->primary();
             $table->string('name');
-            $table->string('user');
-            $table->string('address');
+
+            $table->string('ssh_host');
+            $table->string('ssh_user');
+
+            $table->string('ssh_options')->nullable();
+            $table->string('cmd_git')->nullable();
+            $table->string('cmd_npm')->nullable();
+            $table->string('cmd_yarn')->nullable();
+            $table->string('cmd_bower')->nullable();
+            $table->string('cmd_grunt')->nullable();
+            $table->string('cmd_php')->nullable();
+            $table->string('cmd_composer')->nullable();
+            $table->string('cmd_composer_options')->nullable();
+
             $table->timestamps();
         });
     }

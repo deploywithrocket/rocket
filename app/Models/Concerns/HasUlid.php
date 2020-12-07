@@ -10,7 +10,7 @@ trait HasUlid
     {
         // when creating models, we will generate a new ULID before saving
         static::creating(function ($model) {
-            if (!isset($model->id)) {
+            if (! isset($model->id)) {
                 $model->id = (string) Ulid::generate(true);
             }
         });

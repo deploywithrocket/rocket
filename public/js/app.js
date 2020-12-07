@@ -2332,7 +2332,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: '',
         repository_url: '',
         health_url: '',
-        server_id: '',
+        server_id: 0,
         deploy_path: ''
       }
     };
@@ -2394,63 +2394,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../../layouts/app */ "./resources/js/layouts/app.vue")["default"],
   props: {
-    campaign: Object,
-    directories: Array
+    project: Object,
+    servers: Array
   },
   data: function data() {
     return {
       form: {
-        sender_name: '',
-        mesasge: '',
-        directory_id: 0
+        name: '',
+        repository_url: '',
+        health_url: '',
+        server_id: 0,
+        deploy_path: ''
       }
     };
   },
   mounted: function mounted() {
-    this.form.sender_name = this.campaign.sender_name;
-    this.form.message = this.campaign.message;
-    this.form.directory_id = this.campaign.directory_id;
+    this.form.name = this.project.name;
+    this.form.repository_url = this.project.repository_url;
+    this.form.health_url = this.project.health_url;
+    this.form.server_id = this.project.server_id;
+    this.form.deploy_path = this.project.deploy_path;
   },
   methods: {
     submit: function submit() {
       this.$page.errors = {};
-      this.$inertia.post(this.$route('next.campaigns.update'), _objectSpread({}, this.form));
+      this.$inertia.put(this.$route('projects.update', this.project), _objectSpread({}, this.form));
     }
   }
 });
@@ -2530,7 +2501,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     show: function show(project_id) {
-      this.$inertia.visit(this.$route('next.project.show', project_id));
+      this.$inertia.visit(this.$route('projects.show', project_id));
     }
   }
 });
@@ -2616,86 +2587,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../../layouts/app */ "./resources/js/layouts/app.vue")["default"],
   props: {
-    campaign: Object
+    project: Object
   },
   data: function data() {
-    return {
-      currentStep: 0,
-      steps: ['Create your campaign', 'Preparing contacts', 'The campaign is ready to be sent', 'Sending texts', 'Finished']
-    };
+    return {};
   },
-  mounted: function mounted() {
-    var _this = this;
-
-    if (this.campaign.status == 'draft') this.currentStep = 0;
-    if (this.campaign.status == 'preparing') this.currentStep = 1;
-    if (this.campaign.status == 'ready') this.currentStep = 2;
-    if (this.campaign.status == 'in-progress') this.currentStep = 3;
-    if (this.campaign.status == 'finished') this.currentStep = 4;
-
-    if ([1, 3].includes(this.currentStep)) {
-      setTimeout(function () {
-        _this.$inertia.visit(window.location.href);
-      }, 5000);
-    }
-  },
+  mounted: function mounted() {},
   methods: {
     destroy: function destroy() {
-      if (confirm("Do you really want to delete this campaign?")) {
-        this.$inertia["delete"](this.$route('next.campaigns.destroy', this.campaign.id));
+      if (confirm("Do you really want to delete this project?")) {
+        this.$inertia["delete"](this.$route('projects.destroy', this.project));
       }
     }
   }
@@ -2758,8 +2662,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       form: {
         name: '',
-        user: '',
-        address: ''
+        ssh_user: '',
+        ssh_host: ''
       }
     };
   },
@@ -2830,53 +2734,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../../layouts/app */ "./resources/js/layouts/app.vue")["default"],
   props: {
-    campaign: Object,
-    directories: Array
+    server: Object
   },
   data: function data() {
     return {
       form: {
-        sender_name: '',
-        mesasge: '',
-        directory_id: 0
+        name: '',
+        ssh_user: '',
+        ssh_host: '',
+        ssh_options: '',
+        cmd_git: '',
+        cmd_npm: '',
+        cmd_yarn: '',
+        cmd_bower: '',
+        cmd_grunt: '',
+        cmd_php: '',
+        cmd_composer: '',
+        cmd_composer_options: ''
       }
     };
   },
   mounted: function mounted() {
-    this.form.sender_name = this.campaign.sender_name;
-    this.form.message = this.campaign.message;
-    this.form.directory_id = this.campaign.directory_id;
+    this.form = _objectSpread({}, this.server);
   },
   methods: {
     submit: function submit() {
       this.$page.errors = {};
-      this.$inertia.post(this.$route('next.campaigns.update'), _objectSpread({}, this.form));
+      this.$inertia.put(this.$route('servers.update', this.server), _objectSpread({}, this.form));
     }
   }
 });
@@ -2956,7 +2843,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     show: function show(server_id) {
-      this.$inertia.visit(this.$route('next.server.show', server_id));
+      this.$inertia.visit(this.$route('servers.show', server_id));
     }
   }
 });
@@ -3057,71 +2944,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../../layouts/app */ "./resources/js/layouts/app.vue")["default"],
   props: {
-    campaign: Object
+    server: Object
   },
   data: function data() {
-    return {
-      currentStep: 0,
-      steps: ['Create your campaign', 'Preparing contacts', 'The campaign is ready to be sent', 'Sending texts', 'Finished']
-    };
+    return {};
   },
-  mounted: function mounted() {
-    var _this = this;
-
-    if (this.campaign.status == 'draft') this.currentStep = 0;
-    if (this.campaign.status == 'preparing') this.currentStep = 1;
-    if (this.campaign.status == 'ready') this.currentStep = 2;
-    if (this.campaign.status == 'in-progress') this.currentStep = 3;
-    if (this.campaign.status == 'finished') this.currentStep = 4;
-
-    if ([1, 3].includes(this.currentStep)) {
-      setTimeout(function () {
-        _this.$inertia.visit(window.location.href);
-      }, 5000);
-    }
-  },
+  mounted: function mounted() {},
   methods: {
     destroy: function destroy() {
-      if (confirm("Do you really want to delete this campaign?")) {
-        this.$inertia["delete"](this.$route('next.campaigns.destroy', this.campaign.id));
+      if (confirm("Do you really want to delete this server?")) {
+        this.$inertia["delete"](this.$route('servers.destroy', this.server));
       }
     }
   }
@@ -49324,7 +49159,7 @@ var render = function() {
                   { staticClass: "flex flex-row items-center" },
                   [
                     _c("form-select", {
-                      staticClass: "mb-4 w-1/3",
+                      staticClass: "w-1/3 mb-4",
                       attrs: {
                         label: "Server",
                         name: "server_id",
@@ -49344,7 +49179,7 @@ var render = function() {
                     _c("div", { staticClass: "px-1" }),
                     _vm._v(" "),
                     _c("form-input", {
-                      staticClass: "mb-4 w-2/3",
+                      staticClass: "w-2/3 mb-4",
                       attrs: {
                         label: "Deploy path",
                         type: "text",
@@ -49424,9 +49259,9 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("h1", { staticClass: "my-8 text-2xl font-bold" }, [
-      _vm._v("\n        Campaigns\n        "),
+      _vm._v("\n        Project\n        "),
       _c("i", { staticClass: "text-sm text-gray-500 fas fa-chevron-right" }),
-      _vm._v("\n        " + _vm._s(_vm.campaign.id) + "\n        "),
+      _vm._v("\n        " + _vm._s(_vm.project.id) + "\n        "),
       _c("i", { staticClass: "text-sm text-gray-500 fas fa-chevron-right" }),
       _vm._v("\n        Edit\n    ")
     ]),
@@ -49448,166 +49283,108 @@ var render = function() {
           [
             _c(
               "div",
-              { staticClass: "flex items-center justify-center mb-8" },
+              { staticClass: "w-full p-8 bg-white rounded-lg shadow" },
               [
-                _c("div", { staticClass: "device device-iphone-x" }, [
-                  _c("div", { staticClass: "device-frame" }, [
-                    _c("div", { staticClass: "device-content" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "flex flex-col items-start justify-start w-full h-full bg-white rounded-3xl"
-                        },
-                        [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-full p-4 pt-10 text-center bg-gray-100 border-b rounded-t-3xl"
-                            },
-                            [
-                              _vm._m(0),
-                              _vm._v(" "),
-                              _c("form-input", {
-                                staticClass: "bg-white",
-                                attrs: {
-                                  placeholder: "Sender Name",
-                                  type: "text",
-                                  name: "sender_name",
-                                  errors: _vm.$page.errors.sender_name
-                                },
-                                model: {
-                                  value: _vm.form.sender_name,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.form, "sender_name", $$v)
-                                  },
-                                  expression: "form.sender_name"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-full mt-auto" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "flex flex-col items-end justify-end p-4 ml-auto text-white"
-                              },
-                              _vm._l(_vm.messages, function(message, k) {
-                                return _c(
-                                  "div",
-                                  {
-                                    key: k,
-                                    staticClass:
-                                      "px-3 py-2 mb-2 bg-pink-500 rounded-lg"
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                            " +
-                                        _vm._s(message) +
-                                        "\n                                        "
-                                    )
-                                  ]
-                                )
-                              }),
-                              0
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-full p-4 pt-0" }, [
-                            _c("textarea", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.message,
-                                  expression: "form.message"
-                                }
-                              ],
-                              ref: "message",
-                              staticClass:
-                                "w-full px-3 py-3 text-sm text-gray-700 border rounded-lg appearance-none focus:outline-none focus:shadow-outline",
-                              class: {
-                                "border-red-500 mb-1":
-                                  _vm.$page.errors &&
-                                  _vm.$page.errors.message &&
-                                  _vm.$page.errors.message.length
-                              },
-                              attrs: { name: "message", rows: 4, required: "" },
-                              domProps: { value: _vm.form.message },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "message",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _vm.$page.errors &&
-                          _vm.$page.errors.message &&
-                          _vm.$page.errors.message.length
-                            ? _c("p", {
-                                staticClass: "pl-1 text-xs italic text-red-500",
-                                domProps: {
-                                  textContent: _vm._s(
-                                    _vm.$page.errors &&
-                                      _vm.$page.errors.message &&
-                                      _vm.$page.errors.message[0]
-                                  )
-                                }
-                              })
-                            : _vm._e()
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "device-stripe" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "device-header" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "device-sensors" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "device-btns" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "device-power" })
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "w-full max-w-md p-8 bg-white rounded-lg shadow" },
-              [
-                _c("form-select", {
+                _c("form-input", {
                   staticClass: "mb-4",
                   attrs: {
-                    label: "Directory",
-                    name: "directory_id",
-                    required: "",
-                    errors: _vm.$page.errors.directory_id,
-                    options: _vm.directories
+                    label: "Name",
+                    placeholder: "My awesome project",
+                    type: "text",
+                    name: "name",
+                    errors: _vm.$page.errors.name
                   },
                   model: {
-                    value: _vm.form.directory_id,
+                    value: _vm.form.name,
                     callback: function($$v) {
-                      _vm.$set(_vm.form, "directory_id", $$v)
+                      _vm.$set(_vm.form, "name", $$v)
                     },
-                    expression: "form.directory_id"
+                    expression: "form.name"
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(1)
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "Repository URL",
+                    placeholder: "git@github.com:mgkprod/rocket.git",
+                    type: "text",
+                    name: "repository_url",
+                    errors: _vm.$page.errors.repository_url
+                  },
+                  model: {
+                    value: _vm.form.repository_url,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "repository_url", $$v)
+                    },
+                    expression: "form.repository_url"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "Health check URL",
+                    placeholder: "https://rocket.mgk.dev",
+                    type: "text",
+                    name: "health_url",
+                    errors: _vm.$page.errors.health_url
+                  },
+                  model: {
+                    value: _vm.form.health_url,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "health_url", $$v)
+                    },
+                    expression: "form.health_url"
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "flex flex-row items-center" },
+                  [
+                    _c("form-select", {
+                      staticClass: "w-1/3 mb-4",
+                      attrs: {
+                        label: "Server",
+                        name: "server_id",
+                        required: "",
+                        errors: _vm.$page.errors.server_id,
+                        options: _vm.servers
+                      },
+                      model: {
+                        value: _vm.form.server_id,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "server_id", $$v)
+                        },
+                        expression: "form.server_id"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "px-1" }),
+                    _vm._v(" "),
+                    _c("form-input", {
+                      staticClass: "w-2/3 mb-4",
+                      attrs: {
+                        label: "Deploy path",
+                        type: "text",
+                        placeholder: "/home/websites/rocket",
+                        name: "deploy_path",
+                        errors: _vm.$page.errors.deploy_path
+                      },
+                      model: {
+                        value: _vm.form.deploy_path,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "deploy_path", $$v)
+                        },
+                        expression: "form.deploy_path"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm._m(0)
               ],
               1
             )
@@ -49618,19 +49395,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "inline-block p-4 mb-2 text-lg text-white bg-pink-500 rounded-full"
-      },
-      [_c("i", { staticClass: "fas fa-paper-plane" })]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -49815,368 +49579,171 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("h1", { staticClass: "my-8 text-2xl font-bold" }, [
-      _vm._v("\n        Projects\n        "),
+      _vm._v("\n        Project\n        "),
       _c("i", { staticClass: "text-sm text-gray-500 fas fa-chevron-right" }),
-      _vm._v("\n        " + _vm._s(_vm.campaign.id) + "\n    ")
+      _vm._v("\n        " + _vm._s(_vm.project.id) + "\n    ")
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "flex" }, [
-      _c("div", { staticClass: "w-1/3 mr-4" }, [
-        _c(
-          "div",
-          { staticClass: "flex flex-col" },
-          _vm._l(_vm.steps, function(step, k) {
-            return _c("div", { key: k }, [
-              k != 0
-                ? _c("div", { staticClass: "h-4 ml-4 border-l" })
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "flex flex-row items-center" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "flex items-center justify-center w-10 h-8 mr-4 text-sm font-bold bg-gray-200 rounded",
-                    class: {
-                      "text-gray-300": _vm.currentStep < k,
-                      "text-gray-600 bg-gray-300": _vm.currentStep > k,
-                      "bg-pink-500 text-white": _vm.currentStep == k
-                    }
-                  },
-                  [_vm._v(_vm._s(k + 1))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "w-full text-gray-300",
-                    class: {
-                      "text-gray-600": _vm.currentStep >= k,
-                      "font-semibold": _vm.currentStep == k
-                    }
-                  },
-                  [_c("p", { staticClass: "text-sm" }, [_vm._v(_vm._s(step))])]
-                )
-              ])
-            ])
-          }),
-          0
-        )
-      ]),
-      _vm._v(" "),
       _c("div", { staticClass: "w-full" }, [
         _c(
           "div",
           { staticClass: "w-full p-8 mb-8 bg-white rounded-lg shadow" },
           [
-            [0, 2, 4].includes(_vm.currentStep)
-              ? _c("table", { staticClass: "w-full mb-8 table-fixed" }, [
-                  _c("tbody", [
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [_vm._v("#")]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.id))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v("Sender Name")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.sender_name))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v("Message")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.message))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v("Created at")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.$moment(_vm.campaign.created_at).format("L")
-                          ) +
-                            " " +
-                            _vm._s(
-                              _vm.$moment(_vm.campaign.created_at).format("LT")
-                            )
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v("Directory")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.directory.name))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v("Status")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.status))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [_vm._v("Sent")]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.sent))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [_vm._v("Total")]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.total))
-                      ])
-                    ])
+            _c("table", { staticClass: "w-full mb-8 table-fixed" }, [
+              _c("tbody", [
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [_vm._v("#")]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.project.id))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [_vm._v("Name")]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.project.name))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v("Repository URL")
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.project.repository_url))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v("Deploy path")
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.project.deploy_path))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v("Health URL")
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.project.health_url))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [_vm._v("Env")]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.project.env))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v("Linked dirs")
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.project.linked_dirs))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v("Copied dirs")
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.project.copied_dirs))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [_vm._v("Server")]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.project.server.name))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v("Created at")
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(
+                      _vm._s(_vm.$moment(_vm.project.created_at).format("L")) +
+                        " " +
+                        _vm._s(_vm.$moment(_vm.project.created_at).format("LT"))
+                    )
                   ])
                 ])
-              : _vm._e(),
-            _vm._v(" "),
-            [1, 3].includes(_vm.currentStep)
-              ? _c(
-                  "div",
-                  { staticClass: "text-center" },
-                  [
-                    _vm._m(0),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "mb-1 text-xl font-semibold" }, [
-                      _vm._v(
-                        "\n                        Please wait\n                    "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _vm.currentStep == 1
-                      ? [
-                          _c("div", { staticClass: "text-xs" }, [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.campaign.total) +
-                                " / " +
-                                _vm._s(_vm.campaign.directory_total) +
-                                " (" +
-                                _vm._s(_vm.campaign.directory_percent) +
-                                "%)\n                        "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-full max-w-xs mx-auto mt-2 bg-gray-100 rounded"
-                            },
-                            [
-                              _c("div", {
-                                staticClass: "h-2 bg-pink-500 rounded",
-                                style: {
-                                  width: _vm.campaign.directory_percent + "%"
-                                }
-                              })
-                            ]
-                          )
-                        ]
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.currentStep == 3
-                      ? [
-                          _c("div", { staticClass: "text-xs" }, [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.campaign.sent) +
-                                " / " +
-                                _vm._s(_vm.campaign.total) +
-                                " (" +
-                                _vm._s(_vm.campaign.percent) +
-                                "%)\n                        "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-full max-w-xs mx-auto mt-2 bg-gray-100 rounded"
-                            },
-                            [
-                              _c("div", {
-                                staticClass: "h-2 bg-pink-500 rounded",
-                                style: { width: _vm.campaign.percent + "%" }
-                              })
-                            ]
-                          )
-                        ]
-                      : _vm._e()
-                  ],
-                  2
-                )
-              : _vm._e(),
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "div",
               { staticClass: "flex flex-row justify-between" },
               [
-                _vm.currentStep == 0
-                  ? [
-                      _c(
-                        "inertia-link",
-                        {
-                          staticClass:
-                            "inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200",
-                          attrs: {
-                            href: _vm.$route(
-                              "next.campaigns.edit",
-                              _vm.campaign
-                            )
-                          }
-                        },
-                        [_vm._v("Edit")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "inertia-link",
-                        {
-                          staticClass:
-                            "inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600",
-                          attrs: {
-                            href: _vm.$route(
-                              "next.campaigns.prepare",
-                              _vm.campaign
-                            )
-                          }
-                        },
-                        [_vm._v("Prepare campaign")]
-                      )
-                    ]
-                  : _vm._e(),
+                _c(
+                  "inertia-link",
+                  {
+                    staticClass:
+                      "inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200",
+                    attrs: { href: _vm.$route("projects.edit", _vm.project) }
+                  },
+                  [_vm._v("Edit")]
+                ),
                 _vm._v(" "),
-                _vm.campaign.status == "ready"
-                  ? [
-                      _c(
-                        "inertia-link",
-                        {
-                          staticClass:
-                            "inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200",
-                          attrs: {
-                            href: _vm.$route(
-                              "next.campaigns.edit",
-                              _vm.campaign
-                            )
-                          }
-                        },
-                        [_vm._v("Edit")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "inertia-link",
-                        {
-                          staticClass:
-                            "inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600",
-                          attrs: {
-                            href: _vm.$route(
-                              "next.campaigns.send",
-                              _vm.campaign
-                            )
-                          }
-                        },
-                        [_vm._v("Send campaign")]
-                      )
-                    ]
-                  : _vm._e(),
+                _c("div", { staticClass: "mx-auto" }),
                 _vm._v(" "),
-                _vm.campaign.status == "finished"
-                  ? [
-                      _c("div"),
-                      _vm._v(" "),
-                      _c(
-                        "inertia-link",
-                        {
-                          staticClass:
-                            "inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200",
-                          attrs: {
-                            href: _vm.$route(
-                              "next.campaigns.send",
-                              _vm.campaign
-                            )
-                          }
-                        },
-                        [_vm._v("Retry failed sendings")]
-                      )
-                    ]
-                  : _vm._e()
+                _c(
+                  "inertia-link",
+                  {
+                    staticClass:
+                      "inline-block px-4 py-2 mr-1 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600",
+                    attrs: { href: _vm.$route("projects.edit", _vm.project) }
+                  },
+                  [_vm._v("Setup")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "inertia-link",
+                  {
+                    staticClass:
+                      "inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600",
+                    attrs: { href: _vm.$route("projects.edit", _vm.project) }
+                  },
+                  [_vm._v("Deploy")]
+                )
               ],
-              2
+              1
             )
           ]
         ),
         _vm._v(" "),
-        [0, 2, 4].includes(_vm.currentStep)
-          ? _c(
-              "button",
-              {
-                staticClass:
-                  "inline-block text-sm text-red-500 hover:text-red-600",
-                on: { click: _vm.destroy }
-              },
-              [_vm._v("Delete this campaign")]
-            )
-          : _vm._e()
+        _c(
+          "button",
+          {
+            staticClass: "inline-block text-sm text-red-500 hover:text-red-600",
+            on: { click: _vm.destroy }
+          },
+          [_vm._v("Delete this project")]
+        )
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mb-3" }, [
-      _c("i", {
-        staticClass: "text-gray-500 fal fa-circle-notch fa-spin fa-2x"
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "mb-8" }, [
-      _vm._v(
-        "\n                        You can stay here or safely leave this page."
-      ),
-      _c("br"),
-      _vm._v(
-        "\n                        Campaign status will be updated on each refresh.\n                    "
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -50240,43 +49807,43 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "flex flex-row items-center" },
+                  { staticClass: "flex flex-row items-center mb-4" },
                   [
                     _c("form-input", {
-                      staticClass: "mb-4 w-1/4",
+                      staticClass: "w-1/4",
                       attrs: {
                         label: "User",
                         type: "text",
                         placeholder: "rocket",
-                        name: "user",
-                        errors: _vm.$page.errors.user
+                        name: "ssh_user",
+                        errors: _vm.$page.errors.ssh_user
                       },
                       model: {
-                        value: _vm.form.user,
+                        value: _vm.form.ssh_user,
                         callback: function($$v) {
-                          _vm.$set(_vm.form, "user", $$v)
+                          _vm.$set(_vm.form, "ssh_user", $$v)
                         },
-                        expression: "form.user"
+                        expression: "form.ssh_user"
                       }
                     }),
                     _vm._v(" "),
                     _c("div", { staticClass: "px-2" }, [_vm._v("@")]),
                     _vm._v(" "),
                     _c("form-input", {
-                      staticClass: "mb-4 w-3/4",
+                      staticClass: "w-3/4",
                       attrs: {
-                        label: "Address",
+                        label: "Host",
                         type: "text",
                         placeholder: "sc1.rocket.mgk.dev",
-                        name: "address",
-                        errors: _vm.$page.errors.address
+                        name: "ssh_host",
+                        errors: _vm.$page.errors.ssh_host
                       },
                       model: {
-                        value: _vm.form.address,
+                        value: _vm.form.ssh_host,
                         callback: function($$v) {
-                          _vm.$set(_vm.form, "address", $$v)
+                          _vm.$set(_vm.form, "ssh_host", $$v)
                         },
-                        expression: "form.address"
+                        expression: "form.ssh_host"
                       }
                     })
                   ],
@@ -50343,9 +49910,9 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("h1", { staticClass: "my-8 text-2xl font-bold" }, [
-      _vm._v("\n        Campaigns\n        "),
+      _vm._v("\n        Servers\n        "),
       _c("i", { staticClass: "text-sm text-gray-500 fas fa-chevron-right" }),
-      _vm._v("\n        " + _vm._s(_vm.campaign.id) + "\n        "),
+      _vm._v("\n        " + _vm._s(_vm.server.id) + "\n        "),
       _c("i", { staticClass: "text-sm text-gray-500 fas fa-chevron-right" }),
       _vm._v("\n        Edit\n    ")
     ]),
@@ -50367,166 +49934,236 @@ var render = function() {
           [
             _c(
               "div",
-              { staticClass: "flex items-center justify-center mb-8" },
+              { staticClass: "w-full p-8 bg-white rounded-lg shadow" },
               [
-                _c("div", { staticClass: "device device-iphone-x" }, [
-                  _c("div", { staticClass: "device-frame" }, [
-                    _c("div", { staticClass: "device-content" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "flex flex-col items-start justify-start w-full h-full bg-white rounded-3xl"
-                        },
-                        [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-full p-4 pt-10 text-center bg-gray-100 border-b rounded-t-3xl"
-                            },
-                            [
-                              _vm._m(0),
-                              _vm._v(" "),
-                              _c("form-input", {
-                                staticClass: "bg-white",
-                                attrs: {
-                                  placeholder: "Sender Name",
-                                  type: "text",
-                                  name: "sender_name",
-                                  errors: _vm.$page.errors.sender_name
-                                },
-                                model: {
-                                  value: _vm.form.sender_name,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.form, "sender_name", $$v)
-                                  },
-                                  expression: "form.sender_name"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-full mt-auto" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "flex flex-col items-end justify-end p-4 ml-auto text-white"
-                              },
-                              _vm._l(_vm.messages, function(message, k) {
-                                return _c(
-                                  "div",
-                                  {
-                                    key: k,
-                                    staticClass:
-                                      "px-3 py-2 mb-2 bg-pink-500 rounded-lg"
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                            " +
-                                        _vm._s(message) +
-                                        "\n                                        "
-                                    )
-                                  ]
-                                )
-                              }),
-                              0
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-full p-4 pt-0" }, [
-                            _c("textarea", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.message,
-                                  expression: "form.message"
-                                }
-                              ],
-                              ref: "message",
-                              staticClass:
-                                "w-full px-3 py-3 text-sm text-gray-700 border rounded-lg appearance-none focus:outline-none focus:shadow-outline",
-                              class: {
-                                "border-red-500 mb-1":
-                                  _vm.$page.errors &&
-                                  _vm.$page.errors.message &&
-                                  _vm.$page.errors.message.length
-                              },
-                              attrs: { name: "message", rows: 4, required: "" },
-                              domProps: { value: _vm.form.message },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "message",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _vm.$page.errors &&
-                          _vm.$page.errors.message &&
-                          _vm.$page.errors.message.length
-                            ? _c("p", {
-                                staticClass: "pl-1 text-xs italic text-red-500",
-                                domProps: {
-                                  textContent: _vm._s(
-                                    _vm.$page.errors &&
-                                      _vm.$page.errors.message &&
-                                      _vm.$page.errors.message[0]
-                                  )
-                                }
-                              })
-                            : _vm._e()
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "device-stripe" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "device-header" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "device-sensors" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "device-btns" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "device-power" })
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "w-full max-w-md p-8 bg-white rounded-lg shadow" },
-              [
-                _c("form-select", {
+                _c("form-input", {
                   staticClass: "mb-4",
                   attrs: {
-                    label: "Directory",
-                    name: "directory_id",
-                    required: "",
-                    errors: _vm.$page.errors.directory_id,
-                    options: _vm.directories
+                    label: "Name",
+                    placeholder: "My production server",
+                    type: "text",
+                    name: "name",
+                    errors: _vm.$page.errors.name
                   },
                   model: {
-                    value: _vm.form.directory_id,
+                    value: _vm.form.name,
                     callback: function($$v) {
-                      _vm.$set(_vm.form, "directory_id", $$v)
+                      _vm.$set(_vm.form, "name", $$v)
                     },
-                    expression: "form.directory_id"
+                    expression: "form.name"
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(1)
+                _c(
+                  "div",
+                  { staticClass: "flex flex-row items-center mb-4" },
+                  [
+                    _c("form-input", {
+                      staticClass: "w-1/4",
+                      attrs: {
+                        label: "User",
+                        type: "text",
+                        placeholder: "rocket",
+                        name: "ssh_user",
+                        errors: _vm.$page.errors.ssh_user
+                      },
+                      model: {
+                        value: _vm.form.ssh_user,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "ssh_user", $$v)
+                        },
+                        expression: "form.ssh_user"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "px-2" }, [_vm._v("@")]),
+                    _vm._v(" "),
+                    _c("form-input", {
+                      staticClass: "w-3/4",
+                      attrs: {
+                        label: "Address",
+                        type: "text",
+                        placeholder: "sc1.rocket.mgk.dev",
+                        name: "ssh_host",
+                        errors: _vm.$page.errors.ssh_host
+                      },
+                      model: {
+                        value: _vm.form.ssh_host,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "ssh_host", $$v)
+                        },
+                        expression: "form.ssh_host"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("hr", { staticClass: "my-8" }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "ssh_options",
+                    placeholder: "",
+                    type: "text",
+                    name: "ssh_options",
+                    errors: _vm.$page.errors.ssh_options
+                  },
+                  model: {
+                    value: _vm.form.ssh_options,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "ssh_options", $$v)
+                    },
+                    expression: "form.ssh_options"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "cmd_git",
+                    placeholder: "git",
+                    type: "text",
+                    name: "cmd_git",
+                    errors: _vm.$page.errors.cmd_git
+                  },
+                  model: {
+                    value: _vm.form.cmd_git,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "cmd_git", $$v)
+                    },
+                    expression: "form.cmd_git"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "cmd_npm",
+                    placeholder: "npm",
+                    type: "text",
+                    name: "cmd_npm",
+                    errors: _vm.$page.errors.cmd_npm
+                  },
+                  model: {
+                    value: _vm.form.cmd_npm,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "cmd_npm", $$v)
+                    },
+                    expression: "form.cmd_npm"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "cmd_yarn",
+                    placeholder: "yarn",
+                    type: "text",
+                    name: "cmd_yarn",
+                    errors: _vm.$page.errors.cmd_yarn
+                  },
+                  model: {
+                    value: _vm.form.cmd_yarn,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "cmd_yarn", $$v)
+                    },
+                    expression: "form.cmd_yarn"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "cmd_bower",
+                    placeholder: "bower",
+                    type: "text",
+                    name: "cmd_bower",
+                    errors: _vm.$page.errors.cmd_bower
+                  },
+                  model: {
+                    value: _vm.form.cmd_bower,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "cmd_bower", $$v)
+                    },
+                    expression: "form.cmd_bower"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "cmd_grunt",
+                    placeholder: "grunt",
+                    type: "text",
+                    name: "cmd_grunt",
+                    errors: _vm.$page.errors.cmd_grunt
+                  },
+                  model: {
+                    value: _vm.form.cmd_grunt,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "cmd_grunt", $$v)
+                    },
+                    expression: "form.cmd_grunt"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "cmd_php",
+                    placeholder: "php",
+                    type: "text",
+                    name: "cmd_php",
+                    errors: _vm.$page.errors.cmd_php
+                  },
+                  model: {
+                    value: _vm.form.cmd_php,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "cmd_php", $$v)
+                    },
+                    expression: "form.cmd_php"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "cmd_composer",
+                    placeholder: "composer",
+                    type: "text",
+                    name: "cmd_composer",
+                    errors: _vm.$page.errors.cmd_composer
+                  },
+                  model: {
+                    value: _vm.form.cmd_composer,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "cmd_composer", $$v)
+                    },
+                    expression: "form.cmd_composer"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "cmd_composer_options",
+                    placeholder: "--no-dev",
+                    type: "text",
+                    name: "cmd_composer_options",
+                    errors: _vm.$page.errors.cmd_composer_options
+                  },
+                  model: {
+                    value: _vm.form.cmd_composer_options,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "cmd_composer_options", $$v)
+                    },
+                    expression: "form.cmd_composer_options"
+                  }
+                }),
+                _vm._v(" "),
+                _vm._m(0)
               ],
               1
             )
@@ -50537,19 +50174,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "inline-block p-4 mb-2 text-lg text-white bg-pink-500 rounded-full"
-      },
-      [_c("i", { staticClass: "fas fa-paper-plane" })]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -50633,7 +50257,9 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", { staticClass: "px-2 py-2 truncate" }, [
-                  _vm._v(_vm._s(server.user) + "@" + _vm._s(server.address))
+                  _vm._v(
+                    _vm._s(server.ssh_user) + "@" + _vm._s(server.ssh_host)
+                  )
                 ])
               ]
             )
@@ -50701,11 +50327,11 @@ var staticRenderFns = [
         _c("th", { staticClass: "w-8 px-2 py-2 text-sm text-center" }),
         _vm._v(" "),
         _c("th", { staticClass: "px-2 py-2 text-sm text-left" }, [
-          _vm._v("Server name")
+          _vm._v("Name")
         ]),
         _vm._v(" "),
         _c("th", { staticClass: "px-2 py-2 text-sm text-left" }, [
-          _vm._v("Address")
+          _vm._v("User@Host")
         ])
       ])
     ])
@@ -50734,368 +50360,207 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("h1", { staticClass: "my-8 text-2xl font-bold" }, [
-      _vm._v("\n        Campaigns\n        "),
+      _vm._v("\n        Server\n        "),
       _c("i", { staticClass: "text-sm text-gray-500 fas fa-chevron-right" }),
-      _vm._v("\n        " + _vm._s(_vm.campaign.id) + "\n    ")
+      _vm._v("\n        " + _vm._s(_vm.server.id) + "\n    ")
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "flex" }, [
-      _c("div", { staticClass: "w-1/3 mr-4" }, [
-        _c(
-          "div",
-          { staticClass: "flex flex-col" },
-          _vm._l(_vm.steps, function(step, k) {
-            return _c("div", { key: k }, [
-              k != 0
-                ? _c("div", { staticClass: "h-4 ml-4 border-l" })
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "flex flex-row items-center" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "flex items-center justify-center w-10 h-8 mr-4 text-sm font-bold bg-gray-200 rounded",
-                    class: {
-                      "text-gray-300": _vm.currentStep < k,
-                      "text-gray-600 bg-gray-300": _vm.currentStep > k,
-                      "bg-pink-500 text-white": _vm.currentStep == k
-                    }
-                  },
-                  [_vm._v(_vm._s(k + 1))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "w-full text-gray-300",
-                    class: {
-                      "text-gray-600": _vm.currentStep >= k,
-                      "font-semibold": _vm.currentStep == k
-                    }
-                  },
-                  [_c("p", { staticClass: "text-sm" }, [_vm._v(_vm._s(step))])]
-                )
-              ])
-            ])
-          }),
-          0
-        )
-      ]),
-      _vm._v(" "),
       _c("div", { staticClass: "w-full" }, [
         _c(
           "div",
           { staticClass: "w-full p-8 mb-8 bg-white rounded-lg shadow" },
           [
-            [0, 2, 4].includes(_vm.currentStep)
-              ? _c("table", { staticClass: "w-full mb-8 table-fixed" }, [
-                  _c("tbody", [
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [_vm._v("#")]),
-                      _vm._v(" "),
+            _c("table", { staticClass: "w-full mb-8 table-fixed" }, [
+              _c("tbody", [
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [_vm._v("#")]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.server.id))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [_vm._v("Name")]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.server.name))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [_vm._v("User")]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.server.ssh_user))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [_vm._v("Host")]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(_vm._s(_vm.server.ssh_host))
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm.server.ssh_options
+                  ? _c("tr", { staticClass: "border-b" }, [
                       _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.id))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v("Sender Name")
+                        _vm._v("ssh_options")
                       ]),
                       _vm._v(" "),
                       _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.sender_name))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v("Message")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.message))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v("Created at")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.$moment(_vm.campaign.created_at).format("L")
-                          ) +
-                            " " +
-                            _vm._s(
-                              _vm.$moment(_vm.campaign.created_at).format("LT")
-                            )
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v("Directory")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.directory.name))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v("Status")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.status))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [_vm._v("Sent")]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.sent))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", { staticClass: "border-b" }, [
-                      _c("td", { staticClass: "px-2 py-2" }, [_vm._v("Total")]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "px-2 py-2" }, [
-                        _vm._v(_vm._s(_vm.campaign.total))
+                        _vm._v(_vm._s(_vm.server.ssh_options))
                       ])
                     ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.server.cmd_git
+                  ? _c("tr", { staticClass: "border-b" }, [
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v("cmd_git")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v(_vm._s(_vm.server.cmd_git))
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.server.cmd_npm
+                  ? _c("tr", { staticClass: "border-b" }, [
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v("cmd_npm")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v(_vm._s(_vm.server.cmd_npm))
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.server.cmd_yarn
+                  ? _c("tr", { staticClass: "border-b" }, [
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v("cmd_yarn")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v(_vm._s(_vm.server.cmd_yarn))
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.server.cmd_bower
+                  ? _c("tr", { staticClass: "border-b" }, [
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v("cmd_bower")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v(_vm._s(_vm.server.cmd_bower))
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.server.cmd_grunt
+                  ? _c("tr", { staticClass: "border-b" }, [
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v("cmd_grunt")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v(_vm._s(_vm.server.cmd_grunt))
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.server.cmd_php
+                  ? _c("tr", { staticClass: "border-b" }, [
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v("cmd_php")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v(_vm._s(_vm.server.cmd_php))
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.server.cmd_composer
+                  ? _c("tr", { staticClass: "border-b" }, [
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v("cmd_composer")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v(_vm._s(_vm.server.cmd_composer))
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.server.cmd_composer_options
+                  ? _c("tr", { staticClass: "border-b" }, [
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v("cmd_composer_options")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "px-2 py-2" }, [
+                        _vm._v(_vm._s(_vm.server.cmd_composer_options))
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v("Created at")
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v(
+                      _vm._s(_vm.$moment(_vm.server.created_at).format("L")) +
+                        " " +
+                        _vm._s(_vm.$moment(_vm.server.created_at).format("LT"))
+                    )
                   ])
                 ])
-              : _vm._e(),
-            _vm._v(" "),
-            [1, 3].includes(_vm.currentStep)
-              ? _c(
-                  "div",
-                  { staticClass: "text-center" },
-                  [
-                    _vm._m(0),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "mb-1 text-xl font-semibold" }, [
-                      _vm._v(
-                        "\n                        Please wait\n                    "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _vm.currentStep == 1
-                      ? [
-                          _c("div", { staticClass: "text-xs" }, [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.campaign.total) +
-                                " / " +
-                                _vm._s(_vm.campaign.directory_total) +
-                                " (" +
-                                _vm._s(_vm.campaign.directory_percent) +
-                                "%)\n                        "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-full max-w-xs mx-auto mt-2 bg-gray-100 rounded"
-                            },
-                            [
-                              _c("div", {
-                                staticClass: "h-2 bg-pink-500 rounded",
-                                style: {
-                                  width: _vm.campaign.directory_percent + "%"
-                                }
-                              })
-                            ]
-                          )
-                        ]
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.currentStep == 3
-                      ? [
-                          _c("div", { staticClass: "text-xs" }, [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.campaign.sent) +
-                                " / " +
-                                _vm._s(_vm.campaign.total) +
-                                " (" +
-                                _vm._s(_vm.campaign.percent) +
-                                "%)\n                        "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-full max-w-xs mx-auto mt-2 bg-gray-100 rounded"
-                            },
-                            [
-                              _c("div", {
-                                staticClass: "h-2 bg-pink-500 rounded",
-                                style: { width: _vm.campaign.percent + "%" }
-                              })
-                            ]
-                          )
-                        ]
-                      : _vm._e()
-                  ],
-                  2
-                )
-              : _vm._e(),
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "div",
               { staticClass: "flex flex-row justify-between" },
               [
-                _vm.currentStep == 0
-                  ? [
-                      _c(
-                        "inertia-link",
-                        {
-                          staticClass:
-                            "inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200",
-                          attrs: {
-                            href: _vm.$route(
-                              "next.campaigns.edit",
-                              _vm.campaign
-                            )
-                          }
-                        },
-                        [_vm._v("Edit")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "inertia-link",
-                        {
-                          staticClass:
-                            "inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600",
-                          attrs: {
-                            href: _vm.$route(
-                              "next.campaigns.prepare",
-                              _vm.campaign
-                            )
-                          }
-                        },
-                        [_vm._v("Prepare campaign")]
-                      )
-                    ]
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.campaign.status == "ready"
-                  ? [
-                      _c(
-                        "inertia-link",
-                        {
-                          staticClass:
-                            "inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200",
-                          attrs: {
-                            href: _vm.$route(
-                              "next.campaigns.edit",
-                              _vm.campaign
-                            )
-                          }
-                        },
-                        [_vm._v("Edit")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "inertia-link",
-                        {
-                          staticClass:
-                            "inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600",
-                          attrs: {
-                            href: _vm.$route(
-                              "next.campaigns.send",
-                              _vm.campaign
-                            )
-                          }
-                        },
-                        [_vm._v("Send campaign")]
-                      )
-                    ]
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.campaign.status == "finished"
-                  ? [
-                      _c("div"),
-                      _vm._v(" "),
-                      _c(
-                        "inertia-link",
-                        {
-                          staticClass:
-                            "inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200",
-                          attrs: {
-                            href: _vm.$route(
-                              "next.campaigns.send",
-                              _vm.campaign
-                            )
-                          }
-                        },
-                        [_vm._v("Retry failed sendings")]
-                      )
-                    ]
-                  : _vm._e()
+                _c(
+                  "inertia-link",
+                  {
+                    staticClass:
+                      "inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200",
+                    attrs: { href: _vm.$route("servers.edit", _vm.server) }
+                  },
+                  [_vm._v("Edit")]
+                )
               ],
-              2
+              1
             )
           ]
         ),
         _vm._v(" "),
-        [0, 2, 4].includes(_vm.currentStep)
-          ? _c(
-              "button",
-              {
-                staticClass:
-                  "inline-block text-sm text-red-500 hover:text-red-600",
-                on: { click: _vm.destroy }
-              },
-              [_vm._v("Delete this campaign")]
-            )
-          : _vm._e()
+        _c(
+          "button",
+          {
+            staticClass: "inline-block text-sm text-red-500 hover:text-red-600",
+            on: { click: _vm.destroy }
+          },
+          [_vm._v("Remove this server")]
+        )
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mb-3" }, [
-      _c("i", {
-        staticClass: "text-gray-500 fal fa-circle-notch fa-spin fa-2x"
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "mb-8" }, [
-      _vm._v(
-        "\n                        You can stay here or safely leave this page."
-      ),
-      _c("br"),
-      _vm._v(
-        "\n                        Campaign status will be updated on each refresh.\n                    "
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

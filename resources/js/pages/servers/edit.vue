@@ -1,58 +1,35 @@
 <template>
     <div>
         <h1 class="my-8 text-2xl font-bold">
-            Campaigns
+            Servers
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
-            {{ campaign.id }}
+            {{ server.id }}
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
             Edit
         </h1>
 
         <form @submit.prevent="submit">
             <div class="flex flex-col items-center justify-center w-full">
-                <div class="flex items-center justify-center mb-8">
-                    <div class="device device-iphone-x">
-                        <div class="device-frame">
-                            <div class="device-content">
-                                <div class="flex flex-col items-start justify-start w-full h-full bg-white rounded-3xl">
-                                    <div class="w-full p-4 pt-10 text-center bg-gray-100 border-b rounded-t-3xl">
-                                        <div class="inline-block p-4 mb-2 text-lg text-white bg-pink-500 rounded-full"><i class="fas fa-paper-plane"></i></div>
-                                        <form-input class="bg-white" placeholder="Sender Name" type="text" name="sender_name" v-model="form.sender_name" :errors="$page.errors.sender_name" />
-                                    </div>
+                <div class="w-full p-8 bg-white rounded-lg shadow">
+                    <form-input class="mb-4" label="Name" placeholder="My production server" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
 
-                                    <div class="w-full mt-auto">
-                                        <div class="flex flex-col items-end justify-end p-4 ml-auto text-white">
-                                            <div class="px-3 py-2 mb-2 bg-pink-500 rounded-lg" v-for="(message, k) in messages" v-bind:key="k">
-                                                {{ message }}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="w-full p-4 pt-0">
-                                        <textarea class="w-full px-3 py-3 text-sm text-gray-700 border rounded-lg appearance-none focus:outline-none focus:shadow-outline"
-                                                :class="{ 'border-red-500 mb-1': $page.errors && $page.errors.message && $page.errors.message.length }"
-                                                name="message"
-                                                :rows="4"
-                                                required
-                                                v-model="form.message"
-                                                ref="message"
-                                        ></textarea>
-                                    </div>
-
-                                    <p v-if="$page.errors && $page.errors.message && $page.errors.message.length" class="pl-1 text-xs italic text-red-500" v-text="$page.errors && $page.errors.message && $page.errors.message[0]"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="device-stripe"></div>
-                        <div class="device-header"></div>
-                        <div class="device-sensors"></div>
-                        <div class="device-btns"></div>
-                        <div class="device-power"></div>
+                    <div class="flex flex-row items-center mb-4">
+                        <form-input class="w-1/4" label="User" type="text" placeholder="rocket" name="ssh_user" v-model="form.ssh_user" :errors="$page.errors.ssh_user" />
+                        <div class="px-2">@</div>
+                        <form-input class="w-3/4" label="Address" type="text" placeholder="sc1.rocket.mgk.dev" name="ssh_host" v-model="form.ssh_host" :errors="$page.errors.ssh_host" />
                     </div>
-                </div>
 
-                <div class="w-full max-w-md p-8 bg-white rounded-lg shadow">
-                    <form-select class="mb-4" label="Directory" name="directory_id" required v-model="form.directory_id" :errors="$page.errors.directory_id" :options="directories" />
+                    <hr class="my-8">
+
+                    <form-input class="mb-4" label="ssh_options" placeholder="" type="text" name="ssh_options" v-model="form.ssh_options" :errors="$page.errors.ssh_options" />
+                    <form-input class="mb-4" label="cmd_git" placeholder="git" type="text" name="cmd_git" v-model="form.cmd_git" :errors="$page.errors.cmd_git" />
+                    <form-input class="mb-4" label="cmd_npm" placeholder="npm" type="text" name="cmd_npm" v-model="form.cmd_npm" :errors="$page.errors.cmd_npm" />
+                    <form-input class="mb-4" label="cmd_yarn" placeholder="yarn" type="text" name="cmd_yarn" v-model="form.cmd_yarn" :errors="$page.errors.cmd_yarn" />
+                    <form-input class="mb-4" label="cmd_bower" placeholder="bower" type="text" name="cmd_bower" v-model="form.cmd_bower" :errors="$page.errors.cmd_bower" />
+                    <form-input class="mb-4" label="cmd_grunt" placeholder="grunt" type="text" name="cmd_grunt" v-model="form.cmd_grunt" :errors="$page.errors.cmd_grunt" />
+                    <form-input class="mb-4" label="cmd_php" placeholder="php" type="text" name="cmd_php" v-model="form.cmd_php" :errors="$page.errors.cmd_php" />
+                    <form-input class="mb-4" label="cmd_composer" placeholder="composer" type="text" name="cmd_composer" v-model="form.cmd_composer" :errors="$page.errors.cmd_composer" />
+                    <form-input class="mb-4" label="cmd_composer_options" placeholder="--no-dev" type="text" name="cmd_composer_options" v-model="form.cmd_composer_options" :errors="$page.errors.cmd_composer_options" />
 
                     <div class="flex justify-end mt-8">
                         <button class="px-4 py-2 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none">Edit</button>
@@ -68,32 +45,39 @@
         layout: require('../../layouts/app').default,
 
         props: {
-            campaign: Object,
-            directories: Array,
+            server: Object,
         },
 
         data() {
             return {
                 form: {
-                    sender_name: '',
-                    mesasge: '',
-                    directory_id: 0,
+                    name: '',
+                    ssh_user: '',
+                    ssh_host: '',
+
+                    ssh_options: '',
+                    cmd_git: '',
+                    cmd_npm: '',
+                    cmd_yarn: '',
+                    cmd_bower: '',
+                    cmd_grunt: '',
+                    cmd_php: '',
+                    cmd_composer: '',
+                    cmd_composer_options: '',
                 }
             }
         },
 
         mounted() {
-            this.form.sender_name = this.campaign.sender_name
-            this.form.message = this.campaign.message
-            this.form.directory_id = this.campaign.directory_id
+            this.form = { ...this.server }
         },
 
         methods: {
             submit() {
                 this.$page.errors = {}
 
-                this.$inertia.post(
-                    this.$route('next.campaigns.update'), { ...this.form }
+                this.$inertia.put(
+                    this.$route('servers.update', this.server), { ...this.form }
                 )
             }
         }

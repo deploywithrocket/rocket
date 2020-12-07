@@ -14,9 +14,9 @@
                     <form-input class="mb-4" label="Health check URL" placeholder="https://rocket.mgk.dev" type="text" name="health_url" v-model="form.health_url" :errors="$page.errors.health_url" />
 
                     <div class="flex flex-row items-center">
-                        <form-select class="mb-4 w-1/3" label="Server" name="server_id" required v-model="form.server_id" :errors="$page.errors.server_id" :options="servers" />
+                        <form-select class="w-1/3 mb-4" label="Server" name="server_id" required v-model="form.server_id" :errors="$page.errors.server_id" :options="servers" />
                         <div class="px-1"></div>
-                        <form-input class="mb-4 w-2/3" label="Deploy path" type="text" placeholder="/home/websites/rocket" name="deploy_path" v-model="form.deploy_path" :errors="$page.errors.deploy_path" />
+                        <form-input class="w-2/3 mb-4" label="Deploy path" type="text" placeholder="/home/websites/rocket" name="deploy_path" v-model="form.deploy_path" :errors="$page.errors.deploy_path" />
                     </div>
 
                     <div class="flex justify-end mt-8">
@@ -44,7 +44,7 @@
                     name: '',
                     repository_url: '',
                     health_url: '',
-                    server_id: '',
+                    server_id: 0,
                     deploy_path: '',
                 }
             }
