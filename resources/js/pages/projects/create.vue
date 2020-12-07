@@ -10,7 +10,10 @@
             <div class="flex flex-col items-center justify-center w-full">
                 <div class="w-full p-8 bg-white rounded-lg shadow">
                     <form-input class="mb-4" label="Name" placeholder="My awesome project" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
-                    <form-input class="mb-4" label="Repository URL" placeholder="git@github.com:mgkprod/rocket.git" type="text" name="repository_url" v-model="form.repository_url" :errors="$page.errors.repository_url" />
+
+                    <form-input v-if="!repositories" class="mb-4" label="Repository URL" placeholder="git@github.com:mgkprod/rocket.git" type="text" name="repository_url" v-model="form.repository_url" :errors="$page.errors.repository_url" />
+                    <form-select v-if="repositories" class="mb-4" label="Repository" name="repository_url" required v-model="form.repository_url" :errors="$page.errors.repository_url" :options="repositories" />
+
                     <form-input class="mb-4" label="Health check URL" placeholder="https://rocket.mgk.dev" type="text" name="health_url" v-model="form.health_url" :errors="$page.errors.health_url" />
 
                     <div class="flex flex-row items-center">
@@ -36,6 +39,7 @@
 
         props: {
             servers: Object,
+            repositories: Object,
         },
 
         data() {

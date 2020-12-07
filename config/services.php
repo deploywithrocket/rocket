@@ -29,26 +29,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'osms' => [
-        '+225' => [
-            'client_id' => '83avz8VG4t0rKeZ5Q9GnKwCC2dkhO1th',
-            'client_secret' => 'Z4seBBoeYG3LMvTX',
-            'sender' => 'tel:+22500000000',
-        ],
-        '+221' => [
-            'client_id' => 'zrKTIvuGADFsWjGSGxaEUIHofrBeoOAG',
-            'client_secret' => 'lhZDs0wglHL37Bij',
-            'sender' => 'tel:+22100000000',
-        ],
-        '+223' => [
-            'client_id' => 'YYebGiokWShMlHnqVLJgsGPeX1kOiXkw',
-            'client_secret' => 'hjebhYdWIGAWHP8X',
-            'sender' => 'tel:+22300000000',
-        ],
-        '+216' => [
-            'client_id' => 'VlMy7vfDGiIJI0LrVyzbDgdpjgP1qGLO',
-            'client_secret' => 'D279oKBxqZOzpGPU',
-            'sender' => 'tel:+21600000000',
-        ],
+    'github' => [
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
+        'redirect' => '/auth/github/callback',
     ],
 ];

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectDeploymentController;
 use App\Http\Controllers\ServerController;
@@ -25,6 +26,9 @@ Route::inertia('home', 'home')->name('home')->middleware('auth');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    Route::get('/auth/github', [HomeController::class, 'redirectToProvider'])->name('auth.github');
+    Route::get('/auth/github/callback', [HomeController::class, 'handleProviderCallback'])->name('auth.github.callback');
 
     Route::group([
         'prefix' => 'servers',

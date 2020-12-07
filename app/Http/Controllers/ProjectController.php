@@ -6,7 +6,9 @@ use App\Jobs\EnvoyDeployJob;
 use App\Jobs\EnvoySetupJob;
 use App\Models\Project;
 use App\Models\Server;
+use GrahamCampbell\GitHub\Facades\GitHub;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 class ProjectController extends Controller
 {
@@ -25,7 +27,25 @@ class ProjectController extends Controller
     {
         $servers = Server::pluck('name', 'id');
 
-        return inertia('projects/create', compact('servers'));
+        // try {
+        //     $github_token = optional(
+        //         auth()
+        //         ->user()
+        //         ->social_accounts()
+        //         ->where('provider', 'github')
+        //         ->first()
+        //     )->token;
+
+        //     Config::set('github.connections.main.token', $github_token);
+
+        //     $repositories = collect(GitHub::connection('main')->me()->repositories())
+        //         ->pluck('ssh_url', 'full_name')
+        //         ->toArray();
+        // } catch (\Throwable $th) {
+        // }
+        $repositories = null;
+
+        return inertia('projects/create', compact('servers', 'repositories'));
     }
 
     public function store(Request $request)
@@ -63,7 +83,25 @@ class ProjectController extends Controller
     {
         $servers = Server::pluck('name', 'id');
 
-        return inertia('projects/edit', compact('project', 'servers'));
+        // try {
+        //     $github_token = optional(
+        //         auth()
+        //         ->user()
+        //         ->social_accounts()
+        //         ->where('provider', 'github')
+        //         ->first()
+        //     )->token;
+
+        //     Config::set('github.connections.main.token', $github_token);
+
+        //     $repositories = collect(GitHub::connection('main')->me()->repositories())
+        //         ->pluck('ssh_url', 'full_name')
+        //         ->toArray();
+        // } catch (\Throwable $th) {
+        // }
+        $repositories = null;
+
+        return inertia('projects/edit', compact('project', 'servers', 'repositories'));
     }
 
     public function update(Request $request, Project $project)
@@ -110,11 +148,35 @@ class ProjectController extends Controller
 
     public function deploy(Project $project)
     {
+        // Get latest commit
+        $github_token = optional(
+            auth()
+            ->user()
+            ->social_accounts()
+            ->where('provider', 'github')
+            ->first()
+        )->token;
+
+        Config::set('github.connections.main.token', $github_token);
+
+        [, $user_repo] = explode(':', $project->repository_url);
+        [$user, $repo_ext] = explode('/', $user_repo);
+        [$repo, ] = explode('.', $repo_ext);
+
+        $github_most_recent_commit = collect(
+            GitHub::connection('main')
+                ->repository()
+                ->commits()
+                ->all($user, $repo, [
+                    'branch' => 'main',
+                ])
+        )->first();
+
         $deployment = $project->deployments()->create([
             'server_id' => $project->server->id,
             'type' => 'deploy',
             'release' => date('YmdHis'),
-            'commit' => 'd88ed2b083e7c418cf238bb5738335adb2a2341a',
+            'commit' => $github_most_recent_commit['sha'],
         ]);
 
         dispatch(new EnvoyDeployJob($deployment));

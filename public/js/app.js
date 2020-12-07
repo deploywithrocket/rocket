@@ -1938,6 +1938,33 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/alerts.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/alerts.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/form-input.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/form-input.vue?vue&type=script&lang=js& ***!
@@ -2027,7 +2054,7 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     id: String,
     label: String,
-    options: Array,
+    options: Object,
     errors: {
       type: Array,
       "default": function _default() {
@@ -2097,6 +2124,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -2267,6 +2295,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../layouts/app */ "./resources/js/layouts/app.vue")["default"]
 });
@@ -2320,11 +2349,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../../layouts/app */ "./resources/js/layouts/app.vue")["default"],
   props: {
-    servers: Object
+    servers: Object,
+    repositories: Object
   },
   data: function data() {
     return {
@@ -2476,11 +2509,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../../layouts/app */ "./resources/js/layouts/app.vue")["default"],
   props: {
     project: Object,
-    servers: Array
+    servers: Object,
+    repositories: Object
   },
   data: function data() {
     return {
@@ -48633,6 +48670,76 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/alerts.vue?vue&type=template&id=772c5122&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/alerts.vue?vue&type=template&id=772c5122& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.$page.flash.success ||
+    _vm.$page.flash.warning ||
+    _vm.$page.flash.error
+    ? _c("div", { staticClass: "pt-8 -mb-4" }, [
+        _vm.$page.flash.success
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "p-4 mb-4 text-sm text-white bg-green-500 rounded-lg shadow"
+              },
+              [
+                _c("i", { staticClass: "mr-1 fas fa-check" }),
+                _vm._v(" " + _vm._s(_vm.$page.flash.success) + "\n    ")
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.$page.flash.warning
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "p-4 mb-4 text-sm text-white bg-orange-500 rounded-lg shadow"
+              },
+              [
+                _c("i", { staticClass: "mr-1 fas fas-exclamation-triangle" }),
+                _vm._v(" " + _vm._s(_vm.$page.flash.warning) + "\n    ")
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.$page.flash.error
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "p-4 mb-4 text-sm text-white bg-red-500 rounded-lg shadow"
+              },
+              [
+                _c("i", { staticClass: "mr-1 fas fa-times" }),
+                _vm._v(" " + _vm._s(_vm.$page.flash.error) + "\n    ")
+              ]
+            )
+          : _vm._e()
+      ])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/form-input.vue?vue&type=template&id=59ac0d8c&":
 /*!*************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/form-input.vue?vue&type=template&id=59ac0d8c& ***!
@@ -48965,7 +49072,7 @@ var render = function() {
       _c(
         "div",
         { staticClass: "container pb-8 text-gray-700" },
-        [_vm._t("default")],
+        [_c("alerts"), _vm._v(" "), _vm._t("default")],
         2
       ),
       _vm._v(" "),
@@ -49162,7 +49269,10 @@ var staticRenderFns = [
           _vm._v("Welcome to "),
           _c("span", { staticClass: "text-pink-500" }, [_vm._v("Rocket")])
         ]),
-        _vm._v("\n    Ready for take off!\n")
+        _vm._v("\n    Ready for take off!"),
+        _c("br"),
+        _vm._v(" "),
+        _c("a", { attrs: { href: "/auth/github" } }, [_vm._v("Auth")])
       ]
     )
   }
@@ -49228,23 +49338,45 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("form-input", {
-                  staticClass: "mb-4",
-                  attrs: {
-                    label: "Repository URL",
-                    placeholder: "git@github.com:mgkprod/rocket.git",
-                    type: "text",
-                    name: "repository_url",
-                    errors: _vm.$page.errors.repository_url
-                  },
-                  model: {
-                    value: _vm.form.repository_url,
-                    callback: function($$v) {
-                      _vm.$set(_vm.form, "repository_url", $$v)
-                    },
-                    expression: "form.repository_url"
-                  }
-                }),
+                !_vm.repositories
+                  ? _c("form-input", {
+                      staticClass: "mb-4",
+                      attrs: {
+                        label: "Repository URL",
+                        placeholder: "git@github.com:mgkprod/rocket.git",
+                        type: "text",
+                        name: "repository_url",
+                        errors: _vm.$page.errors.repository_url
+                      },
+                      model: {
+                        value: _vm.form.repository_url,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "repository_url", $$v)
+                        },
+                        expression: "form.repository_url"
+                      }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.repositories
+                  ? _c("form-select", {
+                      staticClass: "mb-4",
+                      attrs: {
+                        label: "Repository",
+                        name: "repository_url",
+                        required: "",
+                        errors: _vm.$page.errors.repository_url,
+                        options: _vm.repositories
+                      },
+                      model: {
+                        value: _vm.form.repository_url,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "repository_url", $$v)
+                        },
+                        expression: "form.repository_url"
+                      }
+                    })
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("form-input", {
                   staticClass: "mb-4",
@@ -49521,23 +49653,45 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("form-input", {
-                  staticClass: "mb-4",
-                  attrs: {
-                    label: "Repository URL",
-                    placeholder: "git@github.com:mgkprod/rocket.git",
-                    type: "text",
-                    name: "repository_url",
-                    errors: _vm.$page.errors.repository_url
-                  },
-                  model: {
-                    value: _vm.form.repository_url,
-                    callback: function($$v) {
-                      _vm.$set(_vm.form, "repository_url", $$v)
-                    },
-                    expression: "form.repository_url"
-                  }
-                }),
+                !_vm.repositories
+                  ? _c("form-input", {
+                      staticClass: "mb-4",
+                      attrs: {
+                        label: "Repository URL",
+                        placeholder: "git@github.com:mgkprod/rocket.git",
+                        type: "text",
+                        name: "repository_url",
+                        errors: _vm.$page.errors.repository_url
+                      },
+                      model: {
+                        value: _vm.form.repository_url,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "repository_url", $$v)
+                        },
+                        expression: "form.repository_url"
+                      }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.repositories
+                  ? _c("form-select", {
+                      staticClass: "mb-4",
+                      attrs: {
+                        label: "Repository",
+                        name: "repository_url",
+                        required: "",
+                        errors: _vm.$page.errors.repository_url,
+                        options: _vm.repositories
+                      },
+                      model: {
+                        value: _vm.form.repository_url,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "repository_url", $$v)
+                        },
+                        expression: "form.repository_url"
+                      }
+                    })
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("form-input", {
                   staticClass: "mb-4",
@@ -63072,6 +63226,7 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
+	"./components/alerts.vue": "./resources/js/components/alerts.vue",
 	"./components/form-input.vue": "./resources/js/components/form-input.vue",
 	"./components/form-select.vue": "./resources/js/components/form-select.vue",
 	"./components/form-textarea.vue": "./resources/js/components/form-textarea.vue",
@@ -63138,7 +63293,7 @@ __webpack_require__.r(__webpack_exports__);
 
 _inertiajs_progress__WEBPACK_IMPORTED_MODULE_4__["InertiaProgress"].init({
   delay: 0,
-  color: 'rgb(249, 115, 22)',
+  color: 'rgb(236, 72, 153)',
   includeCSS: true,
   showSpinner: false
 });
@@ -63204,6 +63359,75 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/alerts.vue":
+/*!********************************************!*\
+  !*** ./resources/js/components/alerts.vue ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _alerts_vue_vue_type_template_id_772c5122___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./alerts.vue?vue&type=template&id=772c5122& */ "./resources/js/components/alerts.vue?vue&type=template&id=772c5122&");
+/* harmony import */ var _alerts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./alerts.vue?vue&type=script&lang=js& */ "./resources/js/components/alerts.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _alerts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _alerts_vue_vue_type_template_id_772c5122___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _alerts_vue_vue_type_template_id_772c5122___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/alerts.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/alerts.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/alerts.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_alerts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./alerts.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/alerts.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_alerts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/alerts.vue?vue&type=template&id=772c5122&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/alerts.vue?vue&type=template&id=772c5122& ***!
+  \***************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_alerts_vue_vue_type_template_id_772c5122___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./alerts.vue?vue&type=template&id=772c5122& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/alerts.vue?vue&type=template&id=772c5122&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_alerts_vue_vue_type_template_id_772c5122___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_alerts_vue_vue_type_template_id_772c5122___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

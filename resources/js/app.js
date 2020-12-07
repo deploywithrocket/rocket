@@ -6,7 +6,7 @@ import { InertiaProgress } from '@inertiajs/progress'
 
 InertiaProgress.init({
   delay: 0,
-  color: 'rgb(249, 115, 22)',
+  color: 'rgb(236, 72, 153)',
   includeCSS: true,
   showSpinner: false,
 })

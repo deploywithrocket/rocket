@@ -25,6 +25,7 @@
         </nav>
 
         <div class="container pb-8 text-gray-700">
+            <alerts></alerts>
             <slot></slot>
         </div>
 

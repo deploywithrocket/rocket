@@ -30,7 +30,7 @@
         props: {
             id: String,
             label: String,
-            options: Array,
+            options: Object,
             errors: {
                 type: Array,
                 default: () => ([]),
