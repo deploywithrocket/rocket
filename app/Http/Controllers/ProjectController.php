@@ -54,7 +54,9 @@ class ProjectController extends Controller
         $project = $project
             ->load('server');
 
-        return inertia('projects/show', compact('project'));
+        $deployments = $project->deployments()->orderBy('created_at', 'DESC')->limit(10)->get();
+
+        return inertia('projects/show', compact('project', 'deployments'));
     }
 
     public function edit(Project $project)
@@ -79,6 +81,7 @@ class ProjectController extends Controller
         $project->health_url = $request->health_url;
         $project->server_id = $request->server_id;
         $project->deploy_path = $request->deploy_path;
+        $project->env = $request->env;
         $project->save();
 
         return redirect()->route('projects.show', $project);

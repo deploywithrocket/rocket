@@ -21,6 +21,8 @@
                         <form-input class="w-2/3 mb-4" label="Deploy path" type="text" placeholder="/home/websites/rocket" name="deploy_path" v-model="form.deploy_path" :errors="$page.errors.deploy_path" />
                     </div>
 
+                    <form-textarea class="mb-4 font-mono" label="Environment file" placeholder='APP_NAME="My awesome project"' name="env" v-model="form.env" :errors="$page.errors.env" rows="30" />
+
                     <div class="flex justify-end mt-8">
                         <button class="px-4 py-2 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none">Edit</button>
                     </div>
@@ -47,16 +49,13 @@
                     health_url: '',
                     server_id: 0,
                     deploy_path: '',
+                    env: '',
                 }
             }
         },
 
         mounted() {
-            this.form.name = this.project.name
-            this.form.repository_url = this.project.repository_url
-            this.form.health_url = this.project.health_url
-            this.form.server_id = this.project.server_id
-            this.form.deploy_path = this.project.deploy_path
+            this.form = { ...this.project }
         },
 
         methods: {

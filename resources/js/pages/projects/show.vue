@@ -65,6 +65,33 @@
                 <button @click="destroy" class="inline-block text-sm text-red-500 hover:text-red-600">Delete this project</button>
             </div>
         </div>
+
+        <h1 class="my-8 text-2xl font-bold">Deployments</h1>
+
+        <div class="p-8 bg-white rounded-lg shadow">
+            <table class="w-full mb-8 table-fixed">
+                <thead>
+                    <tr class="border-b">
+                        <th class="w-8 px-2 py-2 text-sm text-center"></th>
+                        <th class="w-24 px-2 py-2 text-sm text-left">Status</th>
+                        <th class="w-24 px-2 py-2 text-sm text-left">Type</th>
+                        <th class="w-48 px-2 py-2 text-sm text-left">Release</th>
+                        <th class="px-2 py-2 text-sm text-left">Commit</th>
+                        <th class="w-64 px-2 py-2 text-sm text-left">Created at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="deployment in deployments" v-bind:key="deployment.id" class="border-b cursor-pointer hover:bg-gray-100" @click="show(project.id, deployment.id)">
+                        <td class="px-2 py-2 text-center"></td>
+                        <td class="px-2 py-2">{{ deployment.status }}</td>
+                        <td class="px-2 py-2">{{ deployment.type }}</td>
+                        <td class="px-2 py-2">{{ deployment.release }}</td>
+                        <td class="px-2 py-2 truncate">{{ deployment.commit }}</td>
+                        <td class="px-2 py-2">{{ $moment(deployment.created_at).format('L') }} {{ $moment(deployment.created_at).format('LTS') }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -74,6 +101,7 @@
 
         props: {
             project: Object,
+            deployments: Array,
         },
 
         data() {
@@ -84,6 +112,9 @@
         },
 
         methods: {
+            show(project_id, deployment_id) {
+                this.$inertia.visit(this.$route('projects.deployments.show', [project_id, deployment_id]))
+            },
             destroy() {
                 if (confirm("Do you really want to delete this project?")) {
                     this.$inertia.delete(this.$route('projects.destroy', this.project))

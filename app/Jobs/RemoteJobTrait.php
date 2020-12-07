@@ -78,27 +78,27 @@ trait RemoteJobTrait
             fi
         ";
 
-        $this->scripts['preflight'] = "
+        $this->scripts['preflight'] = '
             true
-        ";
+        ';
 
-        $this->scripts['assert:commit'] = "
+        $this->scripts['assert:commit'] = '
             true
-        ";
+        ';
 
         if (! $commit) {
-            $this->scripts['assert:commit'] = "
-                echo \"Commit not defined.\" 1>&2
-            ";
+            $this->scripts['assert:commit'] = '
+                echo "Commit not defined." 1>&2
+            ';
         } else {
             $this->scripts['assert:commit'] = "
                 echo \"Deploying release $release with tree-ish $commit to $ssh_host...\"
             ";
         }
 
-        $this->scripts['deploy:starting'] = "
+        $this->scripts['deploy:starting'] = '
             true
-        ";
+        ';
 
         $this->scripts['deploy:check'] = "
             if [ ! -d \"$repository_path\" ]; then
@@ -129,17 +129,17 @@ trait RemoteJobTrait
             echo \"All checks passed!\"
         ";
 
-        $this->scripts['deploy:backup'] = "
+        $this->scripts['deploy:backup'] = '
             true
-        ";
+        ';
 
-        $this->scripts['deploy:started'] = "
+        $this->scripts['deploy:started'] = '
             true
-        ";
+        ';
 
-        $this->scripts['deploy:provisioning'] = "
+        $this->scripts['deploy:provisioning'] = '
             true
-        ";
+        ';
 
         $this->scripts['deploy:fetch'] = "
             export GIT_SSH_COMMAND=\"ssh -q -o PasswordAuthentication=no -o VerifyHostKeyDNS=yes\"
@@ -156,9 +156,9 @@ trait RemoteJobTrait
             $cmd_git --git-dir \"$repository_path\" --work-tree \"$release_path\" rev-parse HEAD > \"$release_path/REVISION\"
         ";
 
-        $this->scripts['deploy:link'] = "
+        $this->scripts['deploy:link'] = '
             true
-        ";
+        ';
 
         foreach ($linked_dirs as $dir) {
             $this->scripts['deploy:link'] .= "
@@ -208,9 +208,9 @@ trait RemoteJobTrait
             ";
         }
 
-        $this->scripts['deploy:copy'] = "
+        $this->scripts['deploy:copy'] = '
             true
-        ";
+        ';
 
         foreach ($copied_dirs as $dir) {
             $this->scripts['deploy:copy'] .= "
@@ -219,7 +219,7 @@ trait RemoteJobTrait
                 mkdir -p `dirname \"$release_path/$dir\"`
 
                 if [ -d \"$current_path/$dir\" ]; then
-                    rsync -a \"$current_path/" . ($dir ? rtrim($dir, '/') .'/' : '') . "\" \"$release_path/$dir\"
+                    rsync -a \"$current_path/" . ($dir ? rtrim($dir, '/') . '/' : '') . "\" \"$release_path/$dir\"
                 fi
             ";
         }
@@ -236,9 +236,22 @@ trait RemoteJobTrait
             ";
         }
 
-        $this->scripts['deploy:composer'] = "
+        $this->scripts['deploy:dotenv'] = '
             true
-        ";
+        ';
+
+        if ($env_contents = $this->deployment->project->env) {
+            $delimiter = 'EOF-ROCKET-ENV';
+
+            $this->scripts['deploy:dotenv'] .= "
+                echo \"Printing environment file\"
+
+                cat >$release_path/.env <<$delimiter" . PHP_EOL . $env_contents . PHP_EOL . $delimiter;
+        }
+
+        $this->scripts['deploy:composer'] = '
+            true
+        ';
 
         foreach (array_unique([$release_path, $assets_path]) as $path) {
             $this->scripts['deploy:composer'] .= "
@@ -262,13 +275,13 @@ trait RemoteJobTrait
             fi
         ";
 
-        $this->scripts['deploy:provisioned'] = "
+        $this->scripts['deploy:provisioned'] = '
             true
-        ";
+        ';
 
-        $this->scripts['deploy:building'] = "
+        $this->scripts['deploy:building'] = '
             true
-        ";
+        ';
 
         $this->scripts['deploy:build'] = "
             cd \"$assets_path\"
@@ -282,13 +295,13 @@ trait RemoteJobTrait
             fi
         ";
 
-        $this->scripts['deploy:built'] = "
+        $this->scripts['deploy:built'] = '
             true
-        ";
+        ';
 
-        $this->scripts['deploy:publishing'] = "
+        $this->scripts['deploy:publishing'] = '
             true
-        ";
+        ';
 
         $this->scripts['deploy:symlink'] = "
             echo \"Linking directory $release_path to $current_path\"
@@ -311,9 +324,9 @@ trait RemoteJobTrait
             $cmd_php artisan up
         ";
 
-        $this->scripts['deploy:cronjobs'] = "
+        $this->scripts['deploy:cronjobs'] = '
             true
-        ";
+        ';
 
         if (is_array($cron_jobs) && count($cron_jobs) > 0) {
             $this->scripts['deploy:cronjobs'] .= "
@@ -327,9 +340,9 @@ trait RemoteJobTrait
             ";
 
             foreach ($cron_jobs as $cron_job) {
-                $this->scripts['deploy:cronjobs'] .= "
-                    echo " . escapeshellarg($cron_job) . " >> \$FILE
-                ";
+                $this->scripts['deploy:cronjobs'] .= '
+                    echo ' . escapeshellarg($cron_job) . ' >> $FILE
+                ';
             }
 
             $this->scripts['deploy:cronjobs'] .= "
@@ -345,13 +358,13 @@ trait RemoteJobTrait
             ";
         }
 
-        $this->scripts['deploy:published'] = "
+        $this->scripts['deploy:published'] = '
             true
-        ";
+        ';
 
-        $this->scripts['deploy:finishing'] = "
+        $this->scripts['deploy:finishing'] = '
             true
-        ";
+        ';
 
         $this->scripts['deploy:cleanup'] = "
             cd \"$releases_path\"
@@ -362,8 +375,8 @@ trait RemoteJobTrait
             done
         ";
 
-        $this->scripts['deploy:finished'] = "
+        $this->scripts['deploy:finished'] = '
             true
-        ";
+        ';
     }
 }

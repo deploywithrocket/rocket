@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectDeploymentController;
 use App\Http\Controllers\ServerController;
 use Illuminate\Support\Facades\Route;
 
@@ -52,5 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/{project}/setup', [ProjectController::class, 'setup'])->name('setup');
         Route::get('/{project}/deploy', [ProjectController::class, 'deploy'])->name('deploy');
+
+        Route::get('/{project}/{deployment}', [ProjectDeploymentController::class, 'show'])->name('deployments.show');
     });
 });

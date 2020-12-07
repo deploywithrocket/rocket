@@ -4,13 +4,10 @@ namespace App\Jobs;
 
 use App\Models\Deployment;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Queue\SerializesModels;
-use Symfony\Component\Process\Process;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class EnvoyDeployJob implements ShouldQueue
@@ -46,6 +43,7 @@ class EnvoyDeployJob implements ShouldQueue
                 $this->scripts['deploy:release'],
                 $this->scripts['deploy:link'],
                 // $this->scripts['deploy:copy'],
+                $this->scripts['deploy:dotenv'],
                 $this->scripts['deploy:composer'],
                 $this->scripts['deploy:npm'],
                 $this->scripts['deploy:provisioned'],
@@ -69,13 +67,10 @@ class EnvoyDeployJob implements ShouldQueue
             $this->deployment->status = 'error';
             $this->deployment->save();
 
-            dump($this->deployment->raw_output);
             throw $th;
         }
 
         $this->deployment->refresh();
-        dd($this->deployment->raw_output);
-
         $this->afterHandle();
     }
 }
