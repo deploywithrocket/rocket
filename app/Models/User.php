@@ -54,18 +54,22 @@ class User extends Authenticatable
         return $this->hasMany(SocialAccount::class);
     }
 
+    public function github_account()
+    {
+        return $this
+            ->hasOne(SocialAccount::class)
+            ->where('provider', 'github');
+    }
+
     public function github()
     {
-        $social_account = $this
-            ->social_accounts()
-            ->where('provider', 'github')
-            ->first();
+        $github_account = $this->github_account;
 
-        if (! $social_account) {
+        if (! $github_account) {
             return null;
         }
 
-        Config::set('github.connections.main.token', $social_account->token);
+        Config::set('github.connections.main.token', $github_account->token);
 
         return GitHub::connection('main');
     }

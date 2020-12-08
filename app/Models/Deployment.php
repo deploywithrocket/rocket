@@ -46,6 +46,18 @@ class Deployment extends Model
 
     public function extractVariables()
     {
+        $repository_url = 'https://github.com/' . $this->project->repository . '.git';
+
+        $github_account = $this->project->user->github_account;
+
+        if ($github_account) {
+            $repository_url = ''
+                . 'https://'
+                . $github_account->provider_user_name . ':' . $github_account->token
+                . '@github.com'
+                . '/' . $this->project->repository . '.git';
+        }
+
         return [
             'release' => $this->release,
             'commit' => $this->commit['sha'],
@@ -53,7 +65,7 @@ class Deployment extends Model
             'ssh_host' => $this->server->ssh_host,
             'ssh_user' => $this->server->ssh_user,
             'deploy_path' => $this->project->deploy_path,
-            'repository_url' => 'git@github.com:' . $this->project->repository . '.git',
+            'repository_url' => $repository_url,
 
             'linked_files' => $this->project->linked_files ?? [],
             'linked_dirs' => $this->project->linked_dirs ?? [],
