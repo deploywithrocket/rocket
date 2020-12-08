@@ -171,7 +171,9 @@ trait RemoteJobTrait
             ";
         }
 
-        $this->scripts['deploy:starting'] = '';
+        $this->scripts['deploy:starting'] = '
+            echo "🏃  Starting deployment…"
+        ';
 
         $this->scripts['deploy:check'] = "
             if [ ! -d \"$repository_path\" ]; then
@@ -202,11 +204,10 @@ trait RemoteJobTrait
             echo \"All checks passed!\"
         ";
 
-        $this->scripts['deploy:backup'] = '';
         $this->scripts['deploy:started'] = '';
 
         if ($this->deployment->project->hooks['started'] ?? null) {
-            $this->scripts['deploy:started'] .= $this->parseScript($this->deployment->project->hooks['started']);
+            $this->scripts['deploy:started'] .= $this->parseScript($this->deployment->project->hooks['started'], 'started');
         }
 
         $this->scripts['deploy:provisioning'] = '';
@@ -219,6 +220,8 @@ trait RemoteJobTrait
         ";
 
         $this->scripts['deploy:release'] = "
+            echo \"🌀  Cloning repository…\"
+
             mkdir \"$release_path\"
             cd \"$release_path\"
 
@@ -230,7 +233,7 @@ trait RemoteJobTrait
 
         foreach ($linked_dirs as $dir) {
             $this->scripts['deploy:link'] .= "
-                echo \"Linking directory $release_path/$dir to $shared_path/$dir\"
+                echo \"🔗  Linking directory $release_path/$dir to $shared_path/$dir" . "…\"
 
                 mkdir -p `dirname \"$shared_path/$dir\"`
 
@@ -254,7 +257,7 @@ trait RemoteJobTrait
 
         foreach ($linked_files as $file) {
             $this->scripts['deploy:link'] .= "
-                echo \"Linking file $release_path/$file to $shared_path/$file\"
+                echo \"🔗  Linking file $release_path/$file to $shared_path/$file" . "…\"
 
                 mkdir -p `dirname \"$shared_path/$file\"`
 
@@ -280,7 +283,7 @@ trait RemoteJobTrait
 
         foreach ($copied_dirs as $dir) {
             $this->scripts['deploy:copy'] .= "
-                echo \"Copying directory $current_path/$dir to $release_path/$dir\"
+                echo \"📁  Copying directory $current_path/$dir to $release_path/$dir" . "…\"
 
                 mkdir -p `dirname \"$release_path/$dir\"`
 
@@ -292,7 +295,7 @@ trait RemoteJobTrait
 
         foreach ($copied_files as $file) {
             $this->scripts['deploy:copy'] .= "
-                echo \"Copying file $current_path/$file to $release_path/$file\"
+                echo \"📁  Copying file $current_path/$file to $release_path/$file" . "…\"
 
                 mkdir -p `dirname \"$release_path/$file\"`
 
@@ -308,8 +311,7 @@ trait RemoteJobTrait
             $delimiter = 'EOF-ROCKET-ENV';
 
             $this->scripts['deploy:dotenv'] .= "
-                echo \"Printing environment file\"
-
+                echo \"🖨️  Writing environment file…\"
                 cat >$release_path/.env <<$delimiter" . PHP_EOL . $env_contents . PHP_EOL . $delimiter;
         }
 
@@ -320,6 +322,7 @@ trait RemoteJobTrait
                 cd \"$path\"
 
                 if [ -f \"composer.json\" ]; then
+                    echo \"🚚  Running Composer…\";
                     $cmd_composer install $cmd_composer_options --prefer-dist --optimize-autoloader --no-progress --no-interaction
                 fi
             ";
@@ -330,20 +333,20 @@ trait RemoteJobTrait
 
             if [ -f \"package.json\" ]; then
                 if [ -f \"yarn.lock\" ]; then
+                    echo \"📦  Running Yarn…\";
                     $cmd_yarn config set ignore-engines true
                     $cmd_yarn install --pure-lockfile --no-progress --non-interactive
                 else
+                    echo \"📦  Running npm…\";
                     $cmd_npm install
                 fi
-
-                rm -rf node_modules
             fi
         ";
 
         $this->scripts['deploy:provisioned'] = '';
 
         if ($this->deployment->project->hooks['provisioned'] ?? null) {
-            $this->scripts['deploy:provisioned'] .= $this->parseScript($this->deployment->project->hooks['provisioned']);
+            $this->scripts['deploy:provisioned'] .= $this->parseScript($this->deployment->project->hooks['provisioned'], 'provisioned');
         }
 
         $this->scripts['deploy:building'] = '';
@@ -353,23 +356,28 @@ trait RemoteJobTrait
 
             if [ -f \"package.json\" ]; then
                 if [ -f \"yarn.lock\" ]; then
+                    echo \"🌅  Generating assets…\";
                     $cmd_yarn run production --no-progress
                 else
+                    echo \"🌅  Generating assets…\";
                     $cmd_npm run production --no-progress
                 fi
+
+                echo \"Deleting node_modules directory\"
+                rm -rf node_modules
             fi
         ";
 
         $this->scripts['deploy:built'] = '';
 
         if ($this->deployment->project->hooks['built'] ?? null) {
-            $this->scripts['deploy:built'] .= $this->parseScript($this->deployment->project->hooks['built']);
+            $this->scripts['deploy:built'] .= $this->parseScript($this->deployment->project->hooks['built'], 'built');
         }
 
         $this->scripts['deploy:publishing'] = '';
 
         $this->scripts['deploy:symlink'] = "
-            echo \"Linking directory $release_path to $current_path\"
+            echo \"🔥  Linking directory $release_path to $current_path" . "…\"
 
             ln -srfn \"$release_path\" \"$current_path\"
         ";
@@ -411,35 +419,38 @@ trait RemoteJobTrait
         $this->scripts['deploy:published'] = '';
 
         if ($this->deployment->project->hooks['published'] ?? null) {
-            $this->scripts['deploy:published'] .= $this->parseScript($this->deployment->project->hooks['published']);
+            $this->scripts['deploy:published'] .= $this->parseScript($this->deployment->project->hooks['published'], 'published');
         }
 
         $this->scripts['deploy:finishing'] = '';
 
         $this->scripts['deploy:cleanup'] = "
+            echo \"🗑️  Cleaning up old releases…\"
+
             cd \"$releases_path\"
 
             for RELEASE in $(ls -1d * | head -n -$keep_releases); do
                 echo \"Deleting old release \$RELEASE\"
                 rm -rf \"\$RELEASE\"
             done
+
+            echo \"🚀  Application deployed!\"
         ";
 
         $this->scripts['deploy:finished'] = '';
 
         if ($this->deployment->project->hooks['finished'] ?? null) {
-            $this->scripts['deploy:finished'] .= $this->parseScript($this->deployment->project->hooks['finished']);
+            $this->scripts['deploy:finished'] .= $this->parseScript($this->deployment->project->hooks['finished'], 'finished');
         }
     }
 
-    protected function parseScript($sh)
+    protected function parseScript($script, $hook_name = null)
     {
         extract($this->deployment->extractVariables());
 
-        return Str::of($sh)
+        return Str::of($script)
             ->replace('[[release]]', "\"$release_path\"")
             ->replace('[[sha]]', $commit)
-            ->prepend('echo "========= START OF HOOK ========="' . PHP_EOL)
-            ->append(PHP_EOL . 'echo "========= END OF HOOK  ========="');
+            ->prepend($hook_name ? 'echo "💻  Executing ' . $hook_name . ' hook"' . PHP_EOL : '');
     }
 }

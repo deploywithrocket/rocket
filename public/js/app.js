@@ -50194,7 +50194,7 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("h1", { staticClass: "my-8 text-2xl font-bold" }, [
-      _vm._v("\n        Raw output\n    ")
+      _vm._v("\n        Process output\n    ")
     ]),
     _vm._v(" "),
     _c(

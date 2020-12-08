@@ -46,7 +46,7 @@
         </div>
 
         <h1 class="my-8 text-2xl font-bold">
-            Raw output
+            Process output
         </h1>
 
         <div class="w-full p-8 mb-8 font-mono bg-white rounded-lg shadow">

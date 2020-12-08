@@ -38,7 +38,6 @@ class EnvoyDeployJob implements ShouldQueue
                 $this->scripts['setup:directories'],
                 $this->scripts['deploy:starting'],
                 $this->scripts['deploy:check'],
-                $this->scripts['deploy:backup'],
                 $this->scripts['deploy:started'],
                 $this->scripts['deploy:provisioning'],
                 $this->scripts['deploy:fetch'],
