@@ -18,8 +18,10 @@ class CreateProjectsTable extends Migration
             $table->char('server_id', 26)->nullable();
 
             $table->string('name');
-            $table->string('repository_url');
+            $table->string('repository');
+            $table->string('branch');
             $table->string('deploy_path');
+
             $table->string('health_url')->nullable();
 
             $table->longText('env');
@@ -31,6 +33,9 @@ class CreateProjectsTable extends Migration
             $table->json('linked_files')->nullable();
             $table->json('copied_dirs')->nullable();
             $table->json('copied_files')->nullable();
+
+            $table->json('presets')->nullable();
+            $table->json('hooks')->nullable();
 
             $table->timestamps();
         });

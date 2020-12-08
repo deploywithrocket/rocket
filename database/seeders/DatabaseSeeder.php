@@ -26,23 +26,26 @@ class DatabaseSeeder extends Seeder
             'name' => 'universe/sc1',
             'ssh_user' => 'sc1mgkprod',
             'ssh_host' => 'sc1mgkprod.universe.wf',
+            'status' => 'disconnected',
         ]);
 
         Server::firstOrCreate([
             'name' => 'universe/sc2',
             'ssh_user' => 'sc2mgkprod',
             'ssh_host' => 'sc2mgkprod.universe.wf',
+            'status' => 'disconnected',
         ]);
 
         $server = Server::firstOrCreate([
             'name' => 'o2switch/saucisson',
             'ssh_user' => 'mgkprod',
             'ssh_host' => 'saucisson.o2switch.net',
+            'status' => 'disconnected',
         ]);
 
         $server->projects()->firstOrCreate([
             'name' => 'mgkprod/rocket',
-            'repository_url' => 'git@github.com:mgkprod/rocket.git',
+            'repository' => 'mgkprod/rocket',
             'deploy_path' => '/home/mgkprod/rocket.mgk.dev',
             'health_url' => 'https://rocket.mgk.dev',
             'env' => '',

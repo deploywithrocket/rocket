@@ -27,43 +27,25 @@ class ProjectController extends Controller
     {
         $servers = Server::pluck('name', 'id');
 
-        // try {
-        //     $github_token = optional(
-        //         auth()
-        //         ->user()
-        //         ->social_accounts()
-        //         ->where('provider', 'github')
-        //         ->first()
-        //     )->token;
-
-        //     Config::set('github.connections.main.token', $github_token);
-
-        //     $repositories = collect(GitHub::connection('main')->me()->repositories())
-        //         ->pluck('ssh_url', 'full_name')
-        //         ->toArray();
-        // } catch (\Throwable $th) {
-        // }
-        $repositories = null;
-
-        return inertia('projects/create', compact('servers', 'repositories'));
+        return inertia('projects/create', compact('servers'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'repository_url' => ['required', 'string', 'max:255'],
-            'health_url' => ['required', 'string', 'max:255'],
+            'repository' => ['required', 'string', 'max:255'],
             'server_id' => ['required', 'exists:servers,id'],
             'deploy_path' => ['required', 'string', 'max:255'],
         ]);
 
         $project = new Project();
         $project->name = $request->name;
-        $project->repository_url = $request->repository_url;
-        $project->health_url = $request->health_url;
+        $project->repository = $request->repository;
+
         $project->server_id = $request->server_id;
         $project->deploy_path = $request->deploy_path;
+
         $project->save();
 
         return redirect()->route('projects.show', $project->id);

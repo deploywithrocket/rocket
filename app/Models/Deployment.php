@@ -46,10 +46,6 @@ class Deployment extends Model
         $ssh_pem_file = storage_path('app/id_rsa');
         $options = '-q -A -i ' . escapeshellarg($ssh_pem_file);
 
-        if ($this->server->ssh_options) {
-            $options .= ' ' . $this->server->ssh_options;
-        }
-
         return $options . ' ' . $host;
     }
 
@@ -62,7 +58,6 @@ class Deployment extends Model
             'ssh_user' => $this->server->ssh_user,
             'deploy_path' => $this->project->deploy_path,
 
-            'ssh_options' => $this->server->ssh_options,
             'repository_url' => $this->project->repository_url,
             'linked_files' => $this->project->linked_files ?? [],
             'linked_dirs' => $this->project->linked_dirs ?? [],
@@ -73,8 +68,6 @@ class Deployment extends Model
             'cmd_git' => $this->server->cmd_git ?? 'git',
             'cmd_npm' => $this->server->cmd_npm ?? 'npm',
             'cmd_yarn' => $this->server->cmd_npm ?? 'yarn',
-            'cmd_bower' => $this->server->cmd_bower ?? 'bower',
-            'cmd_grunt' => $this->server->cmd_grunt ?? 'grunt',
             'cmd_php' => $this->server->cmd_php ?? 'php',
             'cmd_composer' => $this->server->cmd_composer ?? 'composer',
             'cmd_composer_options' => $this->server->cmd_composer_options ?? '--no-dev',

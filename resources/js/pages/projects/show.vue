@@ -1,9 +1,9 @@
 <template>
     <div>
         <h1 class="my-8 text-2xl font-bold">
-            Project
+            <inertia-link :href="$route('projects.index')" class="hover:underline">Projects</inertia-link>
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
-            {{ project.id }}
+            {{ project.name }}
         </h1>
 
         <div class="flex">
@@ -55,7 +55,7 @@
                     </table>
 
                     <div class="flex flex-row justify-between">
-                        <inertia-link :href="$route('projects.edit', project)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200">Edit</inertia-link>
+                        <inertia-link :href="$route('projects.edit', project)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300">Edit</inertia-link>
                         <div class="mx-auto"></div>
                         <inertia-link :href="$route('projects.setup', project)" class="inline-block px-4 py-2 mr-1 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600">Setup</inertia-link>
                         <inertia-link :href="$route('projects.deploy', project)" class="inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600">Deploy</inertia-link>

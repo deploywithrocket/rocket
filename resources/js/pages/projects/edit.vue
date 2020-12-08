@@ -1,9 +1,9 @@
 <template>
     <div>
         <h1 class="my-8 text-2xl font-bold">
-            Project
+            <inertia-link :href="$route('projects.index')" class="hover:underline">Projects</inertia-link>
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
-            {{ project.id }}
+            {{ project.name }}
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
             Edit
         </h1>

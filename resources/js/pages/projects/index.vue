@@ -5,7 +5,7 @@
         <div class="p-8 bg-white rounded-lg shadow">
             <div class="flex justify-between mb-8">
                 <inertia-link :href="$route('projects.create')" class="px-4 py-2 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600">
-                    Add project
+                    <i class="fas fa-plus"></i> Add project
                 </inertia-link>
             </div>
 
@@ -31,7 +31,7 @@
                     v-if="projects.prev_page_url"
                     preserve-scroll
                     :href="projects.prev_page_url"
-                    class="inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200"
+                    class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"
                 >
                     <i class="fas fa-arrow-left"></i>
                 </inertia-link>
@@ -45,7 +45,7 @@
                     preserve-scroll
                     v-if="projects.next_page_url"
                     :href="projects.next_page_url"
-                    class="inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200"
+                    class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"
                 >
                     <i class="fas fa-arrow-right"></i>
                 </inertia-link>

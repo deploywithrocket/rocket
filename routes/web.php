@@ -37,7 +37,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/', [ServerController::class, 'index'])->name('index');
         Route::get('/create', [ServerController::class, 'create'])->name('create');
         Route::post('/', [ServerController::class, 'store'])->name('store');
-        Route::get('/{server}', [ServerController::class, 'show'])->name('show');
+        Route::get('/{server}/connection', [ServerController::class, 'connection'])->name('connection');
+        Route::post('/{server}/connection/test', [ServerController::class, 'connectionTest'])->name('connection.test');
         Route::get('/{server}/edit', [ServerController::class, 'edit'])->name('edit');
         Route::put('/{server}', [ServerController::class, 'update'])->name('update');
         Route::delete('/{server}', [ServerController::class, 'destroy'])->name('destroy');

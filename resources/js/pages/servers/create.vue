@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="my-8 text-2xl font-bold">
-            Servers
+            <inertia-link :href="$route('servers.index')" class="hover:underline">Servers</inertia-link>
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
             Add Server
         </h1>

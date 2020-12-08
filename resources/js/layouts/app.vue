@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-start min-h-screen bg-gray-100">
-        <nav class="w-full mb-6 text-white bg-gray-900 shadow md:bg-gray-800">
+        <nav class="w-full mb-4 text-white bg-gray-900 shadow md:bg-gray-800">
             <div class="flex flex-wrap items-center">
                 <inertia-link href="/home" class="h-16 bg-gray-900">
                     <img src="/images/logo_alt.svg" alt="Rocket" class="h-full px-4 py-4">
@@ -24,8 +24,9 @@
             </div>
         </nav>
 
+        <alerts></alerts>
+
         <div class="container pb-8 text-gray-700">
-            <alerts></alerts>
             <slot></slot>
         </div>
 

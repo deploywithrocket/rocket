@@ -1,9 +1,9 @@
 <template>
     <div>
         <h1 class="my-8 text-2xl font-bold">
-            Servers
+            <inertia-link :href="$route('servers.index')" class="hover:underline">Servers</inertia-link>
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
-            {{ server.id }}
+            {{ server.name }}
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
             Edit
         </h1>
@@ -21,12 +21,9 @@
 
                     <hr class="my-8">
 
-                    <form-input class="mb-4" label="ssh_options" placeholder="" type="text" name="ssh_options" v-model="form.ssh_options" :errors="$page.errors.ssh_options" />
                     <form-input class="mb-4" label="cmd_git" placeholder="git" type="text" name="cmd_git" v-model="form.cmd_git" :errors="$page.errors.cmd_git" />
                     <form-input class="mb-4" label="cmd_npm" placeholder="npm" type="text" name="cmd_npm" v-model="form.cmd_npm" :errors="$page.errors.cmd_npm" />
                     <form-input class="mb-4" label="cmd_yarn" placeholder="yarn" type="text" name="cmd_yarn" v-model="form.cmd_yarn" :errors="$page.errors.cmd_yarn" />
-                    <form-input class="mb-4" label="cmd_bower" placeholder="bower" type="text" name="cmd_bower" v-model="form.cmd_bower" :errors="$page.errors.cmd_bower" />
-                    <form-input class="mb-4" label="cmd_grunt" placeholder="grunt" type="text" name="cmd_grunt" v-model="form.cmd_grunt" :errors="$page.errors.cmd_grunt" />
                     <form-input class="mb-4" label="cmd_php" placeholder="php" type="text" name="cmd_php" v-model="form.cmd_php" :errors="$page.errors.cmd_php" />
                     <form-input class="mb-4" label="cmd_composer" placeholder="composer" type="text" name="cmd_composer" v-model="form.cmd_composer" :errors="$page.errors.cmd_composer" />
                     <form-input class="mb-4" label="cmd_composer_options" placeholder="--no-dev" type="text" name="cmd_composer_options" v-model="form.cmd_composer_options" :errors="$page.errors.cmd_composer_options" />
@@ -55,12 +52,9 @@
                     ssh_user: '',
                     ssh_host: '',
 
-                    ssh_options: '',
                     cmd_git: '',
                     cmd_npm: '',
                     cmd_yarn: '',
-                    cmd_bower: '',
-                    cmd_grunt: '',
                     cmd_php: '',
                     cmd_composer: '',
                     cmd_composer_options: '',

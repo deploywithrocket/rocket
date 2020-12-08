@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function () {
+    // Route::get('/servers/{server}/key', function (Server $server) {
+    //     return Storage::get('keys/' . $server->id . '.pub');
+    // });
 });
