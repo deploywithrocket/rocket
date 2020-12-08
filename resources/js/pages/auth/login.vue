@@ -1,5 +1,5 @@
 <template>
-    <form class="max-w-lg p-8 mx-auto bg-white rounded-lg shadow" @submit.prevent="submit">
+    <form class="max-w-sm p-8 mx-auto bg-white rounded-lg shadow" @submit.prevent="submit">
         <h1 class="mb-8 text-2xl font-bold">Sign in to your account</h1>
 
         <form-input class="mb-4"
@@ -26,7 +26,7 @@
 
 <script>
     export default {
-        layout: require('../../layouts/guest').default,
+        layout: require('../../layouts/gate').default,
 
         data() {
             return {
