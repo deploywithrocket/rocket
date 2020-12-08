@@ -72,8 +72,10 @@ class ProjectController extends Controller
                 . PHP_EOL
                 . 'php artisan storage:link' . PHP_EOL
                 . PHP_EOL
+                . 'php artisan config:clear' . PHP_EOL
                 . 'php artisan view:clear' . PHP_EOL
                 . 'php artisan cache:clear' . PHP_EOL
+                . 'php artisan clear-compiled' . PHP_EOL
                 . 'php artisan config:cache' . PHP_EOL
                 . PHP_EOL
                 . 'php artisan migrate --force' . PHP_EOL

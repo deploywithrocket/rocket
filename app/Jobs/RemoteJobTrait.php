@@ -330,10 +330,13 @@ trait RemoteJobTrait
 
             if [ -f \"package.json\" ]; then
                 if [ -f \"yarn.lock\" ]; then
+                    $cmd_yarn config set ignore-engines true
                     $cmd_yarn install --pure-lockfile --no-progress --non-interactive
                 else
                     $cmd_npm install
                 fi
+
+                rm -rf node_modules
             fi
         ";
 
