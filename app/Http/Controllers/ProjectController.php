@@ -120,9 +120,16 @@ class ProjectController extends Controller
         $project->deploy_path = $request->deploy_path;
         $project->env = $request->env;
         $project->discord_webhook_url = $request->discord_webhook_url;
+        $project->push_to_deploy = $request->push_to_deploy;
         $project->save();
 
-        return redirect()->route('projects.show', $project);
+        if ($request->push_to_deploy) {
+            $this->hookPTD($project);
+        }
+
+        return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'Project saved!');
     }
 
     public function destroy(Project $project)
@@ -162,7 +169,9 @@ class ProjectController extends Controller
 
         dispatch(new EnvoyDeployJob($deployment));
 
-        return redirect()->route('projects.show', $project);
+        return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'Project queued for deployment');
     }
 
     protected function validateRepo($repository, $branch, &$validator)
@@ -194,5 +203,21 @@ class ProjectController extends Controller
         return redirect()
             ->route('projects.show', $project)
             ->with('success', 'A test message has been sent !');
+    }
+
+    public function hookPTD(Project $project)
+    {
+        [$user, $repo] = explode('/', $project->repository);
+        $gh_client = auth()->user()->github()->repository()->hooks();
+
+        // Hook will not register if it already exists
+        $wh_url = route('api.projects.deploy', $project);
+        rescue(fn () => $gh_client->create($user, $repo, [
+            'name' => 'web',
+            'events' => ['push', 'release'],
+            'config' => ['url' => $wh_url, 'content_type' => 'json'],
+        ]));
+
+        return true;
     }
 }

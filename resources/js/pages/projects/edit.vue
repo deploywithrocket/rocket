@@ -19,6 +19,8 @@
                         <form-input class="w-1/2" label="Branch" placeholder="main" type="text" name="branch" v-model="form.branch" :errors="$page.errors.branch" />
                     </div>
 
+                    <form-checkbox class="mb-4" label="Trigger a deployment when code is pushed" name="push_to_deploy" v-model="form.push_to_deploy"  :errors="$page.errors.push_to_deploy" />
+
                     <form-select class="mb-4" label="Server" name="server_id" required v-model="form.server_id" :errors="$page.errors.server_id" :options="servers" />
                     <form-input class="mb-4" label="Deploy path" type="text" placeholder="/home/websites/rocket" name="deploy_path" v-model="form.deploy_path" :errors="$page.errors.deploy_path" />
                     <form-input class="mb-4" label="Environment" type="text" placeholder="production" name="environment" v-model="form.environment" :errors="$page.errors.environment" />
@@ -58,6 +60,7 @@
                     env: '',
                     environment: '',
                     discord_webhook_url: '',
+                    push_to_deploy: '',
                 }
             }
         },

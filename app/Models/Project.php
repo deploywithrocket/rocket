@@ -18,6 +18,7 @@ class Project extends Model
         'copied_files' => 'json',
         'presets' => 'json',
         'hooks' => 'json',
+        'push_to_deploy' => 'bool',
     ];
 
     protected $appends = [
