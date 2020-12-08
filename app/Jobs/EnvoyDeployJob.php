@@ -26,9 +26,10 @@ class EnvoyDeployJob implements ShouldQueue
 
     public function handle()
     {
-        $this->beforeHandle();
         $this->defineConfig();
         $this->defineTasks();
+
+        $this->beforeHandle();
 
         try {
             $process = $this->ssh->execute([
@@ -66,13 +67,11 @@ class EnvoyDeployJob implements ShouldQueue
                 throw new ProcessFailedException($process);
             }
         } catch (\Throwable $th) {
-            $this->deployment->status = 'error';
-            $this->deployment->save();
+            $this->afterHandleFailed();
 
             throw $th;
         }
 
-        $this->deployment->refresh();
         $this->afterHandle();
     }
 }

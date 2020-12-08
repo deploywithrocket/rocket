@@ -38,7 +38,7 @@ class ServerController extends Controller
         ]);
 
         $server = new Server();
-
+        $server->user_id = auth()->id();
         $server->name = $request->name;
         $server->ssh_user = $request->ssh_user;
         $server->ssh_host = $request->ssh_host;
@@ -125,14 +125,12 @@ class ServerController extends Controller
         $server->name = $request->name;
         $server->ssh_user = $request->ssh_user;
         $server->ssh_host = $request->ssh_host;
-
         $server->cmd_git = $request->cmd_git;
         $server->cmd_npm = $request->cmd_npm;
         $server->cmd_yarn = $request->cmd_yarn;
         $server->cmd_php = $request->cmd_php;
         $server->cmd_composer = $request->cmd_composer;
         $server->cmd_composer_options = $request->cmd_composer_options;
-
         $server->save();
 
         return redirect()

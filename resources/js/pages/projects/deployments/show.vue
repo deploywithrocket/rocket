@@ -36,7 +36,7 @@
                     <tr class="border-b">
                         <td class="px-2 py-2">Commit</td>
                         <td class="px-2 my-2">
-                            <a :href="'https://github.com/' + deployment.commit.from_repository + '/tree/' + deployment.commit.from_branch" class="hover:underline" target="_blank">{{ deployment.commit.from_branch }}</a>@<a :href="'https://github.com/' + deployment.commit.from_repository + '/commit/' + deployment.commit.sha" class="hover:underline" target="_blank">{{ deployment.commit.sha.substring(0, 8) }}</a>
+                            <a :href="'https://github.com/' + deployment.commit.from_repository + '/tree/' + deployment.commit.from_branch" class="hover:underline" target="_blank">{{ deployment.commit.from_branch }}</a>@<a :href="'https://github.com/' + deployment.commit.from_repository + '/commit/' + deployment.commit.sha" class="hover:underline" target="_blank">{{ deployment.commit.sha.substring(0, 7) }}</a>
                         </td>
                     </tr>
                 </tbody>

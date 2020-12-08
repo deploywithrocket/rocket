@@ -37,6 +37,7 @@ class ProjectController extends Controller
             'repository' => ['required', 'string', 'max:255'],
             'branch' => ['required', 'string', 'max:255'],
             'server_id' => ['required', 'exists:servers,id'],
+            'environment' => ['required', 'string', 'max:255'],
             'deploy_path' => ['required', 'string', 'max:255'],
         ]);
 
@@ -51,12 +52,13 @@ class ProjectController extends Controller
         }
 
         $project = new Project();
+        $project->user_id = auth()->id();
         $project->name = $request->name;
         $project->repository = $request->repository;
         $project->branch = $request->branch;
         $project->server_id = $request->server_id;
+        $project->environment = $request->environment;
         $project->deploy_path = $request->deploy_path;
-
         $project->save();
 
         return redirect()->route('projects.show', $project->id);
@@ -94,6 +96,7 @@ class ProjectController extends Controller
             'branch' => ['required', 'string', 'max:255'],
             'live_url' => ['string', 'max:255'],
             'server_id' => ['required', 'exists:servers,id'],
+            'environment' => ['required', 'string', 'max:255'],
             'deploy_path' => ['required', 'string', 'max:255'],
         ]);
 
@@ -111,6 +114,7 @@ class ProjectController extends Controller
         $project->repository = $request->repository;
         $project->live_url = $request->live_url;
         $project->server_id = $request->server_id;
+        $project->environment = $request->environment;
         $project->deploy_path = $request->deploy_path;
         $project->env = $request->env;
         $project->save();

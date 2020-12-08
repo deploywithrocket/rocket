@@ -22,7 +22,7 @@ Artisan::command('users:create', function () {
     $user = new User();
     $user->name = $this->ask('Name ?', null);
     $user->email = $this->ask('Email ?', null);
-    $user->password = Hash::make($this->ask('Password ?'));
+    $user->password = Hash::make($this->secret('Password ?'));
     $user->email_verified_at = now();
     $user->remember_token = Str::random(10);
     $user->save();

@@ -33,6 +33,10 @@
                                 <td class="px-2 py-2 truncate">{{ project.deploy_path }}</td>
                             </tr>
                             <tr class="border-b">
+                                <td class="px-2 py-2">Environment</td>
+                                <td class="px-2 py-2 truncate">{{ project.environment }}</td>
+                            </tr>
+                            <tr class="border-b">
                                 <td class="px-2 py-2">Server</td>
                                 <td class="px-2 py-2">{{ project.server.name }}</td>
                             </tr>
@@ -135,7 +139,7 @@
                             </template>
                         </td>
                         <td class="px-2 py-2 font-mono truncate">
-                            <a :href="'https://github.com/' + deployment.commit.from_repository + '/tree/' + deployment.commit.from_branch" class="hover:underline" target="_blank">{{ deployment.commit.from_branch }}</a>@<a :href="'https://github.com/' + deployment.commit.from_repository + '/commit/' + deployment.commit.sha" class="hover:underline" target="_blank">{{ deployment.commit.sha.substring(0, 8) }}</a>
+                            <a :href="'https://github.com/' + deployment.commit.from_repository + '/tree/' + deployment.commit.from_branch" class="hover:underline" target="_blank">{{ deployment.commit.from_branch }}</a>@<a :href="'https://github.com/' + deployment.commit.from_repository + '/commit/' + deployment.commit.sha" class="hover:underline" target="_blank">{{ deployment.commit.sha.substring(0, 7) }}</a>
                         </td>
                     </tr>
                 </tbody>

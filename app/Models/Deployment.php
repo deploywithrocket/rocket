@@ -48,7 +48,7 @@ class Deployment extends Model
     {
         return [
             'release' => $this->release,
-            'commit' => $this->commit->sha,
+            'commit' => $this->commit['sha'],
 
             'ssh_host' => $this->server->ssh_host,
             'ssh_user' => $this->server->ssh_user,

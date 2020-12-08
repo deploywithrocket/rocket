@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::firstOrCreate([
+        $user = User::firstOrCreate([
             'name' => 'MGK',
             'email' => 'sr@mgk.dev',
         ], [
@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Server::firstOrCreate([
+            'user_id' => $user->id,
             'name' => 'universe/sc1',
             'ssh_user' => 'sc1mgkprod',
             'ssh_host' => 'sc1mgkprod.universe.wf',
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Server::firstOrCreate([
+            'user_id' => $user->id,
             'name' => 'universe/sc2',
             'ssh_user' => 'sc2mgkprod',
             'ssh_host' => 'sc2mgkprod.universe.wf',
@@ -37,6 +39,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $server = Server::firstOrCreate([
+            'user_id' => $user->id,
             'name' => 'o2switch/saucisson',
             'ssh_user' => 'mgkprod',
             'ssh_host' => 'saucisson.o2switch.net',
@@ -44,6 +47,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $server->projects()->firstOrCreate([
+            'user_id' => $user->id,
             'name' => 'mgkprod/rocket',
             'repository' => 'mgkprod/rocket',
             'branch' => 'main',

@@ -2370,6 +2370,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../../layouts/app */ "./resources/js/layouts/app.vue")["default"],
@@ -2384,7 +2385,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         branch: '',
         live_url: '',
         server_id: 0,
-        deploy_path: ''
+        deploy_path: '',
+        environement: ''
       }
     };
   },
@@ -2530,6 +2532,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../../layouts/app */ "./resources/js/layouts/app.vue")["default"],
   props: {
@@ -2544,7 +2547,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         live_url: '',
         server_id: 0,
         deploy_path: '',
-        env: ''
+        env: '',
+        environment: ''
       }
     };
   },
@@ -2665,6 +2669,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -49515,6 +49523,24 @@ var render = function() {
                 _c("form-input", {
                   staticClass: "mb-4",
                   attrs: {
+                    label: "Environment",
+                    type: "text",
+                    placeholder: "production",
+                    name: "environment",
+                    errors: _vm.$page.errors.environment
+                  },
+                  model: {
+                    value: _vm.form.environment,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "environment", $$v)
+                    },
+                    expression: "form.environment"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
                     label: "Live URL",
                     type: "text",
                     placeholder: "https://rocket.mgk.dev",
@@ -49709,7 +49735,7 @@ var render = function() {
                     target: "_blank"
                   }
                 },
-                [_vm._v(_vm._s(_vm.deployment.commit.sha.substring(0, 8)))]
+                [_vm._v(_vm._s(_vm.deployment.commit.sha.substring(0, 7)))]
               )
             ])
           ])
@@ -49893,6 +49919,24 @@ var render = function() {
                       _vm.$set(_vm.form, "deploy_path", $$v)
                     },
                     expression: "form.deploy_path"
+                  }
+                }),
+                _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "Environment",
+                    type: "text",
+                    placeholder: "production",
+                    name: "environment",
+                    errors: _vm.$page.errors.environment
+                  },
+                  model: {
+                    value: _vm.form.environment,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "environment", $$v)
+                    },
+                    expression: "form.environment"
                   }
                 }),
                 _vm._v(" "),
@@ -50282,6 +50326,16 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v("Environment")
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "px-2 py-2 truncate" }, [
+                    _vm._v(_vm._s(_vm.project.environment))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
                   _c("td", { staticClass: "px-2 py-2" }, [_vm._v("Server")]),
                   _vm._v(" "),
                   _c("td", { staticClass: "px-2 py-2" }, [
@@ -50573,7 +50627,7 @@ var render = function() {
                         target: "_blank"
                       }
                     },
-                    [_vm._v(_vm._s(deployment.commit.sha.substring(0, 8)))]
+                    [_vm._v(_vm._s(deployment.commit.sha.substring(0, 7)))]
                   )
                 ])
               ]

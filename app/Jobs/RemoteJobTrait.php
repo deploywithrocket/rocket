@@ -3,12 +3,14 @@
 namespace App\Jobs;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Ssh\Ssh as SSH;
 
 trait RemoteJobTrait
 {
     protected $ssh;
     protected $scripts;
+    protected $xsp;
 
     public function defineConfig()
     {
@@ -18,20 +20,61 @@ trait RemoteJobTrait
             $this->deployment->server->ssh_user,
             $this->deployment->server->ssh_host
         )
-        ->usePrivateKey(storage_path('app/id_rsa')) // TODO
+        ->usePrivateKey(Storage::path('keys/' . $this->deployment->server->id))
         ->onOutput($idk_how_to_use_a_closure)
         ->disableStrictHostKeyChecking();
     }
 
     public function beforeHandle()
     {
+        rescue(function () {
+            $gh_client = $this->deployment->project->user->github()->deployments();
+            [$user, $repo] = explode('/', $this->deployment->project->repository);
+
+            $this->xsp = $gh_client->create($user, $repo, [
+                'ref' => $this->deployment->commit['sha'],
+                'target_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                'environment' => $this->deployment->project->environment,
+            ])['id'];
+        });
+
         $this->deployment->status = 'in_progress';
         $this->deployment->save();
     }
 
     public function afterHandle()
     {
+        if ($this->xsp ?? null) {
+            rescue(function () {
+                $gh_client = $this->deployment->project->user->github()->deployments();
+                [$user, $repo] = explode('/', $this->deployment->project->repository);
+
+                $gh_client->updateStatus($user, $repo, $this->xsp, [
+                    'state' => 'success',
+                    'target_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                ]);
+            });
+        }
+
         $this->deployment->status = 'success';
+        $this->deployment->save();
+    }
+
+    public function afterHandleFailed()
+    {
+        if ($this->xsp ?? null) {
+            rescue(function () {
+                $gh_client = $this->deployment->project->user->github()->deployments();
+                [$user, $repo] = explode('/', $this->deployment->project->repository);
+
+                $gh_client->updateStatus($user, $repo, $this->xsp, [
+                    'state' => 'error',
+                    'target_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                ]);
+            });
+        }
+
+        $this->deployment->status = 'error';
         $this->deployment->save();
     }
 
@@ -59,8 +102,8 @@ trait RemoteJobTrait
             fi
 
             if [ ! -d \"$repository_path\" ]; then
-               $cmd_git . ' clone --bare \"$repository_url\" \"$repository_path\"
-               $cmd_git . ' --git-dir \"$repository_path\" config advice.detachedHead false
+               $cmd_git clone --bare \"$repository_url\" \"$repository_path\"
+               $cmd_git --git-dir \"$repository_path\" config advice.detachedHead false
             fi
         ";
 
