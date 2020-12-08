@@ -61,6 +61,24 @@ class ProjectController extends Controller
         $project->server_id = $request->server_id;
         $project->environment = $request->environment;
         $project->deploy_path = $request->deploy_path;
+
+        $project->hooks = [
+            'built' => ''
+                . 'cd [[release]]' . PHP_EOL
+                . PHP_EOL
+                . 'php artisan down' . PHP_EOL
+                . PHP_EOL
+                . 'php artisan storage:link' . PHP_EOL
+                . PHP_EOL
+                . 'php artisan view:clear' . PHP_EOL
+                . 'php artisan cache:clear' . PHP_EOL
+                . 'php artisan config:cache' . PHP_EOL
+                . PHP_EOL
+                . 'php artisan migrate --force' . PHP_EOL
+                . PHP_EOL
+                . 'php artisan up' . PHP_EOL,
+        ];
+
         $project->save();
 
         return redirect()->route('projects.show', $project->id);
@@ -118,7 +136,6 @@ class ProjectController extends Controller
         $project->server_id = $request->server_id;
         $project->environment = $request->environment;
         $project->deploy_path = $request->deploy_path;
-        $project->env = $request->env;
         $project->discord_webhook_url = $request->discord_webhook_url;
         $project->push_to_deploy = $request->push_to_deploy;
         $project->save();
@@ -129,7 +146,43 @@ class ProjectController extends Controller
 
         return redirect()
             ->route('projects.show', $project)
-            ->with('success', 'Project saved!');
+            ->with('success', 'Project updated!');
+    }
+
+    public function editEnvFile(Project $project)
+    {
+        return inertia('projects/edit/env-file', compact('project'));
+    }
+
+    public function updateEnvFile(Request $request, Project $project)
+    {
+        $project->env = $request->env;
+        $project->save();
+
+        return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'Environment file updated!');
+    }
+
+    public function editHooks(Project $project)
+    {
+        return inertia('projects/edit/hooks', compact('project'));
+    }
+
+    public function updateHooks(Request $request, Project $project)
+    {
+        $project->hooks = [
+            'started' => $request->started,
+            'provisioned' => $request->provisioned,
+            'built' => $request->built,
+            'published' => $request->published,
+            'finished' => $request->finished,
+        ];
+        $project->save();
+
+        return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'Hooks updated!');
     }
 
     public function destroy(Project $project)
