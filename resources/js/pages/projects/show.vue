@@ -44,6 +44,15 @@
                                 <td class="px-2 py-2">Added at</td>
                                 <td class="px-2 py-2">{{ $moment(project.created_at).format('L') }} {{ $moment(project.created_at).format('LT') }}</td>
                             </tr>
+                            <tr class="border-b">
+                                <td class="px-2 py-2">Notifies on</td>
+                                <td class="px-2 py-2">
+                                    <template v-if="project.discord_webhook_url">
+                                        <inertia-link :href="$route('projects.test-discord-webhook', project)" class="hover:underline"><i class="fab fa-discord"></i></inertia-link>
+                                    </template>
+                                    <template v-else>N/A</template>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -55,10 +55,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
         Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
         Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
-
-        Route::get('/{project}/setup', [ProjectController::class, 'setup'])->name('setup');
         Route::get('/{project}/deploy', [ProjectController::class, 'deploy'])->name('deploy');
-
+        Route::get('/{project}/webhook/discord/test', [ProjectController::class, 'testDiscordWebhook'])->name('test-discord-webhook');
         Route::get('/{project}/{deployment}', [ProjectDeploymentController::class, 'show'])->name('deployments.show');
     });
 });

@@ -2533,6 +2533,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../../layouts/app */ "./resources/js/layouts/app.vue")["default"],
   props: {
@@ -2548,7 +2550,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         server_id: 0,
         deploy_path: '',
         env: '',
-        environment: ''
+        environment: '',
+        discord_webhook_url: ''
       }
     };
   },
@@ -2669,6 +2672,15 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -49958,6 +49970,24 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
+                _c("form-input", {
+                  staticClass: "mb-4",
+                  attrs: {
+                    label: "Discord Webhook",
+                    type: "text",
+                    placeholder: "https://discord.com/api/webhooks/...",
+                    name: "discord_webhook_url",
+                    errors: _vm.$page.errors.discord_webhook_url
+                  },
+                  model: {
+                    value: _vm.form.discord_webhook_url,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "discord_webhook_url", $$v)
+                    },
+                    expression: "form.discord_webhook_url"
+                  }
+                }),
+                _vm._v(" "),
                 _c("form-textarea", {
                   staticClass: "mb-4",
                   attrs: {
@@ -50353,6 +50383,37 @@ var render = function() {
                         _vm._s(_vm.$moment(_vm.project.created_at).format("LT"))
                     )
                   ])
+                ]),
+                _vm._v(" "),
+                _c("tr", { staticClass: "border-b" }, [
+                  _c("td", { staticClass: "px-2 py-2" }, [
+                    _vm._v("Notifies on")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    { staticClass: "px-2 py-2" },
+                    [
+                      _vm.project.discord_webhook_url
+                        ? [
+                            _c(
+                              "inertia-link",
+                              {
+                                staticClass: "hover:underline",
+                                attrs: {
+                                  href: _vm.$route(
+                                    "projects.test-discord-webhook",
+                                    _vm.project
+                                  )
+                                }
+                              },
+                              [_c("i", { staticClass: "fab fa-discord" })]
+                            )
+                          ]
+                        : [_vm._v("N/A")]
+                    ],
+                    2
+                  )
                 ])
               ])
             ])

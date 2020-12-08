@@ -25,6 +25,8 @@
 
                     <form-input class="mb-4" label="Live URL" type="text" placeholder="https://rocket.mgk.dev" name="live_url" v-model="form.live_url" :errors="$page.errors.live_url" />
 
+                    <form-input class="mb-4" label="Discord Webhook" type="text" placeholder="https://discord.com/api/webhooks/..." name="discord_webhook_url" v-model="form.discord_webhook_url" :errors="$page.errors.discord_webhook_url" />
+
                     <form-textarea class="mb-4" label="Environment file" placeholder='APP_NAME="My awesome project"' name="env" v-model="form.env" :errors="$page.errors.env" rows="20" mono />
 
                     <div class="flex justify-end mt-8">
@@ -55,6 +57,7 @@
                     deploy_path: '',
                     env: '',
                     environment: '',
+                    discord_webhook_url: '',
                 }
             }
         },

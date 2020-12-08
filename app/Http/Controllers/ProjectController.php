@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Utils\Discord;
 use App\Jobs\EnvoyDeployJob;
 use App\Models\Project;
 use App\Models\Server;
@@ -118,6 +119,7 @@ class ProjectController extends Controller
         $project->environment = $request->environment;
         $project->deploy_path = $request->deploy_path;
         $project->env = $request->env;
+        $project->discord_webhook_url = $request->discord_webhook_url;
         $project->save();
 
         return redirect()->route('projects.show', $project);
@@ -176,5 +178,21 @@ class ProjectController extends Controller
         if (! rescue(fn () => $gh_client->branches($user, $repo, $branch))) {
             $validator->errors()->add('branch', 'Whoops! Unknown branch.');
         }
+    }
+
+    public function testDiscordWebhook(Project $project)
+    {
+        try {
+            (new Discord($project->discord_webhook_url))
+                ->webhook('Webhook is working 😀🔥!');
+        } catch (\Throwable $th) {
+            return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'An error occurred while sending the message');
+        }
+
+        return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'A test message has been sent !');
     }
 }

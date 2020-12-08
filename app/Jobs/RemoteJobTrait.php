@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Http\Utils\Discord;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Ssh\Ssh as SSH;
@@ -27,6 +28,9 @@ trait RemoteJobTrait
 
     public function beforeHandle()
     {
+        $this->deployment->status = 'in_progress';
+        $this->deployment->save();
+
         rescue(function () {
             $gh_client = $this->deployment->project->user->github()->deployments();
             [$user, $repo] = explode('/', $this->deployment->project->repository);
@@ -38,12 +42,24 @@ trait RemoteJobTrait
             ])['id'];
         });
 
-        $this->deployment->status = 'in_progress';
-        $this->deployment->save();
+        if ($this->deployment->project->discord_webhook_url) {
+            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook('Deployment started 🔥🔥!', [
+                'title' => $this->deployment->project->name,
+                'url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                'fields' => [
+                    ['name' => 'Release', 'value' => $this->deployment->release, 'inline' => true],
+                    ['name' => 'Commit', 'value' => $this->deployment->commit['from_branch'] . '@' . substr($this->deployment->commit['sha'], 0, 7), 'inline' => true],
+                    ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
+                ],
+            ], 'info'));
+        }
     }
 
     public function afterHandle()
     {
+        $this->deployment->status = 'success';
+        $this->deployment->save();
+
         if ($this->xsp ?? null) {
             rescue(function () {
                 $gh_client = $this->deployment->project->user->github()->deployments();
@@ -56,12 +72,24 @@ trait RemoteJobTrait
             });
         }
 
-        $this->deployment->status = 'success';
-        $this->deployment->save();
+        if ($this->deployment->project->discord_webhook_url) {
+            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook('Application is now live 🚀🚀!', [
+                'title' => $this->deployment->project->name,
+                'url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                'fields' => [
+                    ['name' => 'Release', 'value' => $this->deployment->release, 'inline' => true],
+                    ['name' => 'Commit', 'value' => $this->deployment->commit['from_branch'] . '@' . substr($this->deployment->commit['sha'], 0, 7), 'inline' => true],
+                    ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
+                ],
+            ], 'success'));
+        }
     }
 
     public function afterHandleFailed()
     {
+        $this->deployment->status = 'error';
+        $this->deployment->save();
+
         if ($this->xsp ?? null) {
             rescue(function () {
                 $gh_client = $this->deployment->project->user->github()->deployments();
@@ -74,8 +102,17 @@ trait RemoteJobTrait
             });
         }
 
-        $this->deployment->status = 'error';
-        $this->deployment->save();
+        if ($this->deployment->project->discord_webhook_url) {
+            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook('Your project has failed to deploy 😭😭', [
+                'title' => $this->deployment->project->name,
+                'url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                'fields' => [
+                    ['name' => 'Release', 'value' => $this->deployment->release, 'inline' => true],
+                    ['name' => 'Commit', 'value' => $this->deployment->commit['from_branch'] . '@' . substr($this->deployment->commit['sha'], 0, 7), 'inline' => true],
+                    ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
+                ],
+        ], 'error'));
+        }
     }
 
     public function appendToOutput($buffer)
