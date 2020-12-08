@@ -12,16 +12,31 @@
             <table class="w-full mb-8 table-fixed">
                 <thead>
                     <tr class="border-b">
-                        <th class="w-8 px-2 py-2 text-sm text-center"></th>
                         <th class="px-2 py-2 text-sm text-left">Name</th>
-                        <th class="px-2 py-2 text-sm text-left">Repository URL</th>
+                        <th class="px-2 py-2 text-sm text-left">Repository</th>
+                        <th class="px-2 py-2 text-sm text-left">Branch</th>
+                        <th class="px-2 py-2 text-sm text-left">Added at</th>
+                        <th class="px-2 py-2 text-sm text-left">Last deployment</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="project in projects.data" v-bind:key="project.id" class="border-b cursor-pointer hover:bg-gray-100" @click="show(project.id)">
-                        <td class="px-2 py-2 text-center"></td>
                         <td class="px-2 py-2 truncate">{{ project.name }}</td>
-                        <td class="px-2 py-2 truncate">{{ project.repository_url }}</td>
+                        <td class="px-2 py-2 truncate">
+                            <img :src="'https://github.com/' + project.repository.split('/')[0] + '.png'" class="inline w-6 h-6 mr-1 rounded-full">
+
+                            {{ project.repository }}
+                        </td>
+                        <td class="px-2 py-2 font-mono truncate">{{ project.branch }}</td>
+                        <td class="px-2 py-2 truncate">{{ $moment(project.created_at).format('L') }} {{ $moment(project.created_at).format('LT') }}</td>
+                        <td class="px-2 py-2 truncate">
+                            <template v-if="project.latest_deployment">
+                                {{ $moment(project.latest_deployment.created_at).format('L') }} {{ $moment(project.latest_deployment.created_at).format('LTS') }}
+                            </template>
+                            <template v-else>
+                                N/A
+                            </template>
+                        </td>
                     </tr>
                 </tbody>
             </table>

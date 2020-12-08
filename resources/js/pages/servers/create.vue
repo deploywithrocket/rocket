@@ -13,7 +13,7 @@
 
                     <div class="flex flex-row items-center mb-4">
                         <form-input class="w-1/4" label="User" type="text" placeholder="rocket" name="ssh_user" v-model="form.ssh_user" :errors="$page.errors.ssh_user" />
-                        <div class="px-2">@</div>
+                        <div class="px-4"></div>
                         <form-input class="w-3/4" label="Host" type="text" placeholder="sc1.rocket.mgk.dev" name="ssh_host" v-model="form.ssh_host" :errors="$page.errors.ssh_host" />
                     </div>
 

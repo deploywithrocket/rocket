@@ -8,7 +8,13 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return inertia('home');
+        $github_account = auth()
+            ->user()
+            ->social_accounts()
+            ->where('provider', 'github')
+            ->first();
+
+        return inertia('home', compact('github_account'));
     }
 
     public function redirectToProvider()
@@ -27,9 +33,8 @@ class HomeController extends Controller
                 'provider' => 'github',
             ], [
                 'provider_user_id' => $socialite_user->getId(),
+                'provider_user_name' => $socialite_user->getNickname(),
                 'token' => $socialite_user->token,
-                'refresh_token' => $socialite_user->refreshToken,
-                'expires_in' => $socialite_user->expiresIn,
             ]);
 
             return redirect()

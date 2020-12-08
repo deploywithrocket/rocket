@@ -25,7 +25,7 @@ trait RemoteJobTrait
 
     public function beforeHandle()
     {
-        $this->deployment->status = 'running';
+        $this->deployment->status = 'in_progress';
         $this->deployment->save();
     }
 

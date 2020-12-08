@@ -10,6 +10,10 @@ class Deployment extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'commit' => 'json',
+    ];
+
     public function project()
     {
         return $this->belongsTo(Project::class);
@@ -40,25 +44,17 @@ class Deployment extends Model
         return sha1($this->server->ssh_host . $this->project->deploy_path);
     }
 
-    public function buildServerString()
-    {
-        $host = $this->server->ssh_user . '@' . $this->server->ssh_host;
-        $ssh_pem_file = storage_path('app/id_rsa');
-        $options = '-q -A -i ' . escapeshellarg($ssh_pem_file);
-
-        return $options . ' ' . $host;
-    }
-
     public function extractVariables()
     {
         return [
             'release' => $this->release,
-            'commit' => $this->commit,
+            'commit' => $this->commit->sha,
+
             'ssh_host' => $this->server->ssh_host,
             'ssh_user' => $this->server->ssh_user,
             'deploy_path' => $this->project->deploy_path,
+            'repository_url' => 'git@github.com:' . $this->project->repository . '.git',
 
-            'repository_url' => $this->project->repository_url,
             'linked_files' => $this->project->linked_files ?? [],
             'linked_dirs' => $this->project->linked_dirs ?? [],
             'copied_files' => $this->project->copied_files ?? [],
@@ -71,10 +67,7 @@ class Deployment extends Model
             'cmd_php' => $this->server->cmd_php ?? 'php',
             'cmd_composer' => $this->server->cmd_composer ?? 'composer',
             'cmd_composer_options' => $this->server->cmd_composer_options ?? '--no-dev',
-
-            // Variables computed internally
             'fingerprint' => $this->buildFingerprint(),
-            'server_string' => $this->buildServerString(),
 
             // Variables computed internally that defined paths
             'repo_path' => $this->getDeployPath('repo'),

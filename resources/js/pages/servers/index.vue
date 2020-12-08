@@ -67,7 +67,7 @@
 
         methods: {
             destroy(server) {
-                if (confirm("Do you really want to delete this server?")) {
+                if (confirm("Do you really want to remove this server?")) {
                     this.$inertia.delete(this.$route('servers.destroy', server))
                 }
             }

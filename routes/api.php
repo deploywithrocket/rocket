@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Server;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +16,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function () {
-    // Route::get('/servers/{server}/key', function (Server $server) {
-    //     return Storage::get('keys/' . $server->id . '.pub');
-    // });
 });
+
+Route::get('/servers/{server}/connect', function (Server $server) {
+    $key = Storage::get('keys/' . $server->id . '.pub');
+
+    echo '#!/bin/bash' . PHP_EOL
+        . "echo \"Adding $server->name key for user \$(whoami)\"" . PHP_EOL
+        . "echo \"$key\" >> ~/.ssh/authorized_keys" . PHP_EOL
+        . 'echo "Key added!"';
+
+    exit;
+})->name('api.servers.connect');

@@ -13,18 +13,18 @@
                 <div class="w-full p-8 bg-white rounded-lg shadow">
                     <form-input class="mb-4" label="Name" placeholder="My awesome project" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
 
-                    <form-input v-if="!repositories" class="mb-4" label="Repository URL" placeholder="git@github.com:mgkprod/rocket.git" type="text" name="repository_url" v-model="form.repository_url" :errors="$page.errors.repository_url" />
-                    <form-select v-if="repositories" class="mb-4" label="Repository" name="repository_url" required v-model="form.repository_url" :errors="$page.errors.repository_url" :options="repositories" />
-
-                    <form-input class="mb-4" label="Health check URL" placeholder="https://rocket.mgk.dev" type="text" name="health_url" v-model="form.health_url" :errors="$page.errors.health_url" />
-
-                    <div class="flex flex-row items-center">
-                        <form-select class="w-1/3 mb-4" label="Server" name="server_id" required v-model="form.server_id" :errors="$page.errors.server_id" :options="servers" />
-                        <div class="px-1"></div>
-                        <form-input class="w-2/3 mb-4" label="Deploy path" type="text" placeholder="/home/websites/rocket" name="deploy_path" v-model="form.deploy_path" :errors="$page.errors.deploy_path" />
+                    <div class="flex flex-row items-center mb-4">
+                        <form-input class="w-1/2" label="Repository" placeholder="mgkprod/rocket" type="text" name="repository" v-model="form.repository" :errors="$page.errors.repository" />
+                        <div class="px-4"></div>
+                        <form-input class="w-1/2" label="Branch" placeholder="main" type="text" name="branch" v-model="form.branch" :errors="$page.errors.branch" />
                     </div>
 
-                    <form-textarea class="mb-4 font-mono" label="Environment file" placeholder='APP_NAME="My awesome project"' name="env" v-model="form.env" :errors="$page.errors.env" rows="30" />
+                    <form-select class="mb-4" label="Server" name="server_id" required v-model="form.server_id" :errors="$page.errors.server_id" :options="servers" />
+                    <form-input class="mb-4" label="Deploy path" type="text" placeholder="/home/websites/rocket" name="deploy_path" v-model="form.deploy_path" :errors="$page.errors.deploy_path" />
+
+                    <form-input class="mb-4" label="Live URL" type="text" placeholder="https://rocket.mgk.dev" name="live_url" v-model="form.live_url" :errors="$page.errors.live_url" />
+
+                    <form-textarea class="mb-4" label="Environment file" placeholder='APP_NAME="My awesome project"' name="env" v-model="form.env" :errors="$page.errors.env" rows="20" mono />
 
                     <div class="flex justify-end mt-8">
                         <button class="px-4 py-2 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none">Edit</button>
@@ -42,7 +42,6 @@
         props: {
             project: Object,
             servers: Object,
-            repositories: Object,
         },
 
         data() {
@@ -50,7 +49,7 @@
                 form: {
                     name: '',
                     repository_url: '',
-                    health_url: '',
+                    live_url: '',
                     server_id: 0,
                     deploy_path: '',
                     env: '',

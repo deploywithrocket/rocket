@@ -17,12 +17,9 @@ class CreateDeploymentsTable extends Migration
             $table->char('id', 26)->primary();
             $table->char('project_id', 26)->nullable();
             $table->char('server_id', 26)->nullable();
-
             $table->string('status')->default('pending');
-
-            $table->string('type')->default('deploy');
             $table->string('release');
-            $table->string('commit');
+            $table->json('commit');
 
             $table->longText('raw_output')->nullable();
 

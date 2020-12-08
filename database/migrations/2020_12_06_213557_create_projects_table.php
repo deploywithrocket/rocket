@@ -22,9 +22,9 @@ class CreateProjectsTable extends Migration
             $table->string('branch');
             $table->string('deploy_path');
 
-            $table->string('health_url')->nullable();
+            $table->string('live_url')->nullable();
 
-            $table->longText('env');
+            $table->longText('env')->nullable();
             $table->longText('cron_jobs')->nullable();
 
             $table->integer('keep_releases')->default(5);

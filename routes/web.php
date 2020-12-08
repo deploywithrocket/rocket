@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::redirect('/', '/home')->name('index');
+
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::redirect('/', '/home')->name('index');
-Route::inertia('home', 'home')->name('home')->middleware('auth');
-
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('/auth/github', [HomeController::class, 'redirectToProvider'])->name('auth.github');

@@ -34,6 +34,8 @@ class EnvoyDeployJob implements ShouldQueue
             $process = $this->ssh->execute([
                 $this->scripts['preflight'],
                 $this->scripts['assert:commit'],
+                $this->scripts['setup:repository'],
+                $this->scripts['setup:directories'],
                 $this->scripts['deploy:starting'],
                 $this->scripts['deploy:check'],
                 $this->scripts['deploy:backup'],

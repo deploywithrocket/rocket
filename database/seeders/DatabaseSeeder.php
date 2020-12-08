@@ -46,9 +46,9 @@ class DatabaseSeeder extends Seeder
         $server->projects()->firstOrCreate([
             'name' => 'mgkprod/rocket',
             'repository' => 'mgkprod/rocket',
+            'branch' => 'main',
             'deploy_path' => '/home/mgkprod/rocket.mgk.dev',
-            'health_url' => 'https://rocket.mgk.dev',
-            'env' => '',
+            'live_url' => 'https://rocket.mgk.dev',
             'linked_dirs' => ['storage/app', 'storage/framework', 'storage/logs'],
             'copied_dirs' => ['node_modules', 'vendor'],
         ]);
