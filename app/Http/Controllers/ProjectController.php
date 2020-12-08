@@ -55,6 +55,7 @@ class ProjectController extends Controller
         $project->user_id = auth()->id();
         $project->name = $request->name;
         $project->repository = $request->repository;
+        $project->live_url = $request->live_url;
         $project->branch = $request->branch;
         $project->server_id = $request->server_id;
         $project->environment = $request->environment;
