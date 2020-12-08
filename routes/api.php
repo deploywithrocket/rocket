@@ -1,6 +1,7 @@
 <?php
 
 use App\Jobs\EnvoyDeployJob;
+use App\Models\Project;
 use App\Models\Server;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,9 @@ Route::get('/servers/{server}/connect', function (Server $server) {
 })->name('api.servers.connect');
 
 Route::post('/projects/{project}/deploy', function (Request $request, Project $project) {
-    abort_if(! $project->push_to_deploy, 500, ['error' => 'PTD is not enabled on this project.']);
+    if (! $project->push_to_deploy) {
+        return response()->json(['error' => 'PTD is not enabled on this project.']);
+    }
 
     if ($request->header('x-github-event') == 'push') {
         // Something have been pushed!
@@ -67,6 +70,10 @@ Route::post('/projects/{project}/deploy', function (Request $request, Project $p
                 ]);
 
                 dispatch(new EnvoyDeployJob($deployment));
+
+                return response()->json([
+                    'message' => 'Deploying release ' . $deployment->release,
+                ], 200);
             }
         }
 
@@ -76,12 +83,7 @@ Route::post('/projects/{project}/deploy', function (Request $request, Project $p
         }
     }
 
-    if ($request->header('x-github-event') == 'release') {
-        // A relase has been $request->action (prereleased, released, deleted, ...)
-        if ($request->action == 'released') {
-            // TODO
-        }
-    }
-
-    return response()->json([], 200);
+    return response()->json([
+        'message' => 'Nothing to do!',
+    ], 200);
 })->name('api.projects.deploy');
