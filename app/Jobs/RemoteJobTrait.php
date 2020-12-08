@@ -159,7 +159,7 @@ trait RemoteJobTrait
             fi
         ";
 
-        $this->scripts['assert:commit'] = 'true';
+        $this->scripts['assert:commit'] = '';
 
         if (! $commit) {
             $this->scripts['assert:commit'] = '
@@ -171,7 +171,7 @@ trait RemoteJobTrait
             ";
         }
 
-        $this->scripts['deploy:starting'] = 'true';
+        $this->scripts['deploy:starting'] = '';
 
         $this->scripts['deploy:check'] = "
             if [ ! -d \"$repository_path\" ]; then
@@ -202,14 +202,14 @@ trait RemoteJobTrait
             echo \"All checks passed!\"
         ";
 
-        $this->scripts['deploy:backup'] = 'true';
-        $this->scripts['deploy:started'] = 'true';
+        $this->scripts['deploy:backup'] = '';
+        $this->scripts['deploy:started'] = '';
 
         if ($this->deployment->project->hooks['started'] ?? null) {
             $this->scripts['deploy:started'] .= $this->parseScript($this->deployment->project->hooks['started']);
         }
 
-        $this->scripts['deploy:provisioning'] = 'true';
+        $this->scripts['deploy:provisioning'] = '';
 
         $this->scripts['deploy:fetch'] = "
             export GIT_SSH_COMMAND=\"ssh -q -o PasswordAuthentication=no -o VerifyHostKeyDNS=yes\"
@@ -226,7 +226,7 @@ trait RemoteJobTrait
             $cmd_git --git-dir \"$repository_path\" --work-tree \"$release_path\" rev-parse HEAD > \"$release_path/REVISION\"
         ";
 
-        $this->scripts['deploy:link'] = 'true';
+        $this->scripts['deploy:link'] = '';
 
         foreach ($linked_dirs as $dir) {
             $this->scripts['deploy:link'] .= "
@@ -276,7 +276,7 @@ trait RemoteJobTrait
             ";
         }
 
-        $this->scripts['deploy:copy'] = 'true';
+        $this->scripts['deploy:copy'] = '';
 
         foreach ($copied_dirs as $dir) {
             $this->scripts['deploy:copy'] .= "
@@ -302,7 +302,7 @@ trait RemoteJobTrait
             ";
         }
 
-        $this->scripts['deploy:dotenv'] = 'true';
+        $this->scripts['deploy:dotenv'] = '';
 
         if ($env_contents = $this->deployment->project->env) {
             $delimiter = 'EOF-ROCKET-ENV';
@@ -313,7 +313,7 @@ trait RemoteJobTrait
                 cat >$release_path/.env <<$delimiter" . PHP_EOL . $env_contents . PHP_EOL . $delimiter;
         }
 
-        $this->scripts['deploy:composer'] = 'true';
+        $this->scripts['deploy:composer'] = '';
 
         foreach (array_unique([$release_path, $assets_path]) as $path) {
             $this->scripts['deploy:composer'] .= "
@@ -337,13 +337,13 @@ trait RemoteJobTrait
             fi
         ";
 
-        $this->scripts['deploy:provisioned'] = 'true';
+        $this->scripts['deploy:provisioned'] = '';
 
         if ($this->deployment->project->hooks['provisioned'] ?? null) {
             $this->scripts['deploy:provisioned'] .= $this->parseScript($this->deployment->project->hooks['provisioned']);
         }
 
-        $this->scripts['deploy:building'] = 'true';
+        $this->scripts['deploy:building'] = '';
 
         $this->scripts['deploy:build'] = "
             cd \"$assets_path\"
@@ -357,13 +357,13 @@ trait RemoteJobTrait
             fi
         ";
 
-        $this->scripts['deploy:built'] = 'true';
+        $this->scripts['deploy:built'] = '';
 
         if ($this->deployment->project->hooks['built'] ?? null) {
             $this->scripts['deploy:built'] .= $this->parseScript($this->deployment->project->hooks['built']);
         }
 
-        $this->scripts['deploy:publishing'] = 'true';
+        $this->scripts['deploy:publishing'] = '';
 
         $this->scripts['deploy:symlink'] = "
             echo \"Linking directory $release_path to $current_path\"
@@ -371,9 +371,9 @@ trait RemoteJobTrait
             ln -srfn \"$release_path\" \"$current_path\"
         ";
 
-        $this->scripts['deploy:publish'] = 'true';
+        $this->scripts['deploy:publish'] = '';
 
-        $this->scripts['deploy:cronjobs'] = 'true';
+        $this->scripts['deploy:cronjobs'] = '';
 
         if (is_array($cron_jobs) && count($cron_jobs) > 0) {
             $this->scripts['deploy:cronjobs'] .= "
@@ -405,13 +405,13 @@ trait RemoteJobTrait
             ";
         }
 
-        $this->scripts['deploy:published'] = 'true';
+        $this->scripts['deploy:published'] = '';
 
         if ($this->deployment->project->hooks['published'] ?? null) {
             $this->scripts['deploy:published'] .= $this->parseScript($this->deployment->project->hooks['published']);
         }
 
-        $this->scripts['deploy:finishing'] = 'true';
+        $this->scripts['deploy:finishing'] = '';
 
         $this->scripts['deploy:cleanup'] = "
             cd \"$releases_path\"
@@ -422,7 +422,7 @@ trait RemoteJobTrait
             done
         ";
 
-        $this->scripts['deploy:finished'] = 'true';
+        $this->scripts['deploy:finished'] = '';
 
         if ($this->deployment->project->hooks['finished'] ?? null) {
             $this->scripts['deploy:finished'] .= $this->parseScript($this->deployment->project->hooks['finished']);
@@ -437,6 +437,6 @@ trait RemoteJobTrait
             ->replace('[[release]]', "\"$release_path\"")
             ->replace('[[sha]]', $commit)
             ->prepend('echo "========= START OF HOOK ========="' . PHP_EOL)
-            ->append('echo "========= END OF HOOK  ========="' . PHP_EOL);
+            ->append(PHP_EOL . 'echo "========= END OF HOOK  ========="');
     }
 }
