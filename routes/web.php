@@ -54,6 +54,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
         Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
         Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
+        Route::get('/{project}/edit/env-file', [ProjectController::class, 'editEnvFile'])->name('edit.env-file');
+        Route::put('/{project}/env-file', [ProjectController::class, 'updateEnvFile'])->name('update.env-file');
+        Route::get('/{project}/edit/hooks', [ProjectController::class, 'editHooks'])->name('edit.hooks');
+        Route::put('/{project}/hooks', [ProjectController::class, 'updateHooks'])->name('update.hooks');
         Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
         Route::get('/{project}/deploy', [ProjectController::class, 'deploy'])->name('deploy');
         Route::get('/{project}/webhook/discord/test', [ProjectController::class, 'testDiscordWebhook'])->name('test-discord-webhook');
