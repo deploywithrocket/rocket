@@ -3,7 +3,7 @@
         <h1 class="my-8 text-2xl font-bold">
             <inertia-link :href="$route('projects.index')" class="hover:underline">Projects</inertia-link>
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
-            {{ project.name }}
+            <inertia-link :href="$route('projects.show', project)" class="hover:underline">{{ project.name }}</inertia-link>
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
             Edit
         </h1>

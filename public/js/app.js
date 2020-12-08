@@ -2520,6 +2520,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   layout: __webpack_require__(/*! ../../../layouts/app */ "./resources/js/layouts/app.vue")["default"],
   props: {
@@ -49760,6 +49762,8 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("i", { staticClass: "text-sm text-gray-500 fas fa-chevron-right" }),
+        _vm._v("\n        Deployments\n        "),
+        _c("i", { staticClass: "text-sm text-gray-500 fas fa-chevron-right" }),
         _vm._v("\n        " + _vm._s(_vm.deployment.release) + "\n    ")
       ],
       1
@@ -49927,7 +49931,16 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("i", { staticClass: "text-sm text-gray-500 fas fa-chevron-right" }),
-        _vm._v("\n        " + _vm._s(_vm.project.name) + "\n        "),
+        _vm._v(" "),
+        _c(
+          "inertia-link",
+          {
+            staticClass: "hover:underline",
+            attrs: { href: _vm.$route("projects.show", _vm.project) }
+          },
+          [_vm._v(_vm._s(_vm.project.name))]
+        ),
+        _vm._v(" "),
         _c("i", { staticClass: "text-sm text-gray-500 fas fa-chevron-right" }),
         _vm._v("\n        Edit\n    ")
       ],

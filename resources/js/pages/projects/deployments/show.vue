@@ -5,6 +5,8 @@
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
             <inertia-link :href="$route('projects.show', project)" class="hover:underline">{{ project.name }}</inertia-link>
             <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
+            Deployments
+            <i class="text-sm text-gray-500 fas fa-chevron-right"></i>
             {{ deployment.release }}
         </h1>
 
