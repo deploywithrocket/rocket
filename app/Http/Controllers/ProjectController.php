@@ -214,7 +214,7 @@ class ProjectController extends Controller
         $wh_url = route('api.projects.deploy', $project);
         rescue(fn () => $gh_client->create($user, $repo, [
             'name' => 'web',
-            'events' => ['push', 'release'],
+            'events' => ['push'],
             'config' => ['url' => $wh_url, 'content_type' => 'json'],
         ]));
 
