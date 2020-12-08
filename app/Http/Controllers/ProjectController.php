@@ -62,6 +62,8 @@ class ProjectController extends Controller
         $project->environment = $request->environment;
         $project->deploy_path = $request->deploy_path;
 
+        // Laravel preset
+        $project->linked_dirs = ['storage/app', 'storage/framework', 'storage/logs'];
         $project->hooks = [
             'built' => ''
                 . 'cd [[release]]' . PHP_EOL
