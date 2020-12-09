@@ -68,6 +68,7 @@ class ProjectController extends Controller
         $project->deploy_path = $request->deploy_path;
 
         // Laravel preset
+        $project->cron_jobs = '* * * * * ' . ($server->cmd_php ?? 'php') . ' ' . $project->deploy_path . '/current/artisan schedule:run >> ' . $project->deploy_path . '/shared/storage/logs/scheduler.log';
         $project->linked_dirs = ['storage/app', 'storage/framework', 'storage/logs'];
         $project->hooks = [
             'built' => ''
