@@ -48,7 +48,7 @@
         },
 
         mounted() {
-            this.form = { ...this.project }
+            this.form.env = this.project.env || ''
         },
 
         methods: {
