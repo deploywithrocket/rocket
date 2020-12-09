@@ -44,7 +44,7 @@
                             <span class="font-mono font-bold">started</span>
                             <p>Right before we start deploying</p>
                         </div>
-                        <MonacoEditor class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" language="shell" theme="vs-dark" v-model="form.started" :options="{ minimap: {enabled: false}}"/>
+                        <codemirror class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" v-model="form.started" :options="options"></codemirror>
                     </div>
 
                     <div class="flex flex-row items-center mb-4">
@@ -52,7 +52,7 @@
                             <span class="font-mono font-bold">provisioned</span>
                             <p>After cloning and installing vendors dependencies</p>
                         </div>
-                        <MonacoEditor class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" language="shell" theme="vs-dark" v-model="form.provisioned" :options="{ minimap: {enabled: false}}"/>
+                        <codemirror class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" v-model="form.provisioned" :options="options"></codemirror>
                     </div>
 
                     <div class="flex flex-row items-center mb-4">
@@ -60,7 +60,7 @@
                             <span class="font-mono font-bold">built</span>
                             <p>Once the production assets have been built</p>
                         </div>
-                        <MonacoEditor class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" language="shell" theme="vs-dark" v-model="form.built" :options="{ minimap: {enabled: false}}"/>
+                        <codemirror class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" v-model="form.built" :options="options"></codemirror>
                     </div>
 
                     <div class="flex flex-row items-center mb-4">
@@ -68,7 +68,7 @@
                             <span class="font-mono font-bold">published</span>
                             <p>Deployment is done and website is live</p>
                         </div>
-                        <MonacoEditor class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" language="shell" theme="vs-dark" v-model="form.published" :options="{ minimap: {enabled: false}}"/>
+                        <codemirror class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" v-model="form.published" :options="options"></codemirror>
                     </div>
 
                     <div class="flex flex-row items-center mb-4">
@@ -76,7 +76,7 @@
                             <span class="font-mono font-bold">finished</span>
                             <p>When the plan is complete</p>
                         </div>
-                        <MonacoEditor class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" language="shell" theme="vs-dark" v-model="form.finished" :options="{ minimap: {enabled: false}}"/>
+                        <codemirror class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" v-model="form.finished" :options="options"></codemirror>
                     </div>
 
                     <div class="flex justify-end mt-8">
@@ -88,14 +88,23 @@
     </div>
 </template>
 
+<style lang="scss">
+    .CodeMirror {
+        height: 100% !important;
+    }
+</style>
+
 <script>
-    import MonacoEditor from 'vue-monaco'
+    import { codemirror } from 'vue-codemirror-lite'
+    require('codemirror/mode/shell/shell')
+    require('codemirror/theme/neo.css')
+    require('codemirror/keymap/sublime')
 
     export default {
         layout: require('../../../layouts/app').default,
 
         components: {
-            MonacoEditor
+            codemirror
         },
 
         props: {
@@ -104,6 +113,14 @@
 
         data() {
             return {
+                options: {
+                    tabSize: 4,
+                    lineNumbers: true,
+                    lineWrapping: true,
+                    viewportMargin: Infinity,
+                    theme: 'neo',
+                    keyMap: 'sublime',
+                },
                 form: {
                     started: '',
                     provisioned: '',
