@@ -14,14 +14,14 @@
             <table class="w-full table-fixed">
                 <tbody>
                     <tr class="border-b">
-                        <td class="w-1/4 px-2 py-2">Requested at</td>
-                        <td class="px-2 py-2">
+                        <td class="w-1/4 px-2 text-sm font-bold">Requested at</td>
+                        <td class="p-3">
                             {{ $moment(deployment.created_at).format('L') }} {{ $moment(deployment.created_at).format('LTS') }}
                         </td>
                     </tr>
                     <tr class="border-b">
-                        <td class="px-2 py-2">Started at</td>
-                        <td class="px-2 py-2">
+                        <td class="px-2 text-sm font-bold">Started at</td>
+                        <td class="p-3">
                             <template v-if="deployment.started_at">
                                 {{ $moment(deployment.started_at).format('L') }} {{ $moment(deployment.started_at).format('LTS') }}
                             </template>
@@ -31,8 +31,8 @@
                         </td>
                     </tr>
                     <tr class="border-b">
-                        <td class="px-2 py-2">Ended at</td>
-                        <td class="px-2 py-2">
+                        <td class="px-2 text-sm font-bold">Ended at</td>
+                        <td class="p-3">
                             <template v-if="deployment.ended_at">
                                 {{ $moment(deployment.ended_at).format('L') }} {{ $moment(deployment.ended_at).format('LTS') }}
                             </template>
@@ -42,20 +42,20 @@
                         </td>
                     </tr>
                     <tr class="border-b">
-                        <td class="px-2 py-2">Duration</td>
-                        <td class="px-2 py-2">{{ deployment.duration }}</td>
+                        <td class="px-2 text-sm font-bold">Duration</td>
+                        <td class="p-3">{{ deployment.duration }}</td>
                     </tr>
                     <tr class="border-b">
-                        <td class="px-2 py-2">Status</td>
-                        <td class="px-2 py-2">{{ deployment.status }}</td>
+                        <td class="px-2 text-sm font-bold">Status</td>
+                        <td class="p-3">{{ deployment.status }}</td>
                     </tr>
                     <tr class="border-b">
-                        <td class="px-2 py-2">Release</td>
-                        <td class="px-2 my-2">{{ deployment.release }}</td>
+                        <td class="px-2 text-sm font-bold">Release</td>
+                        <td class="p-3">{{ deployment.release }}</td>
                     </tr>
                     <tr class="border-b">
-                        <td class="px-2 py-2">Committer</td>
-                        <td class="px-2 my-2">
+                        <td class="px-2 text-sm font-bold">Committer</td>
+                        <td class="p-3">
                             <template v-if="deployment.commit.committer">
                                 <img :src="deployment.commit.committer.avatar_url" class="inline w-6 h-6 mr-1 rounded-full">
                                 <a :href="'https://github.com/' + deployment.commit.committer.login" class="hover:underline" target="_blank">
@@ -67,9 +67,9 @@
                             </template>
                         </td>
                     </tr>
-                    <tr class="border-b">
-                        <td class="px-2 py-2">Commit</td>
-                        <td class="px-2 my-2">
+                    <tr>
+                        <td class="px-2 text-sm font-bold">Commit</td>
+                        <td class="p-3">
                             <a :href="'https://github.com/' + deployment.commit.from_repository + '/tree/' + deployment.commit.from_branch" class="hover:underline" target="_blank">{{ deployment.commit.from_branch }}</a>@<a :href="'https://github.com/' + deployment.commit.from_repository + '/commit/' + deployment.commit.sha" class="hover:underline" target="_blank">{{ deployment.commit.sha.substring(0, 7) }}</a>
                         </td>
                     </tr>

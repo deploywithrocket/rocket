@@ -14,12 +14,12 @@
                     <table class="w-full table-fixed">
                         <tbody>
                             <tr class="border-b">
-                                <td class="w-1/3 px-2 py-2">Name</td>
-                                <td class="px-2 py-2 truncate">{{ project.name }}</td>
+                                <td class="w-1/3 text-sm font-bold">Name</td>
+                                <td class="p-2 truncate">{{ project.name }}</td>
                             </tr>
                             <tr class="border-b">
-                                <td class="px-2 py-2">Live URL</td>
-                                <td class="px-2 py-2">
+                                <td class="text-sm font-bold">Live URL</td>
+                                <td class="p-2">
                                     <div class="flex flex-row items-center w-full">
                                         <img :src="project.favicon_url" class="inline w-6 h-6 mr-2" v-if="project.live_url">
                                         <div class="truncate">
@@ -29,24 +29,24 @@
                                 </td>
                             </tr>
                             <tr class="border-b">
-                                <td class="px-2 py-2">Deploy path</td>
-                                <td class="px-2 py-2 truncate">{{ project.deploy_path }}</td>
+                                <td class="text-sm font-bold">Deploy path</td>
+                                <td class="p-2 truncate">{{ project.deploy_path }}</td>
                             </tr>
                             <tr class="border-b">
-                                <td class="px-2 py-2">Environment</td>
-                                <td class="px-2 py-2 truncate">{{ project.environment }}</td>
+                                <td class="text-sm font-bold">Environment</td>
+                                <td class="p-2 truncate">{{ project.environment }}</td>
                             </tr>
                             <tr class="border-b">
-                                <td class="px-2 py-2">Server</td>
-                                <td class="px-2 py-2">{{ project.server.name }}</td>
+                                <td class="text-sm font-bold">Server</td>
+                                <td class="p-2">{{ project.server.name }}</td>
                             </tr>
                             <tr class="border-b">
-                                <td class="px-2 py-2">Added at</td>
-                                <td class="px-2 py-2">{{ $moment(project.created_at).format('L') }} {{ $moment(project.created_at).format('LT') }}</td>
+                                <td class="text-sm font-bold">Added at</td>
+                                <td class="p-2">{{ $moment(project.created_at).format('L') }} {{ $moment(project.created_at).format('LT') }}</td>
                             </tr>
                             <tr class="border-b">
-                                <td class="px-2 py-2">Notifies on</td>
-                                <td class="px-2 py-2">
+                                <td class="text-sm font-bold">Notifies on</td>
+                                <td class="p-2">
                                     <template v-if="project.discord_webhook_url">
                                         <inertia-link :href="$route('projects.test-discord-webhook', project)" class="hover:underline"><i class="fab fa-discord"></i></inertia-link>
                                     </template>
@@ -63,8 +63,8 @@
                     <table class="w-full table-fixed">
                         <tbody>
                             <tr class="border-b">
-                                <td class="w-1/3 px-2 py-2">Repository</td>
-                                <td class="px-2 py-2 truncate">
+                                <td class="w-1/3 text-sm font-bold">Repository</td>
+                                <td class="p-2 truncate">
                                     <div class="flex flex-row items-center w-full">
                                         <img :src="'https://github.com/' + project.repository.split('/')[0] + '.png'" class="inline w-6 h-6 mr-2 rounded-full">
                                         <div class="truncate">
@@ -74,8 +74,8 @@
                                 </td>
                             </tr>
                             <tr class="border-b">
-                                <td class="px-2 py-2">Deploy branch</td>
-                                <td class="px-2 py-2 font-mono">{{ project.branch }}</td>
+                                <td class="text-sm font-bold">Deploy branch</td>
+                                <td class="p-2 font-mono">{{ project.branch }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -94,8 +94,8 @@
                     <table class="w-full table-fixed">
                         <tbody>
                             <tr class="border-b">
-                                <td class="w-1/3 px-2 py-2">Last deployment</td>
-                                <td class="px-2 py-2 truncate">
+                                <td class="w-1/3 text-sm font-bold">Last deployment</td>
+                                <td class="p-2 truncate">
                                     <template v-if="deployments && deployments[0]">
                                         {{ $moment(deployments[0].created_at).format('L') }} {{ $moment(deployments[0].created_at).format('LTS') }}
                                     </template>
@@ -105,8 +105,8 @@
                                 </td>
                             </tr>
                              <tr class="border-b">
-                                <td class="w-1/3 px-2 py-2">Last deployment duration</td>
-                                <td class="px-2 py-2 truncate">
+                                <td class="w-1/3 text-sm font-bold">Last deployment duration</td>
+                                <td class="p-2 truncate">
                                     <template v-if="deployments && deployments[0]">
                                         {{ deployments[0].duration }}
                                     </template>
@@ -116,12 +116,12 @@
                                 </td>
                             </tr>
                             <tr class="border-b">
-                                <td class="px-2 py-2">Today's</td>
-                                <td class="px-2 py-2 truncate">{{ deployments_stats.today }}</td>
+                                <td class="text-sm font-bold">Today's</td>
+                                <td class="p-2 truncate">{{ deployments_stats.today }}</td>
                             </tr>
                             <tr class="border-b">
-                                <td class="px-2 py-2">This week</td>
-                                <td class="px-2 py-2 truncate">{{ deployments_stats.this_week }}</td>
+                                <td class="text-sm font-bold">This week</td>
+                                <td class="p-2 truncate">{{ deployments_stats.this_week }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -137,16 +137,16 @@
             <table class="w-full mb-8 table-fixed">
                 <thead>
                     <tr class="border-b">
-                        <th class="w-64 px-2 py-2 text-sm text-left">Started at</th>
-                        <th class="w-32 px-2 py-2 text-sm text-left">Status</th>
-                        <th class="w-48 px-2 py-2 text-sm text-left">Release</th>
-                        <th class="px-2 py-2 text-sm text-left">Committer</th>
-                        <th class="px-2 py-2 text-sm text-left">Commit</th>
+                        <th class="w-64 text-sm font-bold text-left">Started at</th>
+                        <th class="w-32 p-2 text-sm text-left">Status</th>
+                        <th class="w-48 p-2 text-sm text-left">Release</th>
+                        <th class="p-2 text-sm text-left">Committer</th>
+                        <th class="p-2 text-sm text-left">Commit</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="deployment in deployments" v-bind:key="deployment.id" class="border-b cursor-pointer hover:bg-gray-100" @click="show(project.id, deployment.id)">
-                        <td class="px-2 py-2">
+                        <td class="p-2">
                             <template v-if="deployment.started_at">
                                 {{ $moment(deployment.started_at).format('L') }} {{ $moment(deployment.started_at).format('LTS') }}
                             </template>
@@ -154,9 +154,9 @@
                                 N/A
                             </template>
                         </td>
-                        <td class="px-2 py-2">{{ deployment.status }}</td>
-                        <td class="px-2 py-2">{{ deployment.release }}</td>
-                        <td class="px-2 py-2 truncate">
+                        <td class="p-2">{{ deployment.status }}</td>
+                        <td class="p-2">{{ deployment.release }}</td>
+                        <td class="p-2 truncate">
                             <template v-if="deployment.commit.committer">
                                 <img :src="deployment.commit.committer.avatar_url" class="inline w-6 h-6 mr-1 rounded-full">
                                 <a :href="'https://github.com/' + deployment.commit.committer.login" class="hover:underline" target="_blank">
@@ -167,7 +167,7 @@
                                 {{ deployment.commit.commit.committer.name }}
                             </template>
                         </td>
-                        <td class="px-2 py-2 font-mono truncate">
+                        <td class="p-2 font-mono truncate">
                             <a :href="'https://github.com/' + deployment.commit.from_repository + '/tree/' + deployment.commit.from_branch" class="hover:underline" target="_blank">{{ deployment.commit.from_branch }}</a>@<a :href="'https://github.com/' + deployment.commit.from_repository + '/commit/' + deployment.commit.sha" class="hover:underline" target="_blank">{{ deployment.commit.sha.substring(0, 7) }}</a>
                         </td>
                     </tr>

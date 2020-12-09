@@ -23,14 +23,14 @@
                             <table class="w-full table-auto">
                                 <tbody>
                                     <tr class="border-b">
-                                        <td class="px-2 py-2 font-mono">[[release]]</td>
-                                        <td class="px-2 py-2">
+                                        <td class="font-mono text-sm font-bold">[[release]]</td>
+                                        <td class="p-2">
                                             Resolves to the current release path, within releases
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="px-2 py-2 font-mono">[[sha]]</td>
-                                        <td class="px-2 py-2">
+                                        <td class="font-mono text-sm font-bold">[[sha]]</td>
+                                        <td class="p-2">
                                             Resolves to the commit hash that is being deployed
                                         </td>
                                     </tr>
