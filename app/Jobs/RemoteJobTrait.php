@@ -44,7 +44,7 @@ trait RemoteJobTrait
             ])['id'];
 
             $gh_client->updateStatus($user, $repo, $this->xsp, [
-                'state' => 'in_progress',
+                'state' => 'pending',
                 'log_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
                 'environment_url' => $this->deployment->project->live_url,
             ]);
@@ -78,7 +78,8 @@ trait RemoteJobTrait
 
                 $gh_client->updateStatus($user, $repo, $this->xsp, [
                     'state' => 'success',
-                    'target_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                    'log_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                    'environment_url' => $this->deployment->project->live_url,
                 ]);
             });
         }
@@ -112,7 +113,8 @@ trait RemoteJobTrait
 
                 $gh_client->updateStatus($user, $repo, $this->xsp, [
                     'state' => 'error',
-                    'target_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                    'log_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                    'environment_url' => $this->deployment->project->live_url,
                 ]);
             });
         }
