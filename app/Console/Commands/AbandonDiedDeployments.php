@@ -16,6 +16,6 @@ class AbandonDiedDeployments extends Command
         Deployment::query()
             ->where('status', 'in_progress')
             ->where('started_at', '<', now()->subMinutes($this->timeout))
-            ->update(['status' => 'abandonned']);
+            ->update(['status' => 'abandoned']);
     }
 }
