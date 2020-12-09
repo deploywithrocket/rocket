@@ -56,11 +56,11 @@ Route::post('/projects/{project}/deploy', function (Request $request, Project $p
                 }
 
                 $commit = [
-                    'sha' => $gh_branch['sha'],
-                    'message' => $gh_branch['commit']['message'],
+                    'sha' => $gh_branch['commit']['sha'],
+                    'message' => $gh_branch['commit']['commit']['message'],
                     'committer' => [
-                        'login' => $gh_branch['committer']['login'],
-                        'avatar_url' => $gh_branch['committer']['avatar_url'],
+                        'login' => $gh_branch['commit']['committer']['login'],
+                        'avatar_url' => $gh_branch['commit']['committer']['avatar_url'],
                     ],
                     'repo' => $project->repository,
                     'from_ref' => 'heads/' . $gh_branch['name'],
