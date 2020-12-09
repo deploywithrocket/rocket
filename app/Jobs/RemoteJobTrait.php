@@ -40,11 +40,13 @@ trait RemoteJobTrait
             $this->xsp = $gh_client->create($user, $repo, [
                 'ref' => $this->deployment->commit['from_ref'] ? 'refs/' . $this->deployment->commit['from_ref'] : $this->deployment->commit['sha'],
                 'environment' => $this->deployment->project->environment,
+                'auto_merge' => false,
             ])['id'];
 
             $gh_client->updateStatus($user, $repo, $this->xsp, [
                 'state' => 'in_progress',
-                'target_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                'log_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                'environment_url' => $this->deployment->project->live_url,
             ]);
         });
 
