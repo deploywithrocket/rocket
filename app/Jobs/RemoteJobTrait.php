@@ -142,11 +142,6 @@ trait RemoteJobTrait
         $this->scripts['setup:repository'] = "
             export GIT_SSH_COMMAND=\"ssh -q -o PasswordAuthentication=no -o VerifyHostKeyDNS=yes\"
 
-            if [ -d \"$repo_path\" ]; then
-                echo \"Deleting directory $repo_path\" 1>&2
-                rm -rf \"$repo_path\"
-            fi
-
             if [ ! -d \"$repository_path\" ]; then
                $cmd_git clone --bare \"$repository_url\" \"$repository_path\"
                $cmd_git --git-dir \"$repository_path\" config advice.detachedHead false
@@ -160,10 +155,6 @@ trait RemoteJobTrait
 
             if [ ! -d \"$shared_path\" ]; then
                 mkdir -v \"$shared_path\"
-            fi
-
-            if [ ! -d \"$backups_path\" ]; then
-                mkdir -v \"$backups_path\"
             fi
         ";
 
@@ -201,11 +192,6 @@ trait RemoteJobTrait
 
             if [ ! -d \"$shared_path\" ]; then
                 echo \"Shared path not found.\" 1>&2
-                exit 1
-            fi
-
-            if [ ! -d \"$backups_path\" ]; then
-                echo \"Backups path not found.\" 1>&2
                 exit 1
             fi
 
