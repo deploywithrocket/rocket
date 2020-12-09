@@ -37,7 +37,7 @@
                                 </tbody>
                             </table>
                         </div>
-                   </div>
+                    </div>
 
                     <div class="flex flex-row items-center mb-4">
                         <div class="w-1/3">

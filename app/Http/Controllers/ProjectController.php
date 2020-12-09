@@ -45,6 +45,11 @@ class ProjectController extends Controller
         $validator->validate();
         $this->validateRepo($request->repository, $request->branch, $validator);
 
+        $server = Server::find($request->server_id);
+        if (! $server) {
+            $validator->errors()->add('server_id', 'Server not found.');
+        }
+
         if (count($validator->errors()->messages())) {
             return redirect()
                 ->back()
@@ -63,6 +68,7 @@ class ProjectController extends Controller
         $project->deploy_path = $request->deploy_path;
 
         // Laravel preset
+        $project->cron_jobs = '* * * * * ' . ($server->cmd_php ?? 'php') . ' ' . $project->deploy_path . '/current/artisan schedule:run >> ' . $project->deploy_path . '/shared/storage/logs/scheduler.log';
         $project->linked_dirs = ['storage/app', 'storage/framework', 'storage/logs'];
         $project->hooks = [
             'built' => ''
@@ -127,6 +133,11 @@ class ProjectController extends Controller
         $validator->validate();
         $this->validateRepo($request->repository, $request->branch, $validator);
 
+        $server = Server::find($request->server_id);
+        if (! $server) {
+            $validator->errors()->add('server_id', 'Server not found.');
+        }
+
         if (count($validator->errors()->messages())) {
             return redirect()
                 ->back()
@@ -187,6 +198,21 @@ class ProjectController extends Controller
         return redirect()
             ->route('projects.show', $project)
             ->with('success', 'Hooks updated!');
+    }
+
+    public function editCronJobs(Project $project)
+    {
+        return inertia('projects/edit/cron-jobs', compact('project'));
+    }
+
+    public function updateCronJobs(Request $request, Project $project)
+    {
+        $project->cron_jobs = $request->cron_jobs;
+        $project->save();
+
+        return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'Cron jobs updated!');
     }
 
     public function destroy(Project $project)
