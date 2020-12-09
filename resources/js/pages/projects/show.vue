@@ -104,6 +104,17 @@
                                     </template>
                                 </td>
                             </tr>
+                             <tr class="border-b">
+                                <td class="w-1/3 px-2 py-2">Last deployment duration</td>
+                                <td class="px-2 py-2 truncate">
+                                    <template v-if="deployments && deployments[0]">
+                                        {{ deployments[0].duration }}
+                                    </template>
+                                    <template v-else>
+                                        N/A
+                                    </template>
+                                </td>
+                            </tr>
                             <tr class="border-b">
                                 <td class="px-2 py-2">Today's</td>
                                 <td class="px-2 py-2 truncate">{{ deployments_stats.today }}</td>
@@ -116,7 +127,6 @@
                     </table>
                 </div>
 
-                <!-- <inertia-link :href="$route('projects.setup', project)" class="inline-block px-4 py-2 mr-1 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600">Setup</inertia-link> -->
                 <button @click="deploy" class="inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600"><i class="fas fa-upload"></i> Deploy now</button>
             </div>
         </div>
@@ -127,7 +137,7 @@
             <table class="w-full mb-8 table-fixed">
                 <thead>
                     <tr class="border-b">
-                        <th class="w-64 px-2 py-2 text-sm text-left">Requested at</th>
+                        <th class="w-64 px-2 py-2 text-sm text-left">Started at</th>
                         <th class="w-32 px-2 py-2 text-sm text-left">Status</th>
                         <th class="w-48 px-2 py-2 text-sm text-left">Release</th>
                         <th class="px-2 py-2 text-sm text-left">Committer</th>
@@ -136,7 +146,14 @@
                 </thead>
                 <tbody>
                     <tr v-for="deployment in deployments" v-bind:key="deployment.id" class="border-b cursor-pointer hover:bg-gray-100" @click="show(project.id, deployment.id)">
-                        <td class="px-2 py-2">{{ $moment(deployment.created_at).format('L') }} {{ $moment(deployment.created_at).format('LTS') }}</td>
+                        <td class="px-2 py-2">
+                            <template v-if="deployment.started_at">
+                                {{ $moment(deployment.started_at).format('L') }} {{ $moment(deployment.started_at).format('LTS') }}
+                            </template>
+                            <template v-else>
+                                N/A
+                            </template>
+                        </td>
                         <td class="px-2 py-2">{{ deployment.status }}</td>
                         <td class="px-2 py-2">{{ deployment.release }}</td>
                         <td class="px-2 py-2 truncate">

@@ -20,7 +20,7 @@
                         </td>
                     </tr>
                     <tr class="border-b">
-                        <td class="w-1/4 px-2 py-2">Started at</td>
+                        <td class="px-2 py-2">Started at</td>
                         <td class="px-2 py-2">
                             <template v-if="deployment.started_at">
                                 {{ $moment(deployment.started_at).format('L') }} {{ $moment(deployment.started_at).format('LTS') }}
@@ -31,7 +31,7 @@
                         </td>
                     </tr>
                     <tr class="border-b">
-                        <td class="w-1/4 px-2 py-2">Ended at</td>
+                        <td class="px-2 py-2">Ended at</td>
                         <td class="px-2 py-2">
                             <template v-if="deployment.ended_at">
                                 {{ $moment(deployment.ended_at).format('L') }} {{ $moment(deployment.ended_at).format('LTS') }}
@@ -42,7 +42,11 @@
                         </td>
                     </tr>
                     <tr class="border-b">
-                        <td class="w-1/4 px-2 py-2">Status</td>
+                        <td class="px-2 py-2">Duration</td>
+                        <td class="px-2 py-2">{{ deployment.duration }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-2 py-2">Status</td>
                         <td class="px-2 py-2">{{ deployment.status }}</td>
                     </tr>
                     <tr class="border-b">
