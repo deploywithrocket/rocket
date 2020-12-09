@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
-use Throwable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,14 +25,10 @@ class AppServiceProvider extends ServiceProvider
         setlocale(LC_TIME, config('app.locale'));
 
         // Version
-        $version = '';
-
-        try {
-            $version = 'v' . file_get_contents(config_path('.version'));
-        } catch (Throwable $e) {
-        }
-
-        Inertia::share('version', $version);
+        Inertia::share(
+            'version',
+            rescue(fn () => 'v' . file_get_contents(config_path('.version')), null, false)
+        );
 
         // Flash messages
         Inertia::share('flash', function () {

@@ -266,8 +266,8 @@ class ProjectController extends Controller
                 ->webhook('Webhook is working 😀🔥!');
         } catch (\Throwable $th) {
             return redirect()
-            ->route('projects.show', $project)
-            ->with('success', 'An error occurred while sending the message');
+                ->route('projects.show', $project)
+                ->with('success', 'An error occurred while sending the message');
         }
 
         return redirect()
