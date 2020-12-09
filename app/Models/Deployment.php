@@ -93,6 +93,7 @@ class Deployment extends Model
             'fingerprint' => $this->buildFingerprint(),
 
             // Variables computed internally that defined paths
+            'project_path' => $this->getDeployPath(),
             'repository_path' => $this->getDeployPath('repository'),
             'current_path' => $this->getDeployPath('current'),
             'releases_path' => $this->getDeployPath('releases'),

@@ -23,6 +23,12 @@
                             <table class="w-full table-auto">
                                 <tbody>
                                     <tr class="border-b">
+                                        <td class="font-mono text-sm font-bold">[[project]]</td>
+                                        <td class="p-2">
+                                            Resolves to the project's root directory
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b">
                                         <td class="font-mono text-sm font-bold">[[release]]</td>
                                         <td class="p-2">
                                             Resolves to the current release path, within releases

@@ -437,6 +437,7 @@ trait RemoteJobTrait
         extract($this->deployment->extractVariables());
 
         return Str::of($script)
+            ->replace('[[project]]', "\"$project_path\"")
             ->replace('[[release]]', "\"$release_path\"")
             ->replace('[[sha]]', $commit)
             ->prepend($hook_name ? 'echo "💻  Executing ' . $hook_name . ' hook"' . PHP_EOL : '');
