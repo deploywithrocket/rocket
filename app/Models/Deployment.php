@@ -32,7 +32,7 @@ class Deployment extends Model
 
     public function getDurationAttribute()
     {
-        return rescue(fn () => $this->ended_at->diff($this->started_at)->format('%i minutes %s seconds'), 'N/A');
+        return rescue(fn () => $this->ended_at->diff($this->started_at)->format('%i minutes %s seconds'), 'N/A', false);
     }
 
     public function getRelativePath($basePath, $relativePath = '')
