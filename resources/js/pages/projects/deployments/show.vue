@@ -14,6 +14,34 @@
             <table class="w-full table-fixed">
                 <tbody>
                     <tr class="border-b">
+                        <td class="w-1/4 px-2 py-2">Requested at</td>
+                        <td class="px-2 py-2">
+                            {{ $moment(deployment.created_at).format('L') }} {{ $moment(deployment.created_at).format('LTS') }}
+                        </td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="w-1/4 px-2 py-2">Started at</td>
+                        <td class="px-2 py-2">
+                            <template v-if="deployment.started_at">
+                                {{ $moment(deployment.started_at).format('L') }} {{ $moment(deployment.started_at).format('LTS') }}
+                            </template>
+                            <template v-else>
+                                N/A
+                            </template>
+                        </td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="w-1/4 px-2 py-2">Ended at</td>
+                        <td class="px-2 py-2">
+                            <template v-if="deployment.ended_at">
+                                {{ $moment(deployment.ended_at).format('L') }} {{ $moment(deployment.ended_at).format('LTS') }}
+                            </template>
+                            <template v-else>
+                                N/A
+                            </template>
+                        </td>
+                    </tr>
+                    <tr class="border-b">
                         <td class="w-1/4 px-2 py-2">Status</td>
                         <td class="px-2 py-2">{{ deployment.status }}</td>
                     </tr>

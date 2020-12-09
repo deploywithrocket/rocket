@@ -126,7 +126,7 @@
             <table class="w-full mb-8 table-fixed">
                 <thead>
                     <tr class="border-b">
-                        <th class="w-64 px-2 py-2 text-sm text-left">Started at</th>
+                        <th class="w-64 px-2 py-2 text-sm text-left">Requested at</th>
                         <th class="w-32 px-2 py-2 text-sm text-left">Status</th>
                         <th class="w-48 px-2 py-2 text-sm text-left">Release</th>
                         <th class="px-2 py-2 text-sm text-left">Committer</th>
