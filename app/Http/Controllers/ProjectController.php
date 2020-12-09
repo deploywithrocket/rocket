@@ -67,31 +67,33 @@ class ProjectController extends Controller
         $project->deploy_path = $request->deploy_path;
 
         // Laravel preset
-        $project->cron_jobs = '* * * * * ' . ($server->cmd_php ?? 'php') . ' ' . $project->deploy_path . '/current/artisan schedule:run >> ' . $project->deploy_path . '/shared/storage/logs/scheduler.log';
-        $project->linked_dirs = ['storage/app', 'storage/framework', 'storage/logs'];
-        $project->hooks = [
-            'built' => ''
-                . 'cd [[release]]' . PHP_EOL
-                . PHP_EOL
-                . 'php artisan down' . PHP_EOL
-                . PHP_EOL
-                . 'php artisan storage:link' . PHP_EOL
-                . PHP_EOL
-                . 'php artisan config:clear' . PHP_EOL
-                . 'php artisan view:clear' . PHP_EOL
-                . 'php artisan cache:clear' . PHP_EOL
-                . 'php artisan clear-compiled' . PHP_EOL
-                . 'php artisan config:cache' . PHP_EOL
-                . PHP_EOL
-                . 'php artisan migrate --force' . PHP_EOL
-                . PHP_EOL
-                . 'php artisan up' . PHP_EOL,
-        ];
+        if ($request->use_laravel_preset) {
+            $project->cron_jobs = '* * * * * ' . ($server->cmd_php ?? 'php') . ' ' . $project->deploy_path . '/current/artisan schedule:run >> ' . $project->deploy_path . '/shared/storage/logs/scheduler.log';
+            $project->linked_dirs = ['storage/app', 'storage/framework', 'storage/logs'];
+            $project->hooks = [
+                'built' => ''
+                    . 'cd [[release]]' . PHP_EOL
+                    . PHP_EOL
+                    . 'php artisan down' . PHP_EOL
+                    . PHP_EOL
+                    . 'php artisan storage:link' . PHP_EOL
+                    . PHP_EOL
+                    . 'php artisan config:clear' . PHP_EOL
+                    . 'php artisan view:clear' . PHP_EOL
+                    . 'php artisan cache:clear' . PHP_EOL
+                    . 'php artisan clear-compiled' . PHP_EOL
+                    . 'php artisan config:cache' . PHP_EOL
+                    . PHP_EOL
+                    . 'php artisan migrate --force' . PHP_EOL
+                    . PHP_EOL
+                    . 'php artisan up' . PHP_EOL,
+            ];
 
-        // Try to load .env.example
-        [$user, $repo] = explode('/', $project->repository);
-        $gh_client = auth()->user()->github()->repository()->contents();
-        $project->env = rescue(fn () => base64_decode($gh_client->show($user, $repo, '.env.example')['content']));
+            // Try to load .env.example
+            [$user, $repo] = explode('/', $project->repository);
+            $gh_client = auth()->user()->github()->repository()->contents();
+            $project->env = rescue(fn () => base64_decode($gh_client->show($user, $repo, '.env.example')['content']), null, false);
+        }
 
         $project->save();
 
@@ -248,11 +250,11 @@ class ProjectController extends Controller
         [$user, $repo] = explode('/', $repository);
         $gh_client = auth()->user()->github()->repository();
 
-        if (! rescue(fn () => $gh_client->show($user, $repo))) {
+        if (! rescue(fn () => $gh_client->show($user, $repo), null, false)) {
             $validator->errors()->add('repository', "Whoops! It seems that we can't access this repository.");
         }
 
-        if (! rescue(fn () => $gh_client->branches($user, $repo, $branch))) {
+        if (! rescue(fn () => $gh_client->branches($user, $repo, $branch), null, false)) {
             $validator->errors()->add('branch', 'Whoops! Unknown branch.');
         }
     }
@@ -284,7 +286,7 @@ class ProjectController extends Controller
             'name' => 'web',
             'events' => ['push'],
             'config' => ['url' => $wh_url, 'content_type' => 'json'],
-        ]));
+        ]), null, false);
 
         return true;
     }

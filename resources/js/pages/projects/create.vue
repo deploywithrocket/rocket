@@ -11,6 +11,8 @@
                 <div class="w-full p-8 bg-white rounded-lg shadow">
                     <form-input class="mb-4" label="Name" placeholder="My awesome project" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
 
+                    <form-checkbox class="mb-4" label="This is a Laravel project" name="use_laravel_preset" v-model="form.use_laravel_preset"  :errors="$page.errors.use_laravel_preset" />
+
                     <div class="flex flex-row items-center mb-4">
                         <form-input class="w-1/2" label="Repository" placeholder="mgkprod/rocket" type="text" name="repository" v-model="form.repository" :errors="$page.errors.repository" />
                         <div class="px-4"></div>
@@ -52,6 +54,7 @@
                     server_id: 0,
                     deploy_path: '',
                     environement: '',
+                    use_laravel_preset: false,
                 }
             }
         },
