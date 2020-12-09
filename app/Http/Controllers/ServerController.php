@@ -50,6 +50,8 @@ class ServerController extends Controller
 
     public function connection(Server $server)
     {
+        $ip_addresses = config('app.ip_addresses');
+
         try {
             $public_key = Storage::get('keys/' . $server->id . '.pub');
         } catch (\Throwable $th) {
@@ -71,7 +73,7 @@ class ServerController extends Controller
             $public_key = $key['publickey'];
         }
 
-        return inertia('servers/connection', compact('server', 'public_key'));
+        return inertia('servers/connection', compact('server', 'public_key', 'ip_addresses'));
     }
 
     public function connectionTest(Server $server)

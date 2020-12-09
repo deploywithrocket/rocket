@@ -36,15 +36,19 @@
             </div>
             <div class="mb-8 text-center">Current status: <span class="font-bold">{{ server.status }}</span></div>
 
-            <div class="mb-4">This key must be added to the server's <code class="font-mono">.ssh/authorized_keys</code> file for each user you want to run tasks as.</div>
+            <p class="mb-4">This key must be added to the server's <code class="font-mono">.ssh/authorized_keys</code> file for each user you want to run tasks as.</p>
 
             <div class="p-4 mb-4 font-mono break-all bg-gray-100 rounded-lg">{{ public_key }}</div>
 
-            <div class="mb-4">Alternatively, you can also directly run this command on your server to allow Rocket to connect to the current user.</div>
+            <p class="mb-4">Alternatively, you can also directly run this command on your server to allow Rocket to connect to the current user.</p>
 
             <div class="p-4 mb-4 font-mono break-all bg-gray-100 rounded-lg">
                 curl -sSL {{ $route('api.servers.connect', server) }} | sh
             </div>
+
+            <p class="mb-4">
+                Note: If you are restricting SSH access to your server using IP whitelisting, you must whitelist the following IP address{{ ip_addresses.length > 1 ? 'es' : '' }}: <span class="font-mono">{{ ip_addresses.join(', ') }}</span>
+            </p>
 
             <div class="flex flex-row justify-between">
                 <button type="button" class="inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200" @click="$inertia.post($route('servers.connection.test', server))">Test connection status</button>
@@ -60,6 +64,7 @@
         props: {
             server: Object,
             public_key: String,
+            ip_addresses: Array,
         },
     }
 </script>

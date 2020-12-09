@@ -224,4 +224,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
     ],
+
+    'ip_addresses' => explode(',', env(
+        'APP_IP_ADDRESSES',
+        ''
+    )),
 ];
