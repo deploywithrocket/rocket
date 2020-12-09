@@ -13,9 +13,9 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::query()
-            ->orderBy('created_at', 'DESC')
             ->with('latest_deployment')
-            ->paginate(10);
+            ->get()
+            ->sortByDesc('latest_deployment.created_at');
 
         return inertia('projects/index', [
             'projects' => $projects,

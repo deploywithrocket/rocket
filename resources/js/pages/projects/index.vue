@@ -20,7 +20,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="project in projects.data" v-bind:key="project.id" class="border-b cursor-pointer hover:bg-gray-100" @click="show(project.id)">
+                    <tr v-for="project in projects" v-bind:key="project.id" class="border-b cursor-pointer hover:bg-gray-100" @click="show(project.id)">
                         <td class="px-2 py-2 truncate">{{ project.name }}</td>
                         <td class="px-2 py-2 truncate">
                             <img :src="'https://github.com/' + project.repository.split('/')[0] + '.png'" class="inline w-6 h-6 mr-1 rounded-full">
@@ -40,32 +40,6 @@
                     </tr>
                 </tbody>
             </table>
-
-            <div class="flex justify-between">
-                <inertia-link
-                    v-if="projects.prev_page_url"
-                    preserve-scroll
-                    :href="projects.prev_page_url"
-                    class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"
-                >
-                    <i class="fas fa-arrow-left"></i>
-                </inertia-link>
-                <div v-else></div>
-
-                <div class="text-sm text-gray-500">
-                    Displaying page {{ projects.current_page }} / {{ projects.last_page }}
-                </div>
-
-                <inertia-link
-                    preserve-scroll
-                    v-if="projects.next_page_url"
-                    :href="projects.next_page_url"
-                    class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"
-                >
-                    <i class="fas fa-arrow-right"></i>
-                </inertia-link>
-                <div v-else></div>
-            </div>
         </div>
     </div>
 </template>
