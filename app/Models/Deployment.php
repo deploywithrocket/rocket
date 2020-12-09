@@ -12,6 +12,12 @@ class Deployment extends Model
 
     protected $casts = [
         'commit' => 'json',
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
+    ];
+
+    protected $appends = [
+        'duration',
     ];
 
     public function project()
@@ -22,6 +28,11 @@ class Deployment extends Model
     public function server()
     {
         return $this->belongsTo(Server::class);
+    }
+
+    public function getDurationAttribute()
+    {
+        return rescue(fn () => $this->ended_at->diff($this->started_at)->format('%i minutes %s seconds'), 'N/A');
     }
 
     public function getRelativePath($basePath, $relativePath = '')
