@@ -44,7 +44,7 @@
                                 <td class="text-sm font-bold">Added at</td>
                                 <td class="p-2">{{ $moment(project.created_at).format('L') }} {{ $moment(project.created_at).format('LT') }}</td>
                             </tr>
-                            <tr class="border-b">
+                            <tr>
                                 <td class="text-sm font-bold">Notifies on</td>
                                 <td class="p-2">
                                     <template v-if="project.discord_webhook_url">
@@ -76,6 +76,10 @@
                             <tr class="border-b">
                                 <td class="text-sm font-bold">Deploy branch</td>
                                 <td class="p-2 font-mono">{{ project.branch }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-sm font-bold">Push to deploy</td>
+                                <td class="p-2">{{ project.push_to_deploy ? 'Enabled' : 'Disabled' }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -116,10 +120,10 @@
                                 </td>
                             </tr>
                             <tr class="border-b">
-                                <td class="text-sm font-bold">Today's</td>
+                                <td class="text-sm font-bold">Today</td>
                                 <td class="p-2 truncate">{{ deployments_stats.today }}</td>
                             </tr>
-                            <tr class="border-b">
+                            <tr>
                                 <td class="text-sm font-bold">This week</td>
                                 <td class="p-2 truncate">{{ deployments_stats.this_week }}</td>
                             </tr>
@@ -127,7 +131,8 @@
                     </table>
                 </div>
 
-                <button @click="deploy" class="inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600"><i class="fas fa-upload"></i> Deploy now</button>
+                <button @click="deployNow" class="inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600"><i class="fas fa-cloud-upload-alt"></i> Deploy now using project settings</button>
+                <inertia-link :href="$route('projects.deployments.create', project)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"><i class="fas fa-cloud-upload-alt"></i> Custom deployment</inertia-link>
             </div>
         </div>
 
@@ -138,8 +143,8 @@
                 <thead>
                     <tr class="border-b">
                         <th class="w-64 text-sm font-bold text-left">Started at</th>
-                        <th class="w-32 p-2 text-sm text-left">Status</th>
-                        <th class="w-48 p-2 text-sm text-left">Release</th>
+                        <th class="w-64 p-2 text-sm text-left">Status</th>
+                        <th class="w-64 p-2 text-sm text-left">Release</th>
                         <th class="p-2 text-sm text-left">Committer</th>
                         <th class="p-2 text-sm text-left">Commit</th>
                     </tr>
@@ -155,7 +160,7 @@
                             </template>
                         </td>
                         <td class="p-2">{{ deployment.status }}</td>
-                        <td class="p-2">{{ deployment.release }}</td>
+                        <td class="p-2 font-mono">{{ deployment.release }}</td>
                         <td class="p-2 truncate">
                             <template v-if="deployment.commit.committer">
                                 <img :src="deployment.commit.committer.avatar_url" class="inline w-6 h-6 mr-1 rounded-full">
@@ -163,12 +168,12 @@
                                     {{ deployment.commit.committer.login }}
                                 </a>
                             </template>
-                            <template v-else>
-                                {{ deployment.commit.commit.committer.name }}
-                            </template>
                         </td>
-                        <td class="p-2 font-mono truncate">
-                            <a :href="'https://github.com/' + deployment.commit.from_repository + '/tree/' + deployment.commit.from_branch" class="hover:underline" target="_blank">{{ deployment.commit.from_branch }}</a>@<a :href="'https://github.com/' + deployment.commit.from_repository + '/commit/' + deployment.commit.sha" class="hover:underline" target="_blank">{{ deployment.commit.sha.substring(0, 7) }}</a>
+                        <td class="p-2 truncate">
+                            <a :href="'https://github.com/' + deployment.commit.repo + '/commit/' + deployment.commit.sha" class="font-mono hover:underline" target="_blank">{{ deployment.commit.sha ? deployment.commit.sha.substring(0, 7) : '-' }}</a>
+                            <template v-if="deployment.commit.from_ref">
+                                (<span class="font-mono">{{ deployment.commit.from_ref }}</span>)
+                            </template>
                         </td>
                     </tr>
                 </tbody>
@@ -184,7 +189,7 @@
         layout: require('../../layouts/app').default,
 
         props: {
-            project: Array,
+            project: Object,
             deployments: Array,
             deployments_stats: Object,
         },
@@ -200,9 +205,12 @@
             show(project_id, deployment_id) {
                 this.$inertia.visit(this.$route('projects.deployments.show', [project_id, deployment_id]))
             },
-            deploy() {
-                if (confirm("Do you really want to deploy the latest commit on branch " + this.project.branch + "?")) {
-                    this.$inertia.visit(this.$route('projects.deploy', this.project))
+            deployNow() {
+                if (confirm("Do you really want to deploy the most recent commit from " + this.project.branch + " branch?")) {
+                    this.$inertia.post(this.$route('projects.deployments.store', this.project), {
+                        type: 'branch',
+                        target: this.project.branch,
+                    })
                 }
             },
             destroy() {

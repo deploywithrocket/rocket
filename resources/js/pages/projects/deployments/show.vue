@@ -51,7 +51,7 @@
                     </tr>
                     <tr class="border-b">
                         <td class="px-2 text-sm font-bold">Release</td>
-                        <td class="p-3">{{ deployment.release }}</td>
+                        <td class="p-3 font-mono">{{ deployment.release }}</td>
                     </tr>
                     <tr class="border-b">
                         <td class="px-2 text-sm font-bold">Committer</td>
@@ -62,15 +62,21 @@
                                     {{ deployment.commit.committer.login }}
                                 </a>
                             </template>
-                            <template v-else>
-                                {{ deployment.commit.commit.committer.name }}
+                        </td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-2 text-sm font-bold">Commit</td>
+                        <td class="p-3">
+                            <a :href="'https://github.com/' + deployment.commit.repo + '/commit/' + deployment.commit.sha" class="font-mono hover:underline" target="_blank">{{ deployment.commit.sha ? deployment.commit.sha.substring(0, 7) : '-' }}</a>
+                            <template v-if="deployment.commit.from_ref">
+                                (<span class="font-mono">{{ deployment.commit.from_ref }}</span>)
                             </template>
                         </td>
                     </tr>
                     <tr>
-                        <td class="px-2 text-sm font-bold">Commit</td>
+                        <td class="px-2 text-sm font-bold">Commit message</td>
                         <td class="p-3">
-                            <a :href="'https://github.com/' + deployment.commit.from_repository + '/tree/' + deployment.commit.from_branch" class="hover:underline" target="_blank">{{ deployment.commit.from_branch }}</a>@<a :href="'https://github.com/' + deployment.commit.from_repository + '/commit/' + deployment.commit.sha" class="hover:underline" target="_blank">{{ deployment.commit.sha.substring(0, 7) }}</a>
+                            {{ deployment.commit.message }}
                         </td>
                     </tr>
                 </tbody>

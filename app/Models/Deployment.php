@@ -69,15 +69,16 @@ class Deployment extends Model
                 . '/' . $this->project->repository . '.git';
         }
 
+        $ref = $this->commit['from_ref'] ? 'refs/' . $this->commit['from_ref'] : $this->commit['sha'];
+
         return [
             'release' => $this->release,
-            'commit' => $this->commit['sha'],
-
+            'ref' => $ref,
+            'sha' => $this->commit['sha'],
             'ssh_host' => $this->server->ssh_host,
             'ssh_user' => $this->server->ssh_user,
             'deploy_path' => $this->project->deploy_path,
             'repository_url' => $repository_url,
-
             'linked_files' => $this->project->linked_files ?? [],
             'linked_dirs' => $this->project->linked_dirs ?? [],
             'copied_files' => $this->project->copied_files ?? [],
@@ -93,14 +94,13 @@ class Deployment extends Model
             'fingerprint' => $this->buildFingerprint(),
 
             // Variables computed internally that defined paths
-            'repo_path' => $this->getDeployPath('repo'),
+            'project_path' => $this->getDeployPath(),
             'repository_path' => $this->getDeployPath('repository'),
             'current_path' => $this->getDeployPath('current'),
             'releases_path' => $this->getDeployPath('releases'),
             'release_path' => $this->getReleasePath($this->release),
             'assets_path' => $this->getReleasePath($this->release),
             'shared_path' => $this->getDeployPath('shared'),
-            'backups_path' => $this->getDeployPath('backups'),
         ];
     }
 }

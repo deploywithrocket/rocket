@@ -22,9 +22,9 @@ trait RemoteJobTrait
             $this->deployment->server->ssh_user,
             $this->deployment->server->ssh_host
         )
-        ->usePrivateKey(Storage::path('keys/' . $this->deployment->server->id))
-        ->onOutput($idk_how_to_use_a_closure)
-        ->disableStrictHostKeyChecking();
+            ->usePrivateKey(Storage::path('keys/' . $this->deployment->server->id))
+            ->onOutput($idk_how_to_use_a_closure)
+            ->disableStrictHostKeyChecking();
     }
 
     public function beforeHandle()
@@ -38,10 +38,14 @@ trait RemoteJobTrait
             [$user, $repo] = explode('/', $this->deployment->project->repository);
 
             $this->xsp = $gh_client->create($user, $repo, [
-                'ref' => $this->deployment->commit['sha'],
-                'target_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+                'ref' => $this->deployment->commit['from_ref'] ? 'refs/' . $this->deployment->commit['from_ref'] : $this->deployment->commit['sha'],
                 'environment' => $this->deployment->project->environment,
             ])['id'];
+
+            $gh_client->updateStatus($user, $repo, $this->xsp, [
+                'state' => 'in_progress',
+                'target_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+            ]);
         });
 
         if ($this->deployment->project->discord_webhook_url) {
@@ -51,7 +55,8 @@ trait RemoteJobTrait
                     ['name' => 'Project', 'value' => $this->deployment->project->name],
                     ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
                     ['name' => 'Release', 'value' => '[' . $this->deployment->release . '](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')', 'inline' => true],
-                    ['name' => 'Commit', 'value' => $this->deployment->commit['from_branch'] . '@' . substr($this->deployment->commit['sha'], 0, 7), 'inline' => true],
+                    ['name' => 'Commit', 'value' => substr($this->deployment->commit['sha'], 0, 7) . ($this->deployment->commit['from_ref'] ? ' (' . $this->deployment->commit['from_ref'] . ')' : ''), 'inline' => true],
+                    ['name' => 'Commit message', 'value' => $this->deployment->commit['message'], 'inline' => true],
                     ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
                 ],
             ], 'info'));
@@ -84,7 +89,8 @@ trait RemoteJobTrait
                     ['name' => 'Project', 'value' => $this->deployment->project->name],
                     ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
                     ['name' => 'Release', 'value' => '[' . $this->deployment->release . '](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')', 'inline' => true],
-                    ['name' => 'Commit', 'value' => $this->deployment->commit['from_branch'] . '@' . substr($this->deployment->commit['sha'], 0, 7), 'inline' => true],
+                    ['name' => 'Commit', 'value' => substr($this->deployment->commit['sha'], 0, 7) . ($this->deployment->commit['from_ref'] ? ' (' . $this->deployment->commit['from_ref'] . ')' : ''), 'inline' => true],
+                    ['name' => 'Commit message', 'value' => $this->deployment->commit['message'], 'inline' => true],
                     ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
                 ],
             ], 'success'));
@@ -117,7 +123,8 @@ trait RemoteJobTrait
                     ['name' => 'Project', 'value' => $this->deployment->project->name],
                     ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
                     ['name' => 'Release', 'value' => '[' . $this->deployment->release . '](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')', 'inline' => true],
-                    ['name' => 'Commit', 'value' => $this->deployment->commit['from_branch'] . '@' . substr($this->deployment->commit['sha'], 0, 7), 'inline' => true],
+                    ['name' => 'Commit', 'value' => substr($this->deployment->commit['sha'], 0, 7) . ($this->deployment->commit['from_ref'] ? ' (' . $this->deployment->commit['from_ref'] . ')' : ''), 'inline' => true],
+                    ['name' => 'Commit message', 'value' => $this->deployment->commit['message'], 'inline' => true],
                     ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
                 ],
         ], 'error'));
@@ -142,11 +149,6 @@ trait RemoteJobTrait
         $this->scripts['setup:repository'] = "
             export GIT_SSH_COMMAND=\"ssh -q -o PasswordAuthentication=no -o VerifyHostKeyDNS=yes\"
 
-            if [ -d \"$repo_path\" ]; then
-                echo \"Deleting directory $repo_path\" 1>&2
-                rm -rf \"$repo_path\"
-            fi
-
             if [ ! -d \"$repository_path\" ]; then
                $cmd_git clone --bare \"$repository_url\" \"$repository_path\"
                $cmd_git --git-dir \"$repository_path\" config advice.detachedHead false
@@ -161,29 +163,13 @@ trait RemoteJobTrait
             if [ ! -d \"$shared_path\" ]; then
                 mkdir -v \"$shared_path\"
             fi
-
-            if [ ! -d \"$backups_path\" ]; then
-                mkdir -v \"$backups_path\"
-            fi
         ";
 
-        $this->scripts['assert:commit'] = '';
-
-        if (! $commit) {
-            $this->scripts['assert:commit'] = '
-                echo "Commit not defined." 1>&2
-            ';
-        } else {
-            $this->scripts['assert:commit'] = "
-                echo \"Deploying release $release with tree-ish $commit to $ssh_host...\"
-            ";
-        }
-
-        $this->scripts['deploy:starting'] = '
-            echo "🏃  Starting deployment…"
-        ';
+        $this->scripts['deploy:starting'] = '';
 
         $this->scripts['deploy:check'] = "
+            echo \"🏃  Deploying $ref as release $release to host $ssh_host" . "…\"
+
             if [ ! -d \"$repository_path\" ]; then
                 echo \"Repository path not found.\" 1>&2
                 exit 1
@@ -204,12 +190,7 @@ trait RemoteJobTrait
                 exit 1
             fi
 
-            if [ ! -d \"$backups_path\" ]; then
-                echo \"Backups path not found.\" 1>&2
-                exit 1
-            fi
-
-            echo \"All checks passed!\"
+            echo \"✅  All checks passed!\"
         ";
 
         $this->scripts['deploy:started'] = '';
@@ -233,7 +214,7 @@ trait RemoteJobTrait
             mkdir \"$release_path\"
             cd \"$release_path\"
 
-            $cmd_git --git-dir \"$repository_path\" --work-tree \"$release_path\" checkout -f $commit
+            $cmd_git --git-dir \"$repository_path\" --work-tree \"$release_path\" checkout -f $ref
             $cmd_git --git-dir \"$repository_path\" --work-tree \"$release_path\" rev-parse HEAD > \"$release_path/REVISION\"
         ";
 
@@ -451,8 +432,10 @@ trait RemoteJobTrait
         extract($this->deployment->extractVariables());
 
         return Str::of($script)
+            ->replace('[[project]]', "\"$project_path\"")
             ->replace('[[release]]', "\"$release_path\"")
-            ->replace('[[sha]]', $commit)
+            ->replace('[[ref]]', $ref)
+            ->replace('[[sha]]', $sha)
             ->prepend($hook_name ? 'echo "💻  Executing ' . $hook_name . ' hook"' . PHP_EOL : '');
     }
 }
