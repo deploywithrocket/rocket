@@ -49,7 +49,7 @@
         layout: require('../../layouts/app').default,
 
         props: {
-            projects: Object,
+            projects: Array,
         },
 
         methods: {

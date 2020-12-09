@@ -277,11 +277,13 @@ class ProjectController extends Controller
 
     public function hookPTD(Project $project)
     {
+        $token = $project->tokens()->where('name', 'ptd_webhook')->first() ?? $project->createToken('ptd_webhook');
+
         [$user, $repo] = explode('/', $project->repository);
         $gh_client = auth()->user()->github()->repository()->hooks();
 
         // Hook will not register if it already exists
-        $wh_url = route('api.projects.deploy', $project);
+        $wh_url = route('api.projects.deploy', $project) . '?token=' . $token->plainTextToken;
         rescue(fn () => $gh_client->create($user, $repo, [
             'name' => 'web',
             'events' => ['push'],

@@ -35,6 +35,14 @@ Route::get('/servers/{server}/connect', function (Server $server) {
 })->name('api.servers.connect');
 
 Route::post('/projects/{project}/deploy', function (Request $request, Project $project) {
+    $token = $project->tokens()->firstWhere('token', $request->token);
+
+    if (! $token) {
+        return response()->json(['error' => 'Token not found.'], 500);
+    }
+
+    $token->fill(['last_used_at' => now()])->save();
+
     if (! $project->push_to_deploy) {
         return response()->json(['error' => 'PTD is not enabled on this project.'], 500);
     }
