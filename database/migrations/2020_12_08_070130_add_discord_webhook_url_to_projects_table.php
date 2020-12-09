@@ -14,7 +14,7 @@ class AddDiscordWebhookUrlToProjectsTable extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->longText('discord_webhook_url')->nullable();
+            $table->longText('discord_webhook_url')->after('hooks')->nullable();
         });
     }
 

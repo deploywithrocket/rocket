@@ -14,7 +14,7 @@ class AddPushToDeployToProjectsTable extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->boolean('push_to_deploy')->default(false);
+            $table->boolean('push_to_deploy')->after('discord_webhook_url')->default(false);
         });
     }
 
