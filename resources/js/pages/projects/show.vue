@@ -109,10 +109,21 @@
                                 </td>
                             </tr>
                              <tr class="border-b">
-                                <td class="w-1/3 text-sm font-bold">Last deployment duration</td>
+                                <td class="w-1/3 text-sm font-bold">Duration</td>
                                 <td class="p-2 truncate">
                                     <template v-if="deployments && deployments[0]">
                                         {{ deployments[0].duration }}
+                                    </template>
+                                    <template v-else>
+                                        N/A
+                                    </template>
+                                </td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="w-1/3 text-sm font-bold">Status</td>
+                                <td class="p-2 truncate">
+                                    <template v-if="deployments && deployments[0]">
+                                        {{ deployments[0].status }}
                                     </template>
                                     <template v-else>
                                         N/A
@@ -133,6 +144,17 @@
 
                 <button @click="deployNow" class="inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600"><i class="fas fa-cloud-upload-alt"></i> Deploy now using project settings</button>
                 <inertia-link :href="$route('projects.deployments.create', project)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"><i class="fas fa-cloud-upload-alt"></i> Custom deployment</inertia-link>
+
+                <hr class="my-8">
+
+                <div class="mb-8">
+                    <div class="flex items-center">
+                        <div class="mr-4">
+                            <span class="font-bold">Show the world you launch rockets!</span> This shield shows the status and the date of your project's last deployment.
+                        </div>
+                        <img :src="'https://img.shields.io/endpoint?style=flat-square&url=' + $route('api.projects.shield', project)" alt="Shield">
+                    </div>
+                </div>
             </div>
         </div>
 

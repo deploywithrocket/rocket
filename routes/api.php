@@ -4,8 +4,10 @@ use App\Jobs\EnvoyDeployJob;
 use App\Models\Project;
 use App\Models\Server;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,3 +89,23 @@ Route::post('/projects/{project}/deploy', function (Request $request, Project $p
 
     return response()->json(['message' => 'Nothing to do!'], 200);
 })->name('api.projects.deploy');
+
+Route::get('/projects/{project}/shield', function (Request $request, Project $project) {
+    $deployment = $project->latest_deployment;
+
+    $color = Str::of($deployment->status)
+        ->replace('success', 'ec4899')
+        ->replace('queued', 'blue')
+        ->replace('in_progress', 'blue')
+        ->replace('error', 'red')
+        ->replace('abandoned', 'inactive')
+        ->__toString();
+
+    return response()->json([
+        'schemaVersion' => 1,
+        'label' => 'rocket',
+        'message' => $deployment->created_at->diffForHumans(),
+        'color' => $color,
+        'logoSvg' => File::get(public_path('images/brand_flatwhite.svg')),
+    ]);
+})->name('api.projects.shield');

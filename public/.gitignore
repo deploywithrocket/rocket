@@ -1,4 +1,6 @@
 *
+!/images
+!/images/**
 !.gitignore
 !.htaccess
 !favicon.ico
