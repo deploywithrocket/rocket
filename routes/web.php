@@ -60,6 +60,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::put('/{project}/hooks', [ProjectController::class, 'updateHooks'])->name('update.hooks');
         Route::get('/{project}/edit/cron-jobs', [ProjectController::class, 'editCronJobs'])->name('edit.cron-jobs');
         Route::put('/{project}/cron-jobs', [ProjectController::class, 'updateCronJobs'])->name('update.cron-jobs');
+        Route::get('/{project}/edit/shared', [ProjectController::class, 'editShared'])->name('edit.shared');
+        Route::put('/{project}/shared', [ProjectController::class, 'updateShared'])->name('update.shared');
         Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
         Route::get('/{project}/webhook/discord/test', [ProjectController::class, 'testDiscordWebhook'])->name('test-discord-webhook');
         Route::get('/{project}/deployments/create', [ProjectDeploymentController::class, 'create'])->name('deployments.create');

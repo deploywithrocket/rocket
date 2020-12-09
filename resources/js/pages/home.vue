@@ -8,7 +8,7 @@
         <div v-if="!github_account">
             <div class="mb-2">In order to deploy private projects, you have to connect your GitHub account.</div>
 
-            <a href="/auth/github" class="px-4 py-2 text-sm font-semibold bg-gray-200 rounded hover:bg-gray-300"><i class="fab fa-github"></i> Connect to GitHub</a>
+            <a href="/auth/github" class="px-4 py-2 text-sm font-semibold bg-gray-100 rounded hover:bg-gray-200"><i class="fab fa-github"></i> Connect to GitHub</a>
         </div>
         <div v-else>
             <i class="fab fa-github"></i> Connected to {{ github_account.provider_user_name }}

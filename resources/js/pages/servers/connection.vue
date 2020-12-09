@@ -47,7 +47,7 @@
             </div>
 
             <div class="flex flex-row justify-between">
-                <button type="button" class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300" @click="$inertia.post($route('servers.connection.test', server))">Test connection status</button>
+                <button type="button" class="inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200" @click="$inertia.post($route('servers.connection.test', server))">Test connection status</button>
             </div>
         </div>
     </div>

@@ -219,6 +219,22 @@ class ProjectController extends Controller
             ->with('success', 'Cron jobs updated!');
     }
 
+    public function editShared(Project $project)
+    {
+        return inertia('projects/edit/shared', compact('project'));
+    }
+
+    public function updateShared(Request $request, Project $project)
+    {
+        $project->linked_dirs = $request->linked_dirs;
+        $project->linked_files = $request->linked_files;
+        $project->save();
+
+        return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'Linked directories updated!');
+    }
+
     public function destroy(Project $project)
     {
         $project->delete();

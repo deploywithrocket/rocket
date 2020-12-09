@@ -21,9 +21,9 @@
                     <div class="mb-4 font-mono text-sm">{{ server.ssh_user }}@{{ server.ssh_host }}</div>
 
                     <div class="flex flex-row space-x-2">
-                        <inertia-link class="px-4 py-2 text-sm font-semibold bg-gray-200 rounded hover:bg-gray-300" :href="$route('servers.edit', server)"><i class="fas fa-fw fa-edit"></i></inertia-link>
-                        <inertia-link class="px-4 py-2 text-sm font-semibold bg-gray-200 rounded hover:bg-gray-300" :href="$route('servers.connection', server)"><i class="fas fa-fw fa-link"></i></inertia-link>
-                        <button @click="destroy(server)" class="px-4 py-2 text-sm font-semibold bg-gray-200 rounded hover:bg-gray-300"><i class="fas fa-fw fa-times"></i></button>
+                        <inertia-link class="px-4 py-2 text-sm font-semibold bg-gray-100 rounded hover:bg-gray-200" :href="$route('servers.edit', server)"><i class="fas fa-fw fa-edit"></i></inertia-link>
+                        <inertia-link class="px-4 py-2 text-sm font-semibold bg-gray-100 rounded hover:bg-gray-200" :href="$route('servers.connection', server)"><i class="fas fa-fw fa-link"></i></inertia-link>
+                        <button @click="destroy(server)" class="px-4 py-2 text-sm font-semibold bg-gray-100 rounded hover:bg-gray-200"><i class="fas fa-fw fa-times"></i></button>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     v-if="servers.prev_page_url"
                     preserve-scroll
                     :href="servers.prev_page_url"
-                    class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"
+                    class="inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200"
                 >
                     <i class="fas fa-arrow-left"></i>
                 </inertia-link>
@@ -47,7 +47,7 @@
                     preserve-scroll
                     v-if="servers.next_page_url"
                     :href="servers.next_page_url"
-                    class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"
+                    class="inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200"
                 >
                     <i class="fas fa-arrow-right"></i>
                 </inertia-link>

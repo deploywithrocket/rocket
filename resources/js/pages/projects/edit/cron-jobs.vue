@@ -15,8 +15,8 @@
                 <div class="w-full p-8 bg-white rounded-lg shadow">
                     <div class="mb-8">
                         <div class="mb-4">
-                            On this page, you can specify cron jobs that will be appended into the server's cron scheduler.<br>
-                            E.g. this is useful for Laravel projects that require the use of scheduled tasks (<a class="hover:underline" href="https://laravel.com/docs/master/scheduling#starting-the-scheduler" target="_blank"><i class="fas fa-book"></i> laravel scheduler</a>)
+                            <p>On this page, you can specify cron jobs that will be appended into the server's cron scheduler.</p>
+                            <p>E.g. this is useful for Laravel projects that require the use of scheduled tasks (<a class="hover:underline" href="https://laravel.com/docs/master/scheduling#starting-the-scheduler" target="_blank"><i class="fas fa-book"></i> laravel scheduler</a>)</p>
                         </div>
                     </div>
 
