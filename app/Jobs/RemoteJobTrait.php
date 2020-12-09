@@ -391,6 +391,8 @@ trait RemoteJobTrait
 
         if (is_array($cron_jobs) && count($cron_jobs) > 0) {
             $this->scripts['deploy:cronjobs'] .= "
+                echo \"⏲  Setting up cron jobs…\"
+
                 FILE=\$(mktemp)
                 crontab -l > \$FILE || true
 
@@ -398,15 +400,7 @@ trait RemoteJobTrait
 
                 echo '# ROCKET BEGIN $fingerprint' >> \$FILE
                 echo 'SHELL=\"/bin/bash\"' >> \$FILE
-            ";
-
-            foreach ($cron_jobs as $cron_job) {
-                $this->scripts['deploy:cronjobs'] .= '
-                    echo ' . escapeshellarg($cron_job) . ' >> $FILE
-                ';
-            }
-
-            $this->scripts['deploy:cronjobs'] .= "
+                echo ' . escapeshellarg($cron_jobs) . ' >> $FILE
                 echo '# ROCKET END $fingerprint' >> \$FILE
 
                 if [ -s \$FILE ]; then
