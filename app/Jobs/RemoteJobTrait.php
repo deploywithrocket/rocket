@@ -30,6 +30,7 @@ trait RemoteJobTrait
     public function beforeHandle()
     {
         $this->deployment->status = 'in_progress';
+        $this->deployment->started_at = now();
         $this->deployment->save();
 
         rescue(function () {
@@ -60,6 +61,7 @@ trait RemoteJobTrait
     public function afterHandle()
     {
         $this->deployment->status = 'success';
+        $this->deployment->ended_at = now();
         $this->deployment->save();
 
         if ($this->xsp ?? null) {
@@ -91,6 +93,7 @@ trait RemoteJobTrait
     public function afterHandleFailed()
     {
         $this->deployment->status = 'error';
+        $this->deployment->ended_at = now();
         $this->deployment->save();
 
         if ($this->xsp ?? null) {
