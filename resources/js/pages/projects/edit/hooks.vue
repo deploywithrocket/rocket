@@ -35,6 +35,12 @@
                                         </td>
                                     </tr>
                                     <tr class="border-b">
+                                        <td class="font-mono text-sm font-bold">[[ref]]</td>
+                                        <td class="p-2">
+                                            Resolves to the ref that is being deployed
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td class="font-mono text-sm font-bold">[[sha]]</td>
                                         <td class="p-2">
                                             Resolves to the commit hash that is being deployed

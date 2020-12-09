@@ -15,7 +15,7 @@ Vue.use(InertiaApp)
 
 Vue.prototype.$route = route
 Vue.prototype.$moment = moment
-Vue.prototype._ = window._;
+Vue.prototype._ = window._
 
 /**
  * The following block of code may be used to automatically register your

@@ -69,15 +69,16 @@ class Deployment extends Model
                 . '/' . $this->project->repository . '.git';
         }
 
+        $ref = $this->commit['from_ref'] ? 'refs/' . $this->commit['from_ref'] : $this->commit['sha'];
+
         return [
             'release' => $this->release,
-            'commit' => $this->commit['sha'],
-
+            'ref' => $ref,
+            'sha' => $this->commit['sha'],
             'ssh_host' => $this->server->ssh_host,
             'ssh_user' => $this->server->ssh_user,
             'deploy_path' => $this->project->deploy_path,
             'repository_url' => $repository_url,
-
             'linked_files' => $this->project->linked_files ?? [],
             'linked_dirs' => $this->project->linked_dirs ?? [],
             'copied_files' => $this->project->copied_files ?? [],

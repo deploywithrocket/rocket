@@ -33,7 +33,6 @@ class EnvoyDeployJob implements ShouldQueue
 
         try {
             $process = $this->ssh->execute([
-                $this->scripts['assert:ref'],
                 $this->scripts['setup:repository'],
                 $this->scripts['setup:directories'],
                 $this->scripts['deploy:starting'],

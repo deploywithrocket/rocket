@@ -48,19 +48,23 @@ Route::post('/projects/{project}/deploy', function (Request $request, Project $p
 
                 [$user, $repo] = explode('/', $project->repository);
                 $gh_client = $project->user->github()->repository();
+
                 $gh_branch = rescue(fn () => $gh_client->branches($user, $repo, $project->branch));
 
                 if (! $gh_branch) {
                     return response()->json(['error', 'It seems that we are unable to access the configured repository.'], 500);
                 }
 
-                $commit = array_merge(
-                    [
-                        'from_branch' => $gh_branch['name'],
-                        'from_repository' => $project->repository,
+                $commit = [
+                    'sha' => $gh_branch['sha'],
+                    'message' => $gh_branch['commit']['message'],
+                    'committer' => [
+                        'login' => $gh_branch['committer']['login'],
+                        'avatar_url' => $gh_branch['committer']['avatar_url'],
                     ],
-                    $gh_branch['commit'],
-                );
+                    'repo' => $project->repository,
+                    'from_ref' => 'heads/' . $gh_branch['name'],
+                ];
 
                 $deployment = $project->deployments()->create([
                     'server_id' => $project->server->id,

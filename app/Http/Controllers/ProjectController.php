@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Utils\Discord;
-use App\Jobs\EnvoyDeployJob;
 use App\Models\Project;
 use App\Models\Server;
 use Illuminate\Http\Request;
@@ -225,41 +224,6 @@ class ProjectController extends Controller
         $project->delete();
 
         return redirect()->route('projects.index');
-    }
-
-    public function deploy(Project $project)
-    {
-        // Get latest commit
-        [$user, $repo] = explode('/', $project->repository);
-        $gh_client = auth()->user()->github()->repository();
-        $gh_branch = rescue(fn () => $gh_client->branches($user, $repo, $project->branch));
-
-        if (! $gh_branch) {
-            return redirect()
-                ->back()
-                ->with('error', 'Whoops! It seems that we are unable to access the configured repository.');
-        }
-
-        $commit = array_merge(
-            [
-                'from_branch' => $gh_branch['name'],
-                'from_repository' => $project->repository,
-            ],
-            $gh_branch['commit'],
-        );
-
-        $deployment = $project->deployments()->create([
-            'server_id' => $project->server->id,
-            'status' => 'queued',
-            'release' => date('YmdHis'),
-            'commit' => $commit,
-        ]);
-
-        dispatch(new EnvoyDeployJob($deployment));
-
-        return redirect()
-            ->route('projects.show', $project)
-            ->with('success', 'Project queued for deployment');
     }
 
     protected function validateRepo($repository, $branch, &$validator)
