@@ -89,6 +89,11 @@ class ProjectController extends Controller
                 . 'php artisan up' . PHP_EOL,
         ];
 
+        // Try to load .env.example
+        [$user, $repo] = explode('/', $project->repository);
+        $gh_client = auth()->user()->github()->repository()->contents();
+        $project->env = rescue(fn () => base64_decode($gh_client->show($user, $repo, '.env.example')['content']));
+
         $project->save();
 
         return redirect()->route('projects.show', $project->id);
