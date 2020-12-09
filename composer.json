@@ -16,6 +16,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/horizon": "^5.4",
+        "laravel/sanctum": "^2.8",
         "laravel/socialite": "^5.1",
         "laravel/tinker": "^2.5",
         "php-http/guzzle7-adapter": "^0.1.1",
