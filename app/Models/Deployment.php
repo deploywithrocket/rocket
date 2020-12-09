@@ -12,6 +12,8 @@ class Deployment extends Model
 
     protected $casts = [
         'commit' => 'json',
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
     ];
 
     public function project()
