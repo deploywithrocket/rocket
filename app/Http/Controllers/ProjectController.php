@@ -45,6 +45,11 @@ class ProjectController extends Controller
         $validator->validate();
         $this->validateRepo($request->repository, $request->branch, $validator);
 
+        $server = Server::find($request->server_id);
+        if (! $server) {
+            $validator->errors()->add('server_id', 'Server not found.');
+        }
+
         if (count($validator->errors()->messages())) {
             return redirect()
                 ->back()
@@ -126,6 +131,11 @@ class ProjectController extends Controller
 
         $validator->validate();
         $this->validateRepo($request->repository, $request->branch, $validator);
+
+        $server = Server::find($request->server_id);
+        if (! $server) {
+            $validator->errors()->add('server_id', 'Server not found.');
+        }
 
         if (count($validator->errors()->messages())) {
             return redirect()
