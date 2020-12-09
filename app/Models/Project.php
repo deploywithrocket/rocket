@@ -53,7 +53,7 @@ class Project extends Model
 
     public function latest_deployment()
     {
-        return $this->hasOne(Deployment::class)->orderBy('created_at', 'DESC');
+        return $this->hasOne(Deployment::class)->latest();
     }
 
     public function getFaviconUrlAttribute()

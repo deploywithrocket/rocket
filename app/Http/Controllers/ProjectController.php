@@ -105,7 +105,7 @@ class ProjectController extends Controller
         $project = $project
             ->load('server');
 
-        $deployments = $project->deployments()->orderBy('created_at', 'DESC')->limit(10)->get();
+        $deployments = $project->deployments()->latest()->limit(10)->get();
 
         $deployments_stats = [
             'today' => $project->deployments()->whereBetween('created_at', [now()->startOfDay(), now()->endOfDay()])->count(),
@@ -277,7 +277,7 @@ class ProjectController extends Controller
 
     public function hookPTD(Project $project)
     {
-        $token = $project->tokens()->where('name', 'ptd_webhook')->first() ?? $project->createToken('ptd_webhook');
+        $token = $project->tokens()->firstWhere('name', 'ptd_webhook') ?? $project->createToken('ptd_webhook');
 
         [$user, $repo] = explode('/', $project->repository);
         $gh_client = auth()->user()->github()->repository()->hooks();

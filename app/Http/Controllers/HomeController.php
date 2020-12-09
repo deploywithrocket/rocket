@@ -11,8 +11,7 @@ class HomeController extends Controller
         $github_account = auth()
             ->user()
             ->social_accounts()
-            ->where('provider', 'github')
-            ->first();
+            ->firstWhere('provider', 'github');
 
         return inertia('home', compact('github_account'));
     }

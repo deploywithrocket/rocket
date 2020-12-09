@@ -16,7 +16,7 @@ class ServerController extends Controller
     public function index()
     {
         $servers = Server::query()
-            ->orderBy('created_at', 'DESC')
+            ->latest()
             ->paginate(10);
 
         return inertia('servers/index', [
