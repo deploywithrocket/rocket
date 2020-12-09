@@ -23,7 +23,6 @@
         "laravel-mix-tailwind": "^0.1.0",
         "lodash": "^4.17.19",
         "moment": "^2.29.1",
-        "monaco-editor-webpack-plugin": "1.9",
         "popper.js": "^1.16.1",
         "postcss": "^8.1.8",
         "resolve-url-loader": "^3.1.0",
@@ -31,7 +30,7 @@
         "sass-loader": "7.*",
         "tailwindcss": "^2.0.1",
         "vue": "^2.5.17",
-        "vue-monaco": "^1.2.1",
+        "vue-codemirror-lite": "^1.0.4",
         "vue-popperjs": "^2.3.0",
         "vue-template-compiler": "^2.6.10"
     }

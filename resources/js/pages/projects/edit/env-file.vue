@@ -13,7 +13,7 @@
         <form @submit.prevent="submit">
             <div class="flex flex-col items-center justify-center w-full">
                 <div class="w-full p-8 bg-white rounded-lg shadow">
-                    <MonacoEditor class="mb-4 bg-gray-100 border" language="ini" theme="vs-dark" v-model="form.env" :options="{ minimap: {enabled: false}}" style="height: 48rem;" />
+                    <codemirror class="mb-4 bg-gray-100 border" v-model="form.env" :options="options" style="height: 48rem;"></codemirror>
 
                     <div class="flex justify-end mt-8">
                         <button class="px-4 py-2 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none">Save</button>
@@ -24,14 +24,23 @@
     </div>
 </template>
 
+<style lang="scss">
+    .CodeMirror {
+        height: 100% !important;
+    }
+</style>
+
 <script>
-    import MonacoEditor from 'vue-monaco'
+    import { codemirror } from 'vue-codemirror-lite'
+    require('codemirror/mode/shell/shell')
+    require('codemirror/theme/neo.css')
+    require('codemirror/keymap/sublime')
 
     export default {
         layout: require('../../../layouts/app').default,
 
         components: {
-            MonacoEditor
+            codemirror
         },
 
         props: {
@@ -41,6 +50,14 @@
 
         data() {
             return {
+                options: {
+                    tabSize: 4,
+                    lineNumbers: true,
+                    lineWrapping: true,
+                    viewportMargin: Infinity,
+                    theme: 'neo',
+                    keyMap: 'sublime',
+                },
                 form: {
                     env: '',
                 }
