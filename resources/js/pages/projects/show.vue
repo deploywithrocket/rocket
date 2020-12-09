@@ -99,39 +99,6 @@
                     <table class="w-full table-fixed">
                         <tbody>
                             <tr class="border-b">
-                                <td class="w-1/3 text-sm font-bold">Last deployment</td>
-                                <td class="p-2 truncate">
-                                    <template v-if="deployments && deployments[0]">
-                                        {{ $moment(deployments[0].created_at).format('L') }} {{ $moment(deployments[0].created_at).format('LTS') }}
-                                    </template>
-                                    <template v-else>
-                                        N/A
-                                    </template>
-                                </td>
-                            </tr>
-                             <tr class="border-b">
-                                <td class="w-1/3 text-sm font-bold">Duration</td>
-                                <td class="p-2 truncate">
-                                    <template v-if="deployments && deployments[0]">
-                                        {{ deployments[0].duration }}
-                                    </template>
-                                    <template v-else>
-                                        N/A
-                                    </template>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="w-1/3 text-sm font-bold">Status</td>
-                                <td class="p-2 truncate">
-                                    <template v-if="deployments && deployments[0]">
-                                        {{ deployments[0].status }}
-                                    </template>
-                                    <template v-else>
-                                        N/A
-                                    </template>
-                                </td>
-                            </tr>
-                            <tr class="border-b">
                                 <td class="text-sm font-bold">Today</td>
                                 <td class="p-2 truncate">{{ deployments_stats.today }}</td>
                             </tr>
@@ -145,6 +112,74 @@
 
                 <button @click="deployNow" class="inline-block px-4 py-2 text-sm font-bold text-white bg-pink-500 rounded hover:bg-pink-600"><i class="fas fa-cloud-upload-alt"></i> Deploy now using project settings</button>
                 <inertia-link :href="$route('projects.deployments.create', project)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-100 rounded hover:bg-gray-200"><i class="fas fa-cloud-upload-alt"></i> Custom deployment</inertia-link>
+
+                <div class="my-8">
+                    <h2 class="mb-4 text-xl font-bold">Last deployment</h2>
+
+                    <div class="flex flex-row items-center">
+                        <div class="relative flex items-center justify-center flex-none p-4 mr-8 border rounded-full">
+                            <img :src="project.favicon_url" class="inline w-10 h-10" v-if="project.live_url">
+
+                            <div class="absolute bottom-0 right-0 text-center text-green-500" v-if="deployments && deployments[0] && deployments[0].ping && deployments[0].ping.status == 'success'">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                            <div class="absolute bottom-0 right-0 text-center text-red-500" v-if="deployments && deployments[0] && deployments[0].ping && deployments[0].ping.status == 'failed'">
+                                <i class="fa fa-times-circle"></i>
+                            </div>
+                        </div>
+
+                        <div>
+                            <table class="w-full table-fixed">
+                                <tbody>
+                                    <tr class="border-b">
+                                        <td class="w-1/3 text-sm font-bold">Requested at</td>
+                                        <td class="p-2 truncate">
+                                            <template v-if="deployments && deployments[0]">
+                                                {{ $moment(deployments[0].created_at).format('L') }} {{ $moment(deployments[0].created_at).format('LTS') }}
+                                            </template>
+                                            <template v-else>
+                                                N/A
+                                            </template>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="w-1/3 text-sm font-bold">Duration</td>
+                                        <td class="p-2 truncate">
+                                            <template v-if="deployments && deployments[0]">
+                                                {{ deployments[0].duration }}
+                                            </template>
+                                            <template v-else>
+                                                N/A
+                                            </template>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="w-1/3 text-sm font-bold">Deployment status</td>
+                                        <td class="p-2 truncate">
+                                            <template v-if="deployments && deployments[0]">
+                                                {{ deployments[0].status }}
+                                            </template>
+                                            <template v-else>
+                                                N/A
+                                            </template>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-1/3 text-sm font-bold">Post-deployment ping</td>
+                                        <td class="p-2 truncate">
+                                            <template v-if="deployments && deployments[0] && deployments[0].ping">
+                                                {{ deployments[0].ping.status }} (code: {{ deployments[0].ping.status_code }}, in {{ deployments[0].ping.request_duration }}ms)
+                                            </template>
+                                            <template v-else>
+                                                N/A
+                                            </template>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
                 <hr class="my-8">
 

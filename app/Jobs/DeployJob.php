@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class EnvoyDeployJob implements ShouldQueue
+class DeployJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, RemoteJobTrait;
 
@@ -70,5 +70,7 @@ class EnvoyDeployJob implements ShouldQueue
         }
 
         $this->afterHandle();
+
+        dispatch(new PingJob($this->deployment));
     }
 }

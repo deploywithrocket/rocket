@@ -56,6 +56,11 @@ class Project extends Model
         return $this->hasOne(Deployment::class)->latest();
     }
 
+    public function pings()
+    {
+        return $this->hasMany(Ping::class);
+    }
+
     public function getFaviconUrlAttribute()
     {
         return rescue(function () {

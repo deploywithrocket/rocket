@@ -105,7 +105,12 @@ class ProjectController extends Controller
         $project = $project
             ->load('server');
 
-        $deployments = $project->deployments()->latest()->limit(10)->get();
+        $deployments = $project
+            ->deployments()
+            ->with('ping')
+            ->latest()
+            ->limit(10)
+            ->get();
 
         $deployments_stats = [
             'today' => $project->deployments()->whereBetween('created_at', [now()->startOfDay(), now()->endOfDay()])->count(),

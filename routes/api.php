@@ -1,6 +1,6 @@
 <?php
 
-use App\Jobs\EnvoyDeployJob;
+use App\Jobs\DeployJob;
 use App\Models\Project;
 use App\Models\Server;
 use Illuminate\Http\Request;
@@ -83,7 +83,7 @@ Route::post('/projects/{project}/deploy', function (Request $request, Project $p
                     'commit' => $commit,
                 ]);
 
-                dispatch(new EnvoyDeployJob($deployment));
+                dispatch(new DeployJob($deployment));
 
                 return response()->json(['message' => 'Deploying release ' . $deployment->release], 200);
             }

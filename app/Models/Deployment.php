@@ -30,6 +30,11 @@ class Deployment extends Model
         return $this->belongsTo(Server::class);
     }
 
+    public function ping()
+    {
+        return $this->hasOne(Ping::class);
+    }
+
     public function getDurationAttribute()
     {
         return rescue(fn () => $this->ended_at->diff($this->started_at)->format('%i minutes %s seconds'), 'N/A', false);

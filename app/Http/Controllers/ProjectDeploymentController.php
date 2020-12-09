@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\EnvoyDeployJob;
+use App\Jobs\DeployJob;
 use App\Models\Deployment;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -67,7 +67,7 @@ class ProjectDeploymentController extends Controller
             'commit' => $commit,
         ]);
 
-        dispatch(new EnvoyDeployJob($deployment));
+        dispatch(new DeployJob($deployment));
 
         return redirect()
             ->route('projects.show', $project)
