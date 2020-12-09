@@ -25,7 +25,7 @@ Route::get('/servers/{server}/connect', function (Server $server) {
     $key = Storage::get('keys/' . $server->id . '.pub');
 
     echo '#!/bin/bash' . PHP_EOL
-        . "echo \"Adding $server->name key for user \$(whoami)\"" . PHP_EOL
+        . "echo \"🔑  Adding $server->name key for user \$(whoami)\"…" . PHP_EOL
         . "echo \"$key\" >> ~/.ssh/authorized_keys" . PHP_EOL
         . 'echo "Key added!"';
 
@@ -34,7 +34,7 @@ Route::get('/servers/{server}/connect', function (Server $server) {
 
 Route::post('/projects/{project}/deploy', function (Request $request, Project $project) {
     if (! $project->push_to_deploy) {
-        return response()->json(['error' => 'PTD is not enabled on this project.']);
+        return response()->json(['error' => 'PTD is not enabled on this project.'], 500);
     }
 
     if ($request->header('x-github-event') == 'push') {
@@ -51,7 +51,7 @@ Route::post('/projects/{project}/deploy', function (Request $request, Project $p
                 $gh_branch = rescue(fn () => $gh_client->branches($user, $repo, $project->branch));
 
                 if (! $gh_branch) {
-                    return abort(500, ['error', 'It seems that we are unable to access the configured repository.']);
+                    return response()->json(['error', 'It seems that we are unable to access the configured repository.'], 500);
                 }
 
                 $commit = array_merge(
@@ -71,9 +71,7 @@ Route::post('/projects/{project}/deploy', function (Request $request, Project $p
 
                 dispatch(new EnvoyDeployJob($deployment));
 
-                return response()->json([
-                    'message' => 'Deploying release ' . $deployment->release,
-                ], 200);
+                return response()->json(['message' => 'Deploying release ' . $deployment->release], 200);
             }
         }
 
@@ -83,7 +81,5 @@ Route::post('/projects/{project}/deploy', function (Request $request, Project $p
         }
     }
 
-    return response()->json([
-        'message' => 'Nothing to do!',
-    ], 200);
+    return response()->json(['message' => 'Nothing to do!'], 200);
 })->name('api.projects.deploy');
