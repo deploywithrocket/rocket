@@ -84,6 +84,7 @@
                 <inertia-link :href="$route('projects.edit', project)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"><i class="fas fa-cog"></i> Settings</inertia-link>
                 <inertia-link :href="$route('projects.edit.env-file', project)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"><i class="fas fa-key"></i> Environment file</inertia-link>
                 <inertia-link :href="$route('projects.edit.hooks', project)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"><i class="fas fa-code"></i> Hooks</inertia-link>
+                <inertia-link :href="$route('projects.edit.cron-jobs', project)" class="inline-block px-4 py-2 text-sm font-bold bg-gray-200 rounded hover:bg-gray-300"><i class="fas fa-clock"></i> Cron jobs</inertia-link>
             </div>
 
             <div class="w-full p-8 mb-4 bg-white rounded-lg shadow xl:mb-0 xl:w-1/2 xl:mx-2">

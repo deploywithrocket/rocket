@@ -200,6 +200,21 @@ class ProjectController extends Controller
             ->with('success', 'Hooks updated!');
     }
 
+    public function editCronJobs(Project $project)
+    {
+        return inertia('projects/edit/cron-jobs', compact('project'));
+    }
+
+    public function updateCronJobs(Request $request, Project $project)
+    {
+        $project->cron_jobs = $request->cron_jobs;
+        $project->save();
+
+        return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'Cron jobs updated!');
+    }
+
     public function destroy(Project $project)
     {
         $project->delete();
