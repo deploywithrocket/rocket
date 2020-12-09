@@ -400,7 +400,7 @@ trait RemoteJobTrait
 
                 echo '# ROCKET BEGIN $fingerprint' >> \$FILE
                 echo 'SHELL=\"/bin/bash\"' >> \$FILE
-                echo ' . escapeshellarg($cron_jobs) . ' >> \$FILE
+                echo " . escapeshellarg($cron_jobs) . " >> \$FILE
                 echo '# ROCKET END $fingerprint' >> \$FILE
 
                 if [ -s \$FILE ]; then
