@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
 
 /*
  |--------------------------------------------------------------------------
@@ -17,6 +18,14 @@ mix.js('resources/js/app.js', 'public/js')
         processCssUrls: false,
         postCss: [
             require('tailwindcss')()
+        ],
+    })
+    .webpackConfig({
+        plugins: [
+            new MonacoEditorPlugin({
+                languages: ['ini', 'shell'],
+                features: ['!gotoSymbol']
+            })
         ],
     })
     .version()

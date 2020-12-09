@@ -44,7 +44,7 @@
                             <span class="font-mono font-bold">started</span>
                             <p>Right before we start deploying</p>
                         </div>
-                        <form-textarea class="w-2/3 pl-4 mb-4" label="started" name="started" v-model="form.started" :errors="$page.errors.started" rows="20" mono />
+                        <MonacoEditor class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" language="shell" theme="vs-dark" v-model="form.started" :options="{ minimap: {enabled: false}}"/>
                     </div>
 
                     <div class="flex flex-row items-center mb-4">
@@ -52,7 +52,7 @@
                             <span class="font-mono font-bold">provisioned</span>
                             <p>After cloning and installing vendors dependencies</p>
                         </div>
-                        <form-textarea class="w-2/3 pl-4 mb-4" label="provisioned" name="provisioned" v-model="form.provisioned" :errors="$page.errors.provisioned" rows="20" mono />
+                        <MonacoEditor class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" language="shell" theme="vs-dark" v-model="form.provisioned" :options="{ minimap: {enabled: false}}"/>
                     </div>
 
                     <div class="flex flex-row items-center mb-4">
@@ -60,7 +60,7 @@
                             <span class="font-mono font-bold">built</span>
                             <p>Once the production assets have been built</p>
                         </div>
-                        <form-textarea class="w-2/3 pl-4 mb-4" label="built" name="built" v-model="form.built" :errors="$page.errors.built" rows="20" mono />
+                        <MonacoEditor class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" language="shell" theme="vs-dark" v-model="form.built" :options="{ minimap: {enabled: false}}"/>
                     </div>
 
                     <div class="flex flex-row items-center mb-4">
@@ -68,7 +68,7 @@
                             <span class="font-mono font-bold">published</span>
                             <p>Deployment is done and website is live</p>
                         </div>
-                        <form-textarea class="w-2/3 pl-4 mb-4" label="published" name="published" v-model="form.published" :errors="$page.errors.published" rows="20" mono />
+                        <MonacoEditor class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" language="shell" theme="vs-dark" v-model="form.published" :options="{ minimap: {enabled: false}}"/>
                     </div>
 
                     <div class="flex flex-row items-center mb-4">
@@ -76,7 +76,7 @@
                             <span class="font-mono font-bold">finished</span>
                             <p>When the plan is complete</p>
                         </div>
-                        <form-textarea class="w-2/3 pl-4 mb-4" label="finished" name="finished" v-model="form.finished" :errors="$page.errors.finished" rows="20" mono />
+                        <MonacoEditor class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" language="shell" theme="vs-dark" v-model="form.finished" :options="{ minimap: {enabled: false}}"/>
                     </div>
 
                     <div class="flex justify-end mt-8">
@@ -89,8 +89,14 @@
 </template>
 
 <script>
+    import MonacoEditor from 'vue-monaco'
+
     export default {
         layout: require('../../../layouts/app').default,
+
+        components: {
+            MonacoEditor
+        },
 
         props: {
             project: Object,
@@ -109,7 +115,11 @@
         },
 
         mounted() {
-            this.form = { ...this.project.hooks }
+            this.form.started = this.project.hooks.started || ''
+            this.form.provisioned = this.project.hooks.provisioned || ''
+            this.form.built = this.project.hooks.built || ''
+            this.form.published = this.project.hooks.published || ''
+            this.form.finished = this.project.hooks.finished || ''
         },
 
         methods: {

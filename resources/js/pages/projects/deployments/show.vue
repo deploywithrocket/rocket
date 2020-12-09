@@ -49,9 +49,7 @@
             Process output
         </h1>
 
-        <div class="w-full p-8 mb-8 font-mono bg-white rounded-lg shadow">
-            <pre class="p-4 overflow-x-auto bg-gray-100 rounded-lg">{{ deployment.raw_output }}</pre>
-        </div>
+        <pre class="w-full p-8 mb-8 overflow-x-auto font-mono text-sm text-white bg-gray-900 rounded-lg shadow">{{ deployment.raw_output }}</pre>
 
     </div>
 </template>
