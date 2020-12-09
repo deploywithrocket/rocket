@@ -163,12 +163,26 @@ class ProjectController extends Controller
         $project->environment = $request->environment;
         $project->deploy_path = $request->deploy_path;
         $project->discord_webhook_url = $request->discord_webhook_url;
-        $project->push_to_deploy = $request->push_to_deploy;
-        $project->save();
 
-        if ($request->push_to_deploy) {
-            $this->hookPTD($project);
+        if ($request->push_to_deploy && ! $project->push_to_deploy) {
+            // PTD enabled
+            $project->push_to_deploy = $this->addPtdHook($project);
+            if (! $project->push_to_deploy) {
+                return redirect()
+                    ->back()
+                    ->withInput($request->input())
+                    ->with(
+                    'error',
+                    'Rocket was unable to add the push_to_deploy webhook'
+                );
+            }
+        } elseif (! $request->push_to_deploy && $project->push_to_deploy) {
+            // PTD disabled
+            $this->removePTDHook($project);
+            $project->push_to_deploy = null;
         }
+
+        $project->save();
 
         return redirect()
             ->route('projects.show', $project)
@@ -280,21 +294,29 @@ class ProjectController extends Controller
             ->with('success', 'A test message has been sent !');
     }
 
-    public function hookPTD(Project $project)
+    public function addPtdHook(Project $project)
     {
-        $token = $project->tokens()->firstWhere('name', 'ptd_webhook') ?? $project->createToken('ptd_webhook');
+        $token = $project->createToken('ptd-webhook');
 
         [$user, $repo] = explode('/', $project->repository);
         $gh_client = auth()->user()->github()->repository()->hooks();
 
-        // Hook will not register if it already exists
         $wh_url = route('api.projects.deploy', $project) . '?token=' . $token->plainTextToken;
-        rescue(fn () => $gh_client->create($user, $repo, [
+
+        return rescue(fn () => $gh_client->create($user, $repo, [
             'name' => 'web',
             'events' => ['push'],
             'config' => ['url' => $wh_url, 'content_type' => 'json'],
-        ]), null, false);
+        ])['id'], null, false);
+    }
 
-        return true;
+    public function removePtdHook(Project $project)
+    {
+        $project->tokens()->where('name', 'ptd-webhook')->delete();
+
+        [$user, $repo] = explode('/', $project->repository);
+        $gh_client = auth()->user()->github()->repository()->hooks();
+
+        rescue(fn () => $gh_client->remove($user, $repo, $project->push_to_deploy), null, false);
     }
 }

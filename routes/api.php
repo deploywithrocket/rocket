@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\PersonalAccessToken;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,10 +36,10 @@ Route::get('/servers/{server}/connect', function (Server $server) {
 })->name('api.servers.connect');
 
 Route::post('/projects/{project}/deploy', function (Request $request, Project $project) {
-    $token = $project->tokens()->firstWhere('token', $request->token);
+    $token = PersonalAccessToken::findToken($request->token);
 
-    if (! $token) {
-        return response()->json(['error' => 'Token not found.'], 500);
+    if (! $token || $token->tokenable->id != $project->id) {
+        return response()->json(['error' => 'Token not found or auth failed.'], 500);
     }
 
     $token->fill(['last_used_at' => now()])->save();
