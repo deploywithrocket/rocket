@@ -166,7 +166,7 @@
         layout: require('../../layouts/app').default,
 
         props: {
-            project: Object,
+            project: Array,
             deployments: Array,
             deployments_stats: Object,
         },
