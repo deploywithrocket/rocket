@@ -1,6 +1,7 @@
 *
 !.gitignore
 !.htaccess
+!favicon.ico
 !favicon.svg
 !index.php
 !robots.txt

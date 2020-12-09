@@ -78,7 +78,8 @@ trait RemoteJobTrait
 
         if ($this->deployment->project->discord_webhook_url) {
             rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook(null, [
-                'title' => 'Application is now live 🚀🚀! See by yourself: [' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')',
+                'title' => 'Application is now live 🚀🚀!',
+                'description' => 'See by yourself: [' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')',
                 'fields' => [
                     ['name' => 'Project', 'value' => $this->deployment->project->name],
                     ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
@@ -110,7 +111,8 @@ trait RemoteJobTrait
 
         if ($this->deployment->project->discord_webhook_url) {
             rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook(null, [
-                'title' => 'Your project has failed to deploy 😭😭. [Deployment log](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')',
+                'title' => 'Your project has failed to deploy 😭😭',
+                'description' => '[See the deployment log](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')',
                 'fields' => [
                     ['name' => 'Project', 'value' => $this->deployment->project->name],
                     ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
@@ -392,8 +394,10 @@ trait RemoteJobTrait
 
         $this->scripts['deploy:cronjobs'] = '';
 
-        if (is_array($cron_jobs) && count($cron_jobs) > 0) {
+        if ($cron_jobs) {
             $this->scripts['deploy:cronjobs'] .= "
+                echo \"⏲  Setting up cron jobs…\"
+
                 FILE=\$(mktemp)
                 crontab -l > \$FILE || true
 
@@ -401,15 +405,7 @@ trait RemoteJobTrait
 
                 echo '# ROCKET BEGIN $fingerprint' >> \$FILE
                 echo 'SHELL=\"/bin/bash\"' >> \$FILE
-            ";
-
-            foreach ($cron_jobs as $cron_job) {
-                $this->scripts['deploy:cronjobs'] .= '
-                    echo ' . escapeshellarg($cron_job) . ' >> $FILE
-                ';
-            }
-
-            $this->scripts['deploy:cronjobs'] .= "
+                echo " . escapeshellarg($cron_jobs) . " >> \$FILE
                 echo '# ROCKET END $fingerprint' >> \$FILE
 
                 if [ -s \$FILE ]; then

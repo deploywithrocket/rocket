@@ -58,6 +58,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::put('/{project}/env-file', [ProjectController::class, 'updateEnvFile'])->name('update.env-file');
         Route::get('/{project}/edit/hooks', [ProjectController::class, 'editHooks'])->name('edit.hooks');
         Route::put('/{project}/hooks', [ProjectController::class, 'updateHooks'])->name('update.hooks');
+        Route::get('/{project}/edit/cron-jobs', [ProjectController::class, 'editCronJobs'])->name('edit.cron-jobs');
+        Route::put('/{project}/cron-jobs', [ProjectController::class, 'updateCronJobs'])->name('update.cron-jobs');
         Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
         Route::get('/{project}/deploy', [ProjectController::class, 'deploy'])->name('deploy');
         Route::get('/{project}/webhook/discord/test', [ProjectController::class, 'testDiscordWebhook'])->name('test-discord-webhook');
