@@ -23,6 +23,10 @@ class Discord
             ],
         ];
 
+        if ($content == null) {
+            unset($payload['json']['content']);
+        }
+
         if ($embed) {
             switch ($type) {
                 case 'info':

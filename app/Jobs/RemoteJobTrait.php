@@ -44,11 +44,12 @@ trait RemoteJobTrait
         });
 
         if ($this->deployment->project->discord_webhook_url) {
-            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook('Deployment started 🔥🔥!', [
-                'title' => $this->deployment->project->name,
-                'url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook(null, [
+                'title' => 'Deployment started 🔥🔥!',
                 'fields' => [
-                    ['name' => 'Release', 'value' => $this->deployment->release, 'inline' => true],
+                    ['name' => 'Project', 'value' => $this->deployment->project->name],
+                    ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
+                    ['name' => 'Release', 'value' => '[' . $this->deployment->release . '](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')', 'inline' => true],
                     ['name' => 'Commit', 'value' => $this->deployment->commit['from_branch'] . '@' . substr($this->deployment->commit['sha'], 0, 7), 'inline' => true],
                     ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
                 ],
@@ -74,11 +75,12 @@ trait RemoteJobTrait
         }
 
         if ($this->deployment->project->discord_webhook_url) {
-            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook('Application is now live 🚀🚀!', [
-                'title' => $this->deployment->project->name,
-                'url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook(null, [
+                'title' => 'Application is now live 🚀🚀! See by yourself: [' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')',
                 'fields' => [
-                    ['name' => 'Release', 'value' => $this->deployment->release, 'inline' => true],
+                    ['name' => 'Project', 'value' => $this->deployment->project->name],
+                    ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
+                    ['name' => 'Release', 'value' => '[' . $this->deployment->release . '](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')', 'inline' => true],
                     ['name' => 'Commit', 'value' => $this->deployment->commit['from_branch'] . '@' . substr($this->deployment->commit['sha'], 0, 7), 'inline' => true],
                     ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
                 ],
@@ -104,11 +106,12 @@ trait RemoteJobTrait
         }
 
         if ($this->deployment->project->discord_webhook_url) {
-            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook('Your project has failed to deploy 😭😭', [
-                'title' => $this->deployment->project->name,
-                'url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
+            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook(null, [
+                'title' => 'Your project has failed to deploy 😭😭. [Deployment log](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')',
                 'fields' => [
-                    ['name' => 'Release', 'value' => $this->deployment->release, 'inline' => true],
+                    ['name' => 'Project', 'value' => $this->deployment->project->name],
+                    ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
+                    ['name' => 'Release', 'value' => '[' . $this->deployment->release . '](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')', 'inline' => true],
                     ['name' => 'Commit', 'value' => $this->deployment->commit['from_branch'] . '@' . substr($this->deployment->commit['sha'], 0, 7), 'inline' => true],
                     ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
                 ],
