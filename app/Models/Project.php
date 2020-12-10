@@ -66,4 +66,17 @@ class Project extends Model
             return 'https://icons.duckduckgo.com/ip3/' . parse_url($this->live_url, PHP_URL_HOST) . '.ico';
         });
     }
+
+    public function getRepositoryUrlAttribute()
+    {
+        if ($github_account = $this->user->github_account) {
+            return ''
+                . 'https://'
+                . $github_account->provider_user_name . ':' . $github_account->token
+                . '@github.com'
+                . '/' . $this->repository . '.git';
+        }
+
+        return 'https://github.com/' . $this->repository . '.git';
+    }
 }

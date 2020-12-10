@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Deployment;
+use App\Utils\ShellScriptRenderer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,37 +28,30 @@ class DeployJob implements ShouldQueue
     public function handle()
     {
         $this->defineConfig();
-        $this->defineTasks();
-
         $this->beforeHandle();
+
+        $sh_renderer = new ShellScriptRenderer($this->deployment);
 
         try {
             $process = $this->ssh->execute([
-                $this->scripts['setup:repository'],
-                $this->scripts['setup:directories'],
-                $this->scripts['deploy:starting'],
-                $this->scripts['deploy:check'],
-                $this->scripts['deploy:started'],
-                $this->scripts['deploy:provisioning'],
-                $this->scripts['deploy:fetch'],
-                $this->scripts['deploy:release'],
-                $this->scripts['deploy:link'],
-                // $this->scripts['deploy:copy'],
-                $this->scripts['deploy:dotenv'],
-                $this->scripts['deploy:composer'],
-                $this->scripts['deploy:npm'],
-                $this->scripts['deploy:provisioned'],
-                $this->scripts['deploy:building'],
-                $this->scripts['deploy:build'],
-                $this->scripts['deploy:built'],
-                $this->scripts['deploy:publishing'],
-                $this->scripts['deploy:symlink'],
-                $this->scripts['deploy:publish'],
-                $this->scripts['deploy:cronjobs'],
-                $this->scripts['deploy:published'],
-                $this->scripts['deploy:finishing'],
-                $this->scripts['deploy:cleanup'],
-                $this->scripts['deploy:finished'],
+                $sh_renderer->render('setup.repository'),
+                $sh_renderer->render('setup.directories'),
+                $sh_renderer->render('deploy.check'),
+                $sh_renderer->render('hooks.started'),
+                $sh_renderer->render('deploy.fetch'),
+                $sh_renderer->render('deploy.clone'),
+                $sh_renderer->render('deploy.link'),
+                $sh_renderer->render('deploy.dotenv'),
+                $sh_renderer->render('deploy.composer'),
+                $sh_renderer->render('deploy.npm'),
+                $sh_renderer->render('hooks.provisioned'),
+                $sh_renderer->render('deploy.build'),
+                $sh_renderer->render('hooks.built'),
+                $sh_renderer->render('deploy.symlink'),
+                $sh_renderer->render('deploy.cronjobs'),
+                $sh_renderer->render('hooks.published'),
+                $sh_renderer->render('deploy.cleanup'),
+                $sh_renderer->render('hooks.finished'),
             ]);
 
             if (! $process->isSuccessful()) {

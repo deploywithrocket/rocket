@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /*
@@ -28,4 +29,14 @@ Artisan::command('users:create', function () {
     $user->save();
 
     $this->line('User created with id: ' . $user->id);
+});
+
+Artisan::command('fix:keys', function () {
+    $files = Storage::allFiles('keys');
+
+    foreach ($files as $file) {
+        File::chmod(Storage::path($file), 0600);
+    }
+
+    // File::chmod(Storage::path('keys'), 0700);
 });
