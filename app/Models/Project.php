@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class Project extends Model
 {
     use Concerns\HasUlid;
     use HasApiTokens;
+    use Notifiable;
 
     protected $guarded = [];
 

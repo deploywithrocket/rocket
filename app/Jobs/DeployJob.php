@@ -2,8 +2,10 @@
 
 namespace App\Jobs;
 
-use App\Http\Utils\Discord;
 use App\Models\Deployment;
+use App\Notifications\DeployFailed;
+use App\Notifications\DeployStarted;
+use App\Notifications\DeploySuccessful;
 use App\Utils\ShellScriptRenderer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,9 +24,8 @@ class DeployJob implements ShouldQueue
     public $timeout = 60 * 15;
 
     protected $ssh;
-    protected $github_deployment_id;
-
     protected Deployment $deployment;
+    protected $github_deployment_id;
 
     public function __construct(Deployment $deployment)
     {
@@ -33,17 +34,15 @@ class DeployJob implements ShouldQueue
 
     public function handle()
     {
+        $this->before();
+
         $this->ssh = SSH::create(
             $this->deployment->server->ssh_user,
             $this->deployment->server->ssh_host
-        )
+            )
             ->usePrivateKey(Storage::path('keys/' . $this->deployment->server->id))
             ->onOutput(fn ($type, $line) => $this->appendToOutput($line))
             ->disableStrictHostKeyChecking();
-
-        $this->before();
-        $this->execute();
-        $this->after();
 
         $sh_renderer = new ShellScriptRenderer($this->deployment);
 
@@ -71,6 +70,8 @@ class DeployJob implements ShouldQueue
         if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
+
+        $this->after();
     }
 
     protected function before()
@@ -79,36 +80,18 @@ class DeployJob implements ShouldQueue
         $this->deployment->started_at = now();
         $this->deployment->save();
 
-        rescue(function () {
+        $this->github_deployment_id = rescue(function () {
             $gh_client = $this->deployment->project->user->github()->deployments();
             [$user, $repo] = explode('/', $this->deployment->project->repository);
 
-            $this->github_deployment_id = $gh_client->create($user, $repo, [
+            return $gh_client->create($user, $repo, [
                 'ref' => $this->deployment->commit['from_ref'] ? 'refs/' . $this->deployment->commit['from_ref'] : $this->deployment->commit['sha'],
                 'environment' => $this->deployment->project->environment,
                 'auto_merge' => false,
             ])['id'];
+        }, null, false);
 
-            $gh_client->updateStatus($user, $repo, $this->github_deployment_id, [
-                'state' => 'pending',
-                'log_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
-                'environment_url' => $this->deployment->project->live_url,
-            ]);
-        });
-
-        if ($this->deployment->project->discord_webhook_url) {
-            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook(null, [
-                'title' => 'Deployment started 🔥🔥!',
-                'fields' => [
-                    ['name' => 'Project', 'value' => $this->deployment->project->name],
-                    ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
-                    ['name' => 'Release', 'value' => '[' . $this->deployment->release . '](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')', 'inline' => true],
-                    ['name' => 'Commit', 'value' => substr($this->deployment->commit['sha'], 0, 7) . ($this->deployment->commit['from_ref'] ? ' (' . $this->deployment->commit['from_ref'] . ')' : ''), 'inline' => true],
-                    ['name' => 'Commit message', 'value' => $this->deployment->commit['message'], 'inline' => true],
-                    ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
-                ],
-            ], 'info'));
-        }
+        $this->deployment->project->notify(new DeployStarted($this->deployment, $this->github_deployment_id));
     }
 
     protected function after()
@@ -117,70 +100,18 @@ class DeployJob implements ShouldQueue
         $this->deployment->ended_at = now();
         $this->deployment->save();
 
-        if ($this->github_deployment_id ?? null) {
-            rescue(function () {
-                $gh_client = $this->deployment->project->user->github()->deployments();
-                [$user, $repo] = explode('/', $this->deployment->project->repository);
-
-                $gh_client->updateStatus($user, $repo, $this->github_deployment_id, [
-                    'state' => 'success',
-                    'log_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
-                    'environment_url' => $this->deployment->project->live_url,
-                ]);
-            });
-        }
-
-        if ($this->deployment->project->discord_webhook_url) {
-            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook(null, [
-                'title' => 'Application is now live 🚀🚀!',
-                'description' => 'See by yourself: [' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')',
-                'fields' => [
-                    ['name' => 'Project', 'value' => $this->deployment->project->name],
-                    ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
-                    ['name' => 'Release', 'value' => '[' . $this->deployment->release . '](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')', 'inline' => true],
-                    ['name' => 'Commit', 'value' => substr($this->deployment->commit['sha'], 0, 7) . ($this->deployment->commit['from_ref'] ? ' (' . $this->deployment->commit['from_ref'] . ')' : ''), 'inline' => true],
-                    ['name' => 'Commit message', 'value' => $this->deployment->commit['message'], 'inline' => true],
-                    ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
-                ],
-            ], 'success'));
-        }
+        $this->deployment->project->notify(new DeploySuccessful($this->deployment, $this->github_deployment_id));
 
         dispatch(new PingJob($this->deployment));
     }
 
-    protected function failed()
+    public function failed()
     {
         $this->deployment->status = 'error';
         $this->deployment->ended_at = now();
         $this->deployment->save();
 
-        if ($this->github_deployment_id ?? null) {
-            rescue(function () {
-                $gh_client = $this->deployment->project->user->github()->deployments();
-                [$user, $repo] = explode('/', $this->deployment->project->repository);
-
-                $gh_client->updateStatus($user, $repo, $this->github_deployment_id, [
-                    'state' => 'error',
-                    'log_url' => route('projects.deployments.show', [$this->deployment->project, $this->deployment]),
-                    'environment_url' => $this->deployment->project->live_url,
-                ]);
-            });
-        }
-
-        if ($this->deployment->project->discord_webhook_url) {
-            rescue(fn () => (new Discord($this->deployment->project->discord_webhook_url))->webhook(null, [
-                'title' => 'Your project has failed to deploy 😭😭',
-                'description' => '[See the deployment log](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')',
-                'fields' => [
-                    ['name' => 'Project', 'value' => $this->deployment->project->name],
-                    ['name' => 'URL', 'value' => '[' . $this->deployment->project->live_url . '](' . $this->deployment->project->live_url . ')'],
-                    ['name' => 'Release', 'value' => '[' . $this->deployment->release . '](' . route('projects.deployments.show', [$this->deployment->project, $this->deployment]) . ')', 'inline' => true],
-                    ['name' => 'Commit', 'value' => substr($this->deployment->commit['sha'], 0, 7) . ($this->deployment->commit['from_ref'] ? ' (' . $this->deployment->commit['from_ref'] . ')' : ''), 'inline' => true],
-                    ['name' => 'Commit message', 'value' => $this->deployment->commit['message'], 'inline' => true],
-                    ['name' => 'Server', 'value' => $this->deployment->server->name, 'inline' => true],
-                ],
-            ], 'error'));
-        }
+        $this->deployment->project->notify(new DeployFailed($this->deployment, $this->github_deployment_id));
     }
 
     protected function appendToOutput($buffer)
