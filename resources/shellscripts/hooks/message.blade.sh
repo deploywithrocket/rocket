@@ -1,1 +1,1 @@
-echo "💻  Executing {!! $hook_name !!} hook"
+echo "💻  Executing {!! $hook_name !!} hook…"
