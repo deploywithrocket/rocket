@@ -1,4 +1,4 @@
-<p align="center"><img src="./.github/header.png" alt="Rocket Header"></p>
+<p align="center"><img src="./.github/header.jpg" alt="Rocket Header"></p>
 
 # 🚀 Rocket
 
