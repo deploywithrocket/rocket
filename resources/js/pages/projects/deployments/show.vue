@@ -55,6 +55,17 @@
                             <td class="px-5 py-3">{{ deployment.status }}</td>
                         </tr>
                         <tr class="even:bg-gray-50">
+                            <td class="px-5 py-3 text-sm font-bold">Post-deployment ping</td>
+                            <td class="px-5 py-3">
+                                <template v-if="deployment.ping">
+                                    {{ deployment.ping.status }} (code: {{ deployment.ping.status_code }}, in {{ deployment.ping.request_duration }}ms)
+                                </template>
+                                <template v-else>
+                                    N/A
+                                </template>
+                            </td>
+                        </tr>
+                        <tr class="even:bg-gray-50">
                             <td class="px-5 py-3 text-sm font-bold">Release</td>
                             <td class="px-5 py-3">{{ deployment.release }}</td>
                         </tr>

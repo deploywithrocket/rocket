@@ -89,6 +89,8 @@ class ProjectDeploymentController extends Controller
     {
         abort_if($deployment->project_id != $project->id, 404);
 
+        $deployment->load('ping');
+
         return inertia('projects/deployments/show', compact('project', 'deployment'));
     }
 }

@@ -215,11 +215,6 @@
                         target: this.project.branch,
                     })
                 }
-            },
-            destroy() {
-                if (confirm("Do you really want to remove this project?")) {
-                    this.$inertia.delete(this.$route('projects.destroy', this.project))
-                }
             }
         }
     }
