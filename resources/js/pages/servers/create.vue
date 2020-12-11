@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="flex justify-end mt-8">
-                        <button class="px-4 py-2 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none">Add</button>
+                        <button class="inline-block px-4 py-2 text-sm font-semibold text-white transition duration-150 ease-in-out bg-pink-500 rounded-lg hover:bg-pink-600 focus:outline-none">Add</button>
                     </div>
                 </div>
             </div>

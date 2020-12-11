@@ -22,9 +22,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gray: colors.trueGray,
+        gray: {
+          ...colors.trueGray,
+          '900': '#1F1F1F',
+        },
         orange: colors.orange,
-        pink: colors.pink,
+        pink: {
+          ...colors.pink,
+          '500': '#FD3A84',
+        },
       },
       screens: {
         xl: "1140px",

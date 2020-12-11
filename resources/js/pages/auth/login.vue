@@ -1,5 +1,5 @@
 <template>
-    <form class="max-w-sm p-8 mx-auto bg-white rounded-lg shadow" @submit.prevent="submit">
+    <form class="w-full max-w-sm p-8 mx-auto bg-white rounded-lg shadow-md" @submit.prevent="submit">
         <h1 class="mb-8 text-2xl font-bold">Sign in to your account</h1>
 
         <form-input class="mb-4"
@@ -20,7 +20,7 @@
                 required
                 autocomplete="current-password" />
 
-        <button class="w-full py-3 text-sm font-semibold text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none">Sign In</button>
+        <button class="inline-block w-full px-4 py-3 text-sm font-semibold text-center text-white transition duration-150 ease-in-out bg-pink-500 rounded-lg shadow-md focus:border-brand-700 active:bg-brand-700 focus:outline-none focus:shadow-outline hover:bg-pink-600">Sign In</button>
     </form>
 </template>
 
