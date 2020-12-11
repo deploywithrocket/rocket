@@ -23,7 +23,7 @@ module.exports = {
     extend: {
       colors: {
         gray: {
-          ...colors.trueGray,
+          ...colors.gray,
           '900': '#1F1F1F',
         },
         orange: colors.orange,
@@ -41,7 +41,9 @@ module.exports = {
       padding: "1rem",
     },
   },
-  variants: {},
+  variants: {
+    backgroundColor: ['hover', 'focus', 'even'],
+  },
   plugins: [
     require('@tailwindcss/custom-forms')
   ],

@@ -74,6 +74,17 @@ class ProjectDeploymentController extends Controller
             ->with('success', 'Project queued for deployment');
     }
 
+    public function index(Project $project)
+    {
+        $deployments = $project
+            ->deployments()
+            ->with('ping')
+            ->latest()
+            ->paginate();
+
+        return inertia('projects/deployments/index', compact('project', 'deployments'));
+    }
+
     public function show(Project $project, Deployment $deployment)
     {
         abort_if($deployment->project_id != $project->id, 404);
