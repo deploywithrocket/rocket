@@ -72,7 +72,9 @@ class ProjectController extends Controller
             $project->linked_dirs = ['storage/app', 'storage/framework', 'storage/logs'];
             $project->hooks = [
                 'built' => ''
-                    . 'cd [[release]]' . PHP_EOL
+                    . 'cd {!! $release_path !!}' . PHP_EOL
+                    . PHP_EOL
+                    . 'echo "⭐  Laravel magic!"' . PHP_EOL
                     . PHP_EOL
                     . 'php artisan down' . PHP_EOL
                     . PHP_EOL

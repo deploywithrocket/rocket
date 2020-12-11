@@ -19,29 +19,33 @@
                             Like any other step during your deployment, if a deployment hook exits with a non-zero status code, the entire deployment will be cancelled. This prevents your applications from experiencing downtime with a broken deployment.
                         </div>
                         <div class="mb-4">
-                            You may use the following variables within your deployment hook scripts:<br>
+                            <p>
+                                Under the hood, Rocket uses Laravel Blade templating system to build the final deployment script.<br>
+                                You may use the following variables within your hooks:
+                            </p>
+
                             <table class="w-full table-auto">
                                 <tbody>
                                     <tr class="border-b">
-                                        <td class="font-mono text-sm font-bold">[[project]]</td>
+                                        <td class="font-mono text-sm font-bold">{!! $deploy_path !!}</td>
                                         <td class="p-2">
                                             Resolves to the project's root directory
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="font-mono text-sm font-bold">[[release]]</td>
+                                        <td class="font-mono text-sm font-bold">{!! $release_path !!}</td>
                                         <td class="p-2">
                                             Resolves to the current release path, within releases
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="font-mono text-sm font-bold">[[ref]]</td>
+                                        <td class="font-mono text-sm font-bold">{!! $ref !!}</td>
                                         <td class="p-2">
                                             Resolves to the ref that is being deployed
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="font-mono text-sm font-bold">[[sha]]</td>
+                                        <td class="font-mono text-sm font-bold">{!! $sha !!}</td>
                                         <td class="p-2">
                                             Resolves to the commit hash that is being deployed
                                         </td>
