@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class Project extends Model
 {
     use Concerns\HasUlid;
     use HasApiTokens;
+    use Notifiable;
 
     protected $guarded = [];
 
@@ -65,5 +67,18 @@ class Project extends Model
         return rescue(function () {
             return 'https://icons.duckduckgo.com/ip3/' . parse_url($this->live_url, PHP_URL_HOST) . '.ico';
         });
+    }
+
+    public function getRepositoryUrlAttribute()
+    {
+        if ($github_account = $this->user->github_account) {
+            return ''
+                . 'https://'
+                . $github_account->provider_user_name . ':' . $github_account->token
+                . '@github.com'
+                . '/' . $this->repository . '.git';
+        }
+
+        return 'https://github.com/' . $this->repository . '.git';
     }
 }
