@@ -13,8 +13,7 @@ class ProjectController extends Controller
     {
         $projects = Project::query()
             ->with('latest_deployment')
-            ->get()
-            ->sortByDesc('latest_deployment.created_at');
+            ->paginate(20);
 
         return inertia('projects/index', [
             'projects' => $projects,
@@ -111,7 +110,7 @@ class ProjectController extends Controller
             ->deployments()
             ->with('ping')
             ->latest()
-            ->limit(10)
+            ->limit(5)
             ->get();
 
         $deployments_stats = [
@@ -124,14 +123,19 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
+        return redirect()->route('projects.edit.common', $project);
+    }
+
+    public function editCommon(Project $project)
+    {
         $servers = Server::query()
             ->where('status', 'connected')
             ->pluck('name', 'id');
 
-        return inertia('projects/edit', compact('project', 'servers'));
+        return inertia('projects/edit/common', compact('project', 'servers'));
     }
 
-    public function update(Request $request, Project $project)
+    public function updateCommon(Request $request, Project $project)
     {
         $validator = validator()->make($request->input(), [
             'name' => ['required', 'string', 'max:255'],
@@ -187,7 +191,7 @@ class ProjectController extends Controller
         $project->save();
 
         return redirect()
-            ->route('projects.show', $project)
+            ->route('projects.edit.common', $project)
             ->with('success', 'Project updated!');
     }
 
@@ -202,7 +206,7 @@ class ProjectController extends Controller
         $project->save();
 
         return redirect()
-            ->route('projects.show', $project)
+            ->route('projects.edit.env-file', $project)
             ->with('success', 'Environment file updated!');
     }
 
@@ -223,7 +227,7 @@ class ProjectController extends Controller
         $project->save();
 
         return redirect()
-            ->route('projects.show', $project)
+            ->route('projects.edit.hooks', $project)
             ->with('success', 'Hooks updated!');
     }
 
@@ -238,7 +242,7 @@ class ProjectController extends Controller
         $project->save();
 
         return redirect()
-            ->route('projects.show', $project)
+            ->route('projects.edit.cron-jobs', $project)
             ->with('success', 'Cron jobs updated!');
     }
 
@@ -254,7 +258,7 @@ class ProjectController extends Controller
         $project->save();
 
         return redirect()
-            ->route('projects.show', $project)
+            ->route('projects.edit.shared', $project)
             ->with('success', 'Linked directories updated!');
     }
 

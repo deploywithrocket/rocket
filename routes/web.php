@@ -53,7 +53,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/', [ProjectController::class, 'store'])->name('store');
         Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
         Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
-        Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
+        Route::get('/{project}/edit/common', [ProjectController::class, 'editCommon'])->name('edit.common');
+        Route::put('/{project}/common', [ProjectController::class, 'updateCommon'])->name('update.common');
         Route::get('/{project}/edit/env-file', [ProjectController::class, 'editEnvFile'])->name('edit.env-file');
         Route::put('/{project}/env-file', [ProjectController::class, 'updateEnvFile'])->name('update.env-file');
         Route::get('/{project}/edit/hooks', [ProjectController::class, 'editHooks'])->name('edit.hooks');
@@ -66,6 +67,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/{project}/webhook/discord/test', [ProjectController::class, 'testDiscordWebhook'])->name('test-discord-webhook');
         Route::get('/{project}/deployments/create', [ProjectDeploymentController::class, 'create'])->name('deployments.create');
         Route::post('/{project}/deployments', [ProjectDeploymentController::class, 'store'])->name('deployments.store');
+        Route::get('/{project}/deployments', [ProjectDeploymentController::class, 'index'])->name('deployments.index');
         Route::get('/{project}/deployments/{deployment}', [ProjectDeploymentController::class, 'show'])->name('deployments.show');
     });
 });

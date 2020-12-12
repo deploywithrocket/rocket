@@ -1,17 +1,33 @@
 <template>
-    <div class="max-w-sm p-8 mx-auto bg-white rounded-lg shadow lg:max-w-3xl">
-        <div class="mb-8">
-            <h1 class="text-2xl font-bold">Welcome to <span class="text-pink-500">Rocket</span></h1>
-            Ready for take off!
-        </div>
+    <div>
+        <nav class="flex items-center mb-8 font-semibold">
+            Home
+        </nav>
 
-        <div v-if="!github_account">
-            <div class="mb-2">In order to deploy private projects, you have to connect your GitHub account.</div>
-
-            <a href="/auth/github" class="px-4 py-2 text-sm font-semibold bg-gray-100 rounded hover:bg-gray-200"><i class="fab fa-github"></i> Connect to GitHub</a>
-        </div>
-        <div v-else>
-            <i class="fab fa-github"></i> Connected to {{ github_account.provider_user_name }}
+        <div class="flex flex-col items-start w-full mx-auto mb-8 overflow-hidden bg-white rounded shadow-sm">
+            <div class="w-full px-5 py-4 bg-gray-50">
+                <h2 class="font-semibold">Welcome!</h2>
+            </div>
+            <div class="w-full px-5 py-4">
+                <div v-if="!github_account">
+                    In order to deploy private projects, you have to connect your GitHub account.
+                </div>
+                <div v-else>
+                    We are now ready for take off!
+                </div>
+            </div>
+            <div class="w-full px-5 py-4 text-sm bg-gray-50">
+                <div class="flex justify-end">
+                    <a href="/auth/github" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-200 ease-in-out bg-gray-200 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-gray-500"><i class="mr-1 opacity-50 fab fa-github"></i>
+                        <span v-if="!github_account">
+                            Connect to GitHub
+                        </span>
+                        <span v-else>
+                            Reconnect to GitHub
+                        </span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </template>

@@ -22,12 +22,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gray: colors.trueGray,
+        gray: {
+          ...colors.gray,
+          '900': '#1F1F1F',
+        },
         orange: colors.orange,
-        pink: colors.pink,
-      },
-      screens: {
-        xl: "1140px",
+        pink: {
+          ...colors.pink,
+          '500': '#FD3A84',
+        },
       },
     },
     container: {
@@ -35,7 +38,9 @@ module.exports = {
       padding: "1rem",
     },
   },
-  variants: {},
+  variants: {
+    backgroundColor: ['hover', 'focus', 'even'],
+  },
   plugins: [
     require('@tailwindcss/custom-forms')
   ],
