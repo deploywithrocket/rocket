@@ -19,9 +19,8 @@
                     <thead>
                         <tr class="border-b border-gray-100">
                             <th class="px-5 py-3 text-sm font-semibold text-center">Name</th>
-                            <th class="px-5 py-3 text-sm font-semibold text-center">Repository</th>
-                            <th class="px-5 py-3 text-sm font-semibold text-center">Branch</th>
-                            <th class="px-5 py-3 text-sm font-semibold text-center">Added at</th>
+                            <th class="hidden px-5 py-3 text-sm font-semibold text-center md:table-cell">Repository</th>
+                            <th class="hidden px-5 py-3 text-sm font-semibold text-center md:table-cell">Branch</th>
                             <th class="px-5 py-3 text-sm font-semibold text-center">Last deployment</th>
                         </tr>
                     </thead>
@@ -33,13 +32,11 @@
                                     <div class="truncate">{{ project.name }}</div>
                                 </div>
                             </td>
-                            <td class="px-5 py-3 truncate">
+                            <td class="hidden px-5 py-3 truncate md:table-cell">
                                 <img :src="'https://github.com/' + project.repository.split('/')[0] + '.png'" class="inline w-6 h-6 mr-1 rounded ">
-
                                 {{ project.repository }}
                             </td>
-                            <td class="px-5 py-3 font-mono text-center truncate">{{ project.branch }}</td>
-                            <td class="px-5 py-3 text-center truncate">{{ $moment(project.created_at).format('L') }} {{ $moment(project.created_at).format('LT') }}</td>
+                            <td class="hidden px-5 py-3 font-mono text-center truncate md:table-cell">{{ project.branch }}</td>
                             <td class="px-5 py-3 text-center truncate">
                                 <template v-if="project.latest_deployment">
                                     {{ $moment(project.latest_deployment.created_at).format('L') }} {{ $moment(project.latest_deployment.created_at).format('LTS') }}

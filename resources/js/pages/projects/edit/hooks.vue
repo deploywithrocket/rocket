@@ -10,7 +10,7 @@
             Hooks
         </nav>
 
-        <div class="flex flex-row">
+        <div class="flex flex-col md:flex-row">
             <project-edit-nav :project="project" />
 
             <div class="flex flex-col items-start w-full mb-8 overflow-hidden bg-white rounded shadow-sm">
@@ -25,34 +25,34 @@
                                 Like any other step during your deployment, if a deployment hook exits with a non-zero status code, the entire deployment will be cancelled. This prevents your applications from experiencing downtime with a broken deployment.
                             </div>
                             <div class="mb-4">
-                                <p>
+                                <p class="mb-4">
                                     Under the hood, Rocket uses Laravel Blade templating system to build the final deployment script.<br>
                                     You may use the following variables within your hooks:
                                 </p>
 
-                                <table class="w-full table-auto">
+                                <table class="w-full border border-gray-100 table-auto">
                                     <tbody>
-                                        <tr class="border-b">
-                                            <td class="font-mono text-sm font-bold">{!! $deploy_path !!}</td>
-                                            <td class="p-2">
+                                        <tr class="border-b border-gray-100 even:bg-gray-50">
+                                            <td class="px-5 py-3 font-mono text-sm font-bold">{!! $deploy_path !!}</td>
+                                            <td class="px-5 py-3">
                                                 Resolves to the project's root directory
                                             </td>
                                         </tr>
-                                        <tr class="border-b">
-                                            <td class="font-mono text-sm font-bold">{!! $release_path !!}</td>
-                                            <td class="p-2">
+                                        <tr class="border-b border-gray-100 even:bg-gray-50">
+                                            <td class="px-5 py-3 font-mono text-sm font-bold">{!! $release_path !!}</td>
+                                            <td class="px-5 py-3">
                                                 Resolves to the current release path, within releases
                                             </td>
                                         </tr>
-                                        <tr class="border-b">
-                                            <td class="font-mono text-sm font-bold">{!! $ref !!}</td>
-                                            <td class="p-2">
+                                        <tr class="border-b border-gray-100 even:bg-gray-50">
+                                            <td class="px-5 py-3 font-mono text-sm font-bold">{!! $ref !!}</td>
+                                            <td class="px-5 py-3">
                                                 Resolves to the ref that is being deployed
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td class="font-mono text-sm font-bold">{!! $sha !!}</td>
-                                            <td class="p-2">
+                                        <tr class="border-b border-gray-100 even:bg-gray-50">
+                                            <td class="px-5 py-3 font-mono text-sm font-bold">{!! $sha !!}</td>
+                                            <td class="px-5 py-3">
                                                 Resolves to the commit hash that is being deployed
                                             </td>
                                         </tr>
@@ -61,44 +61,44 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-row items-center mb-4">
-                            <div class="w-1/3">
+                        <div class="flex flex-col items-center mb-4 lg:flex-row">
+                            <div class="w-full mb-4 lg:w-1/3">
                                 <span class="font-mono font-bold">started</span>
                                 <p>Right before we start deploying</p>
                             </div>
-                            <codemirror class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" v-model="form.started" :options="options"></codemirror>
+                            <codemirror class="w-full mb-4 border border-gray-100 lg:ml-4 lg:w-2/3 h-72" v-model="form.started" :options="options"></codemirror>
                         </div>
 
-                        <div class="flex flex-row items-center mb-4">
-                            <div class="w-1/3">
+                        <div class="flex flex-col items-center mb-4 lg:flex-row">
+                            <div class="w-full mb-4 lg:w-1/3">
                                 <span class="font-mono font-bold">provisioned</span>
                                 <p>After cloning and installing vendors dependencies</p>
                             </div>
-                            <codemirror class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" v-model="form.provisioned" :options="options"></codemirror>
+                            <codemirror class="w-full mb-4 border border-gray-100 lg:ml-4 lg:w-2/3 h-72" v-model="form.provisioned" :options="options"></codemirror>
                         </div>
 
-                        <div class="flex flex-row items-center mb-4">
-                            <div class="w-1/3">
+                        <div class="flex flex-col items-center mb-4 lg:flex-row">
+                            <div class="w-full mb-4 lg:w-1/3">
                                 <span class="font-mono font-bold">built</span>
                                 <p>Once the production assets have been built</p>
                             </div>
-                            <codemirror class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" v-model="form.built" :options="options"></codemirror>
+                            <codemirror class="w-full mb-4 border border-gray-100 lg:ml-4 lg:w-2/3 h-72" v-model="form.built" :options="options"></codemirror>
                         </div>
 
-                        <div class="flex flex-row items-center mb-4">
-                            <div class="w-1/3">
+                        <div class="flex flex-col items-center mb-4 lg:flex-row">
+                            <div class="w-full mb-4 lg:w-1/3">
                                 <span class="font-mono font-bold">published</span>
                                 <p>Deployment is done and website is live</p>
                             </div>
-                            <codemirror class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" v-model="form.published" :options="options"></codemirror>
+                            <codemirror class="w-full mb-4 border border-gray-100 lg:ml-4 lg:w-2/3 h-72" v-model="form.published" :options="options"></codemirror>
                         </div>
 
-                        <div class="flex flex-row items-center mb-4">
-                            <div class="w-1/3">
+                        <div class="flex flex-col items-center mb-4 lg:flex-row">
+                            <div class="w-full mb-4 lg:w-1/3">
                                 <span class="font-mono font-bold">finished</span>
                                 <p>When the plan is complete</p>
                             </div>
-                            <codemirror class="w-2/3 mb-4 ml-4 bg-gray-100 border h-72" v-model="form.finished" :options="options"></codemirror>
+                            <codemirror class="w-full mb-4 border border-gray-100 lg:ml-4 lg:w-2/3 h-72" v-model="form.finished" :options="options"></codemirror>
                         </div>
                     </div>
                     <div class="w-full px-5 py-4 text-sm bg-gray-50">

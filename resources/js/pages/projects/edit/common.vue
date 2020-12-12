@@ -10,7 +10,7 @@
             Common
         </nav>
 
-        <div class="flex flex-row">
+        <div class="flex flex-col md:flex-row">
             <project-edit-nav :project="project" />
 
             <form @submit.prevent="submit" class="w-full">

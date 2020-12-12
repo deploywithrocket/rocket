@@ -10,7 +10,7 @@
             Cron jobs
         </nav>
 
-        <div class="flex flex-row">
+        <div class="flex flex-col md:flex-row">
             <project-edit-nav :project="project" />
 
             <div class="flex flex-col items-start w-full mb-8 overflow-hidden bg-white rounded shadow-sm">

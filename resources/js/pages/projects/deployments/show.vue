@@ -89,7 +89,7 @@
                                 <a :href="'https://github.com/' + deployment.commit.repo + '/commit/' + deployment.commit.sha" class="font-mono hover:underline" target="_blank">{{ deployment.commit.sha ? deployment.commit.sha.substring(0, 7) : '-' }}</a>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="even:bg-gray-50">
                             <td class="px-5 py-3 text-sm font-bold">Commit message</td>
                             <td class="px-5 py-3">
                                 {{ deployment.commit.message }}
