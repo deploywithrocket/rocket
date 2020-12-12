@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="flex items-center my-8 font-semibold">
+        <nav class="flex items-center mb-8 font-semibold">
             <inertia-link :href="$route('projects.index')" class="text-gray-500 hover:underline">Projects</inertia-link>
             <div class="px-3 text-xs text-gray-400"><i class="fas fa-chevron-right"></i></div>
             <inertia-link :href="$route('projects.show', project)" class="text-gray-500 hover:underline">{{ project.name }}</inertia-link>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="flex items-center my-8 font-semibold">
+        <nav class="flex items-center mb-8 font-semibold">
             Projects
         </nav>
 
@@ -11,7 +11,7 @@
                         <h2>All projects</h2>
                         <div class="mx-auto"></div>
                         <inertia-link :href="$route('projects.create')" class="inline-block px-4 py-2 text-sm font-semibold text-white transition duration-150 ease-in-out bg-pink-500 rounded-lg hover:bg-pink-600">
-                            <i class="mr-1 fas fa-plus"></i> Add project
+                            <i class="mr-1 opacity-75 fas fa-plus"></i> Add project
                         </inertia-link>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="flex items-center my-8 font-semibold">
+        <nav class="flex items-center mb-8 font-semibold">
             <inertia-link :href="$route('servers.index')" class="text-gray-500 hover:underline">Servers</inertia-link>
             <div class="px-3 text-xs text-gray-400"><i class="fas fa-chevron-right"></i></div>
             Add
@@ -23,7 +23,7 @@
                     </div>
                     <div class="w-full px-5 py-4 text-sm bg-gray-50">
                         <div class="flex justify-end">
-                            <button class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-150 ease-in-out bg-gray-200 rounded-lg hover:bg-gray-300"><i class="mr-1 fas fa-plus"></i> Add</button>
+                            <button class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-150 ease-in-out bg-gray-200 rounded-lg hover:bg-gray-300"><i class="mr-1 opacity-75 fas fa-plus"></i> Add</button>
                         </div>
                     </div>
                 </form>

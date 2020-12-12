@@ -32,9 +32,6 @@ module.exports = {
           '500': '#FD3A84',
         },
       },
-      screens: {
-        xl: "1140px",
-      },
     },
     container: {
       center: true,

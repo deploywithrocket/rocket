@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="flex items-center my-8 font-semibold">
+        <nav class="flex items-center mb-8 font-semibold">
             Servers
         </nav>
 

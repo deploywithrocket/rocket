@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="flex items-center my-8 font-semibold">
+        <nav class="flex items-center mb-8 font-semibold">
             <inertia-link :href="$route('projects.index')" class="text-gray-500 hover:underline">Projects</inertia-link>
             <div class="px-3 text-xs text-gray-400"><i class="fas fa-chevron-right"></i></div>
             <inertia-link :href="$route('projects.show', project)" class="text-gray-500 hover:underline">{{ project.name }}</inertia-link>
@@ -79,9 +79,9 @@
                 </table>
 
                 <div class="flex flex-row w-full px-5 py-4 text-sm text-right text-gray-600 lg:px-6 bg-gray-50">
-                    <inertia-link :href="$route('projects.edit', project)" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-150 ease-in-out bg-gray-200 rounded-lg hover:bg-gray-300"><i class="mr-1 fas fa-cog"></i> Settings</inertia-link>
+                    <inertia-link :href="$route('projects.edit', project)" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-150 ease-in-out bg-gray-200 rounded-lg hover:bg-gray-300"><i class="mr-1 opacity-75 fas fa-cog"></i> Settings</inertia-link>
                     <div class="mx-auto"></div>
-                    <button @click="deployNow" class="inline-block px-4 py-2 text-sm font-semibold text-white transition duration-150 ease-in-out bg-pink-500 rounded-lg hover:bg-pink-600"><i class="mr-1 fas fa-cloud-upload-alt"></i> Deploy now</button>
+                    <button @click="deployNow" class="inline-block px-4 py-2 text-sm font-semibold text-white transition duration-150 ease-in-out bg-pink-500 rounded-lg hover:bg-pink-600"><i class="mr-1 opacity-75 fas fa-cloud-upload-alt"></i> Deploy now</button>
                 </div>
             </div>
 
@@ -126,7 +126,7 @@
                         <div class="flex items-center">
                             <h2>Recent deployments</h2>
                             <div class="mx-auto"></div>
-                            <inertia-link :href="$route('projects.deployments.index', project)" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-150 ease-in-out bg-gray-200 rounded-lg hover:bg-gray-300"><i class="mr-1 fas fa-rocket"></i> Show more</inertia-link>
+                            <inertia-link :href="$route('projects.deployments.index', project)" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-150 ease-in-out bg-gray-200 rounded-lg hover:bg-gray-300"><i class="mr-1 opacity-75 fas fa-rocket"></i> Show more</inertia-link>
                         </div>
                     </div>
 
