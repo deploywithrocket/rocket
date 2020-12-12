@@ -13,8 +13,7 @@ class ProjectController extends Controller
     {
         $projects = Project::query()
             ->with('latest_deployment')
-            ->get()
-            ->sortByDesc('latest_deployment.created_at');
+            ->paginate(20);
 
         return inertia('projects/index', [
             'projects' => $projects,

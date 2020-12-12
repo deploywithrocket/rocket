@@ -73,7 +73,7 @@
                             <td class="px-5 py-3 text-sm font-bold">Committer</td>
                             <td class="px-5 py-3">
                                 <template v-if="deployment.commit.committer">
-                                    <img :src="deployment.commit.committer.avatar_url" class="inline w-6 h-6 mr-1 rounded">
+                                    <img :src="deployment.commit.committer.avatar_url" class="inline w-6 h-6 mr-1 rounded ">
                                     <a :href="'https://github.com/' + deployment.commit.committer.login" class="hover:underline" target="_blank">
                                         {{ deployment.commit.committer.login }}
                                     </a>

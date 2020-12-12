@@ -49,7 +49,7 @@
                             <td class="w-1/3 px-5 py-3 text-sm font-bold">Repository</td>
                             <td class="px-5 py-3 truncate">
                                 <div class="flex flex-row items-center w-full">
-                                    <img :src="'https://github.com/' + project.repository.split('/')[0] + '.png'" class="inline w-6 h-6 mr-2 rounded">
+                                    <img :src="'https://github.com/' + project.repository.split('/')[0] + '.png'" class="inline w-6 h-6 mr-2 rounded ">
                                     <div class="truncate">
                                         <a :href="'https://github.com/' + project.repository" target="_blank" class="hover:underline">{{ project.repository }}</a>
                                     </div>
@@ -79,9 +79,9 @@
                 </table>
 
                 <div class="flex flex-row w-full px-5 py-4 text-sm text-right text-gray-600 lg:px-6 bg-gray-50">
-                    <inertia-link :href="$route('projects.edit', project)" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-150 ease-in-out bg-gray-200 rounded-lg hover:bg-gray-300"><i class="mr-1 opacity-75 fas fa-cog"></i> Settings</inertia-link>
+                    <inertia-link :href="$route('projects.edit', project)" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-200 ease-in-out bg-gray-200 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-gray-500"><i class="mr-1 opacity-50 fas fa-cog"></i> Settings</inertia-link>
                     <div class="mx-auto"></div>
-                    <button @click="deployNow" class="inline-block px-4 py-2 text-sm font-semibold text-white transition duration-150 ease-in-out bg-pink-500 rounded-lg hover:bg-pink-600"><i class="mr-1 opacity-75 fas fa-cloud-upload-alt"></i> Deploy now</button>
+                    <button @click="deployNow" class="inline-block px-4 py-2 text-sm font-semibold text-white transition duration-200 ease-in-out bg-pink-500 rounded hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-pink-500"><i class="mr-1 fas fa-cloud-upload-alt"></i> Deploy now</button>
                 </div>
             </div>
 
@@ -126,7 +126,7 @@
                         <div class="flex items-center">
                             <h2>Recent deployments</h2>
                             <div class="mx-auto"></div>
-                            <inertia-link :href="$route('projects.deployments.index', project)" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-150 ease-in-out bg-gray-200 rounded-lg hover:bg-gray-300"><i class="mr-1 opacity-75 fas fa-rocket"></i> Show more</inertia-link>
+                            <inertia-link :href="$route('projects.deployments.index', project)" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-200 ease-in-out bg-gray-200 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-gray-500"><i class="mr-1 opacity-50 fas fa-rocket"></i> Show more</inertia-link>
                         </div>
                     </div>
 
@@ -171,7 +171,7 @@
                                         </div>
 
                                         <div class="w-1/4">
-                                            <img :src="deployment.commit.committer.avatar_url" class="inline w-4 h-4 mr-1 rounded">
+                                            <img :src="deployment.commit.committer.avatar_url" class="inline w-4 h-4 mr-1 rounded ">
                                             <a :href="'https://github.com/' + deployment.commit.committer.login" class="hover:underline" target="_blank">
                                                 {{ deployment.commit.committer.login }}
                                             </a>

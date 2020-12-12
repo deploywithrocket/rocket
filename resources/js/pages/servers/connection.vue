@@ -43,11 +43,11 @@
 
                     <p class="mb-4">This key must be added to the server's <code class="font-mono">.ssh/authorized_keys</code> file for each user you want to run tasks as.</p>
 
-                    <div class="p-4 mb-4 font-mono break-all bg-gray-100 rounded-lg">{{ public_key }}</div>
+                    <div class="p-4 mb-4 font-mono break-all bg-gray-100 rounded -lg">{{ public_key }}</div>
 
                     <p class="mb-4">Alternatively, you can also directly run this command on your server to allow Rocket to connect to the current user.</p>
 
-                    <div class="p-4 mb-4 font-mono break-all bg-gray-100 rounded-lg">
+                    <div class="p-4 mb-4 font-mono break-all bg-gray-100 rounded -lg">
                         curl -sSL {{ $route('api.servers.connect', server) }} | sh
                     </div>
 
@@ -57,7 +57,7 @@
                 </div>
                 <div class="w-full px-5 py-4 text-sm bg-gray-50">
                     <div class="flex justify-end">
-                        <button type="button" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-150 ease-in-out bg-gray-200 rounded-lg hover:bg-gray-300" @click="$inertia.post($route('servers.connection.test', server))"><i class="mr-1 opacity-75 fas fa-link"></i> Test connection status</button>
+                        <button type="button" class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-200 ease-in-out bg-gray-200 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-gray-500" @click="$inertia.post($route('servers.connection.test', server))"><i class="mr-1 opacity-50 fas fa-link"></i> Test connection status</button>
                     </div>
                 </div>
             </div>
