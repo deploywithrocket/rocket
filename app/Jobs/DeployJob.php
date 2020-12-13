@@ -25,6 +25,8 @@ class DeployJob implements ShouldQueue
 
     protected $ssh;
     protected Deployment $deployment;
+
+    protected $tasks;
     protected $github_deployment_id;
 
     public function __construct(Deployment $deployment)
@@ -34,44 +36,11 @@ class DeployJob implements ShouldQueue
 
     public function handle()
     {
-        $this->before();
-
-        $this->ssh = SSH::create(
-            $this->deployment->server->ssh_user,
-            $this->deployment->server->ssh_host
-            )
-            ->usePrivateKey(Storage::path('keys/' . $this->deployment->server->id))
-            ->onOutput(fn ($type, $line) => $this->appendToOutput($line))
-            ->disableStrictHostKeyChecking();
-
-        $sh_renderer = new ShellScriptRenderer($this->deployment);
-
-        $process = $this->ssh->execute([
-            $sh_renderer->render('setup.repository'),
-            $sh_renderer->render('setup.directories'),
-            $sh_renderer->render('deploy.check'),
-            $sh_renderer->render('hooks.started'),
-            $sh_renderer->render('deploy.fetch'),
-            $sh_renderer->render('deploy.clone'),
-            $sh_renderer->render('deploy.link'),
-            $sh_renderer->render('deploy.dotenv'),
-            $sh_renderer->render('deploy.composer'),
-            $sh_renderer->render('deploy.npm'),
-            $sh_renderer->render('hooks.provisioned'),
-            $sh_renderer->render('deploy.build'),
-            $sh_renderer->render('hooks.built'),
-            $sh_renderer->render('deploy.symlink'),
-            $sh_renderer->render('deploy.cronjobs'),
-            $sh_renderer->render('hooks.published'),
-            $sh_renderer->render('deploy.cleanup'),
-            $sh_renderer->render('hooks.finished'),
-        ]);
-
-        if (! $process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        $this->after();
+        $this
+            ->before()
+            ->computeTasks()
+            ->runTasks()
+            ->after();
     }
 
     protected function before()
@@ -79,6 +48,13 @@ class DeployJob implements ShouldQueue
         $this->deployment->status = 'in_progress';
         $this->deployment->started_at = now();
         $this->deployment->save();
+
+        $this->ssh = SSH::create(
+            $this->deployment->server->ssh_user,
+            $this->deployment->server->ssh_host
+        )
+            ->usePrivateKey(Storage::path('keys/' . $this->deployment->server->id))
+            ->disableStrictHostKeyChecking();
 
         $this->github_deployment_id = rescue(function () {
             $gh_client = $this->deployment->project->user->github()->deployments();
@@ -92,6 +68,77 @@ class DeployJob implements ShouldQueue
         }, null, false);
 
         $this->deployment->project->notify(new DeployStarted($this->deployment, $this->github_deployment_id));
+
+        return $this;
+    }
+
+    protected function computeTasks()
+    {
+        $sh_renderer = new ShellScriptRenderer($this->deployment);
+
+        $this->defineTask('start', [
+            $sh_renderer->render('setup.repository'),
+            $sh_renderer->render('setup.directories'),
+            $sh_renderer->render('deploy.check'),
+            $sh_renderer->render('hooks.started'),
+        ]);
+
+        $this->defineTask('provision', [
+            $sh_renderer->render('deploy.fetch'),
+            $sh_renderer->render('deploy.clone'),
+            $sh_renderer->render('deploy.link'),
+            $sh_renderer->render('deploy.dotenv'),
+            $sh_renderer->render('deploy.composer'),
+            $sh_renderer->render('deploy.npm'),
+            $sh_renderer->render('hooks.provisioned'),
+        ]);
+
+        $this->defineTask('build', [
+            $sh_renderer->render('deploy.build'),
+            $sh_renderer->render('hooks.built'),
+        ]);
+
+        $this->defineTask('publish', [
+            $sh_renderer->render('deploy.symlink'),
+            $sh_renderer->render('deploy.cronjobs'),
+            $sh_renderer->render('hooks.published'),
+        ]);
+
+        $this->defineTask('finish', [
+            $sh_renderer->render('deploy.cleanup'),
+            $sh_renderer->render('hooks.finished'),
+        ]);
+
+        return $this;
+    }
+
+    protected function defineTask($name, $commands)
+    {
+        $this->tasks[$name] = $commands;
+
+        return $this;
+    }
+
+    protected function runTasks()
+    {
+        foreach ($this->tasks as $name => $task) {
+            $this->runTask($name);
+        }
+
+        return $this;
+    }
+
+    protected function runTask($name)
+    {
+        $this->ssh->onOutput(fn ($type, $line) => $this->appendToOutput($type, $line, $name));
+
+        $process = $this->ssh->execute($this->tasks[$name]);
+
+        if (! $process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        return $this;
     }
 
     protected function after()
@@ -103,6 +150,8 @@ class DeployJob implements ShouldQueue
         $this->deployment->project->notify(new DeploySuccessful($this->deployment, $this->github_deployment_id));
 
         dispatch(new PingJob($this->deployment));
+
+        return $this;
     }
 
     public function failed()
