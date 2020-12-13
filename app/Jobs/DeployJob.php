@@ -163,9 +163,17 @@ class DeployJob implements ShouldQueue
         $this->deployment->project->notify(new DeployFailed($this->deployment, $this->github_deployment_id));
     }
 
-    protected function appendToOutput($buffer)
+    protected function appendToOutput($type, $line, $name)
     {
-        $this->deployment->raw_output .= $buffer;
+        $raw_output = $this->deployment->raw_output;
+
+        if (! ($raw_output[$name] ?? null)) {
+            $raw_output[$name] = '';
+        }
+
+        $raw_output[$name] .= $line;
+        $this->deployment->raw_output = $raw_output;
+
         $this->deployment->save();
     }
 }

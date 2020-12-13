@@ -12,6 +12,7 @@ class Deployment extends Model
 
     protected $casts = [
         'commit' => 'json',
+        'raw_output' => 'json',
         'started_at' => 'datetime',
         'ended_at' => 'datetime',
     ];
