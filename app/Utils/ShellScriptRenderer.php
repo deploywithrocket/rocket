@@ -62,9 +62,9 @@ class ShellScriptRenderer
             'repository_path' => $this->path($this->deployment->project->deploy_path, '/repository'),
             'current_path' => $this->path($this->deployment->project->deploy_path, '/current'),
             'releases_path' => $this->path($this->deployment->project->deploy_path, '/releases'),
-            'release_path' => $this->path($this->deployment->project->deploy_path, $this->deployment->release),
+            'release_path' => $this->path($this->deployment->project->deploy_path, '/releases/' . $this->deployment->release),
             'shared_path' => $this->path($this->deployment->project->deploy_path, '/shared'),
-            'env_path' => $this->path($this->deployment->project->deploy_path, $this->deployment->release, '.env'),
+            'env_path' => $this->path($this->deployment->project->deploy_path, '/releases/' . $this->deployment->release . '/.env'),
         ];
 
         $linked_dirs = $linked_files = [];
