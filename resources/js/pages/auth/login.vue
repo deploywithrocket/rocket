@@ -5,6 +5,8 @@
                 Sign in to your account
             </div>
             <form class="w-full" @submit.prevent="submit">
+                <alerts class="mt-4"></alerts>
+
                 <div class="w-full px-5 py-4">
                     <form-input class="mb-4" label="Email" placeholder="Your Email Address" v-model="form.email" :errors="$page.errors.email" required autofocus autocomplete="email" />
                     <form-input class="mb-4" label="Password" placeholder="Your Password" type="password" v-model="form.password" :errors="$page.errors.password" required autocomplete="current-password" />

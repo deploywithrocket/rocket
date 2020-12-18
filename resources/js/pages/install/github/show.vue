@@ -2,16 +2,16 @@
     <div class="w-full">
         <div class="flex flex-col items-start w-full max-w-lg mx-auto mb-8 overflow-hidden bg-white rounded shadow-sm">
             <div class="w-full px-5 py-4 font-semibold bg-gray-50">
-                App
+                GitHub
             </div>
             <form class="w-full" @submit.prevent="submit">
                 <alerts class="mt-4"></alerts>
 
                 <div class="w-full px-5 py-4">
-                    <p class="mb-8">Create a database on your server and set the credentials using the form below.</p>
+                    <p class="mb-8">Configure your GitHub OAuth app here. If you don't know what to fill in, please refer to the Rocket's documentation.</p>
 
-                    <form-input class="w-full mb-4" label="Name" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
-                    <form-input class="w-full mb-4" label="Url" type="text" name="url" v-model="form.url" :errors="$page.errors.url" />
+                    <form-input class="w-full mb-4" label="Client ID" type="text" name="client_id" v-model="form.client_id" :errors="$page.errors.client_id" />
+                    <form-input class="w-full mb-4" label="Client Secret" type="text" name="client_secret" v-model="form.client_secret" :errors="$page.errors.client_secret" />
                 </div>
                 <div class="w-full px-5 py-4 text-sm bg-gray-50">
                     <div class="flex justify-end">
@@ -25,22 +25,22 @@
 
 <script>
     export default {
-        layout: require('../../layouts/gate').default,
+        layout: require('../../../layouts/gate').default,
 
-        props: ['current_env'],
+        props: ['connections', 'current_env'],
 
         data() {
             return {
                 form: {
-                    name: '',
-                    url: '',
+                    client_id: '',
+                    client_secret: '',
                 }
             }
         },
 
         mounted() {
-            if (this.form.name == '') this.form.name = this.current_env.name
-            if (this.form.url == '') this.form.url = this.current_env.url
+            if (this.form.client_id == '') this.form.client_id = this.current_env.client_id
+            if (this.form.client_secret == '') this.form.client_secret = this.current_env.client_secret
         },
 
         methods: {
@@ -48,10 +48,8 @@
                 this.$page.errors = {}
 
                 this.$inertia.post(
-                    this.$route('install.app.submit'), { ...this.form }
+                    this.$route('install.github.submit'), { ...this.form }
                 )
-
-                this.form.password = ''
             }
         }
     }

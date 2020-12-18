@@ -2,13 +2,13 @@
     <div class="w-full">
         <div class="flex flex-col items-start w-full max-w-lg mx-auto mb-8 overflow-hidden bg-white rounded shadow-sm">
             <div class="w-full px-5 py-4 font-semibold bg-gray-50">
-                Database
+                Configure the database connection
             </div>
             <form class="w-full" @submit.prevent="submit">
                 <alerts class="mt-4"></alerts>
 
                 <div class="w-full px-5 py-4">
-                    <p class="mb-8">Create a database on your server and set the credentials using the form below.</p>
+                    <p class="mb-4">Create a database on your server and set the credentials using the form below.</p>
 
                     <form-select class="w-full mb-4" label="Connection" type="text" name="connection" v-model="form.connection" :errors="$page.errors.connection" :options="connections" />
                     <form-input class="w-full mb-4" label="Host" type="text" name="host" v-model="form.host" :errors="$page.errors.host" />
@@ -29,7 +29,7 @@
 
 <script>
     export default {
-        layout: require('../../layouts/gate').default,
+        layout: require('../../../layouts/gate').default,
 
         props: ['connections', 'current_env'],
 

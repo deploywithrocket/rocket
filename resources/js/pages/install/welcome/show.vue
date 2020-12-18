@@ -7,10 +7,14 @@
             <form class="w-full" @submit.prevent="submit">
                 <div class="w-full px-5 py-4">
                     <p class="mb-4">
-                        If you've made it to this page, you've already done the hardest part!<br>
-                        However, there are a few steps left before you make your first deployment.
+                        If you've made it to this page, you've already done the hardest part! However, there are a few steps left before you make your first deployment.
                     </p>
-                    <p>Click "Next" to begin the installation</p>
+
+                    <p class="mb-4">
+                        You will be guided through several forms to configure your Rocket instance.
+                    </p>
+
+                    <p>Click "Next" to begin</p>
                 </div>
                 <div class="w-full px-5 py-4 text-sm bg-gray-50">
                     <div class="flex justify-end">
@@ -24,11 +28,11 @@
 
 <script>
     export default {
-        layout: require('../../layouts/gate').default,
+        layout: require('../../../layouts/gate').default,
 
         methods: {
             submit() {
-                this.$inertia.visit(this.$route('install.system'))
+                this.$inertia.visit(this.$route('install.system.show'))
             }
         }
     }

@@ -51,7 +51,7 @@
 
 <script>
     export default {
-        layout: require('../../layouts/gate').default,
+        layout: require('../../../layouts/gate').default,
 
         props: ['min_php_version', 'extensions', 'permissions'],
 

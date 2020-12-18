@@ -2,7 +2,12 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\InstallController;
+use App\Http\Controllers\Install\AppController;
+use App\Http\Controllers\Install\DatabaseController;
+use App\Http\Controllers\Install\GitHubController;
+use App\Http\Controllers\Install\SystemController;
+use App\Http\Controllers\Install\UserController;
+use App\Http\Controllers\Install\WelcomeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectDeploymentController;
 use App\Http\Controllers\ServerController;
@@ -20,24 +25,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', '/home')->name('index');
-
-Route::group([
-    'prefix' => 'install',
-    'as' => 'install.',
-], function () {
-    Route::get('/', [InstallController::class, 'index'])->name('index');
-    Route::get('/system', [InstallController::class, 'system'])->name('system');
-    Route::get('/database', [InstallController::class, 'database'])->name('database');
-    Route::post('/database', [InstallController::class, 'submitDatabase'])->name('database.submit');
-    Route::get('/app', [InstallController::class, 'app'])->name('app');
-    Route::post('/app', [InstallController::class, 'submitApp'])->name('app.submit');
-    Route::get('/user', [InstallController::class, 'user'])->name('user');
-    Route::post('/user', [InstallController::class, 'submitUser'])->name('user.submit');
-    Route::get('/github', [InstallController::class, 'github'])->name('github');
-    Route::post('/github', [InstallController::class, 'submitGithub'])->name('github.submit');
-    Route::get('/apply', [InstallController::class, 'apply'])->name('apply');
-    Route::post('/apply', [InstallController::class, 'submitApply'])->name('apply.submit');
-});
 
 Route::group(['middleware' => 'installed'], function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -91,4 +78,20 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('/{project}/deployments/{deployment}', [ProjectDeploymentController::class, 'show'])->name('deployments.show');
         });
     });
+});
+
+Route::group([
+    'prefix' => 'install',
+    'as' => 'install.',
+], function () {
+    Route::get('/', [WelcomeController::class, 'show'])->name('index');
+    Route::get('/system', [SystemController::class, 'show'])->name('system.show');
+    Route::get('/database', [DatabaseController::class, 'show'])->name('database.show');
+    Route::post('/database/submit', [DatabaseController::class, 'submit'])->name('database.submit');
+    Route::get('/app', [AppController::class, 'show'])->name('app.show');
+    Route::post('/app/submit', [AppController::class, 'submit'])->name('app.submit');
+    Route::get('/user', [UserController::class, 'show'])->name('user.show');
+    Route::post('/user/submit', [UserController::class, 'submit'])->name('user.submit');
+    Route::get('/github', [GitHubController::class, 'show'])->name('github.show');
+    Route::post('/github/submit', [GitHubController::class, 'submit'])->name('github.submit');
 });

@@ -17,16 +17,12 @@ class DotEnvInterface
 
     public function get($key)
     {
-        return rescue(function () use ($key) {
-            preg_match('/' . $key . '=(.*)/', $this->contents, $matches);
-
-            return $matches[1];
-        }, null, false);
+        return env($key);
     }
 
     public function set($key, $value = '')
     {
-        $this->contents = preg_replace('/(' . $key . ')=(.*)/', '$1=' . $value, $this->contents);
+        $this->contents = preg_replace('/(' . $key . ')=(.*)/', '$1=' . escapeshellarg($value), $this->contents);
 
         return $this;
     }
