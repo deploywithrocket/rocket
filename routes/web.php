@@ -33,8 +33,10 @@ Route::group([
     Route::post('/app', [InstallController::class, 'submitApp'])->name('app.submit');
     Route::get('/user', [InstallController::class, 'user'])->name('user');
     Route::post('/user', [InstallController::class, 'submitUser'])->name('user.submit');
+    Route::get('/github', [InstallController::class, 'github'])->name('github');
+    Route::post('/github', [InstallController::class, 'submitGithub'])->name('github.submit');
     Route::get('/apply', [InstallController::class, 'apply'])->name('apply');
-    Route::post('/user', [InstallController::class, 'submitApply'])->name('apply.submit');
+    Route::post('/apply', [InstallController::class, 'submitApply'])->name('apply.submit');
 });
 
 Route::group(['middleware' => 'installed'], function () {
