@@ -33,8 +33,6 @@
 </template>
 
 <script>
-    import {Howl, Howler} from 'howler';
-
     export default {
         layout: require('../../layouts/app').default,
 

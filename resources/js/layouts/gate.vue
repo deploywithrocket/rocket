@@ -9,13 +9,7 @@
 </template>
 
 <script>
-    import Popper from 'vue-popperjs';
-
     export default {
-        components: {
-            'popper': Popper
-        },
-
         data() {
             return {
                 open: false,

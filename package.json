@@ -17,13 +17,11 @@
         "autoprefixer": "^10.0.2",
         "axios": "^0.19",
         "cross-env": "^7.0",
-        "howler": "^2.2.1",
         "laravel-mix": "^5.0.1",
         "laravel-mix-purgecss": "^4.1",
         "laravel-mix-tailwind": "^0.1.0",
         "lodash": "^4.17.19",
         "moment": "^2.29.1",
-        "popper.js": "^1.16.1",
         "postcss": "^8.1.8",
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.20.1",
@@ -31,7 +29,6 @@
         "tailwindcss": "^2.0.1",
         "vue": "^2.5.17",
         "vue-codemirror-lite": "^1.0.4",
-        "vue-popperjs": "^2.3.0",
         "vue-template-compiler": "^2.6.10"
     }
 }
