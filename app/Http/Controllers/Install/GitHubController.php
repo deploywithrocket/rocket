@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Install;
 
-use Illuminate\Http\Request;
-use App\Utils\DotEnvInterface;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Storage;
+use App\Utils\DotEnvInterface;
 use GrahamCampbell\GitHub\Facades\GitHub;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 
 class GitHubController extends Controller
 {
