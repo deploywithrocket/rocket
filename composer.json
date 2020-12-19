@@ -24,7 +24,9 @@
         "robinvdvleuten/ulid": "^5.0",
         "spatie/ssh": "^1.4",
         "symfony/process": "^5.2",
-        "titasgailius/laravel-moonlight": "^1.0"
+        "inertiajs/inertia-laravel": "^0.3.4",
+        "tightenco/ziggy": "^1.0.4"
+
     },
     "require-dev": {
         "facade/ignition": "^2.5",

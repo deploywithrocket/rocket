@@ -10,8 +10,8 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "@inertiajs/inertia": "^0.1.7",
-        "@inertiajs/inertia-vue": "^0.1.2",
+        "@inertiajs/inertia": "^0.7.0",
+        "@inertiajs/inertia-vue": "^0.4.3",
         "@inertiajs/progress": "^0.2.2",
         "@tailwindcss/custom-forms": "^0.2.1",
         "autoprefixer": "^10.0.2",

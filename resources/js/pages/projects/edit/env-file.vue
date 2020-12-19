@@ -78,7 +78,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.put(
                     this.$route('projects.update.env-file', this.project), { ...this.form }

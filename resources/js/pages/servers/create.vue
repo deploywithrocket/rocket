@@ -13,12 +13,12 @@
                 </div>
                 <form @submit.prevent="submit" class="w-full">
                     <div class="w-full px-5 py-4">
-                        <form-input class="mb-4" label="Name" placeholder="My production server" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
+                        <form-input class="mb-4" label="Name" placeholder="My production server" type="text" name="name" v-model="form.name" :errors="$page.props.errors.name" />
 
                         <div class="flex flex-row items-center mb-4">
-                            <form-input class="w-1/4" label="User" type="text" placeholder="rocket" name="ssh_user" v-model="form.ssh_user" :errors="$page.errors.ssh_user" />
+                            <form-input class="w-1/4" label="User" type="text" placeholder="rocket" name="ssh_user" v-model="form.ssh_user" :errors="$page.props.errors.ssh_user" />
                             <div class="px-4"></div>
-                            <form-input class="w-3/4" label="Host" type="text" placeholder="sc1.rocket.mgk.dev" name="ssh_host" v-model="form.ssh_host" :errors="$page.errors.ssh_host" />
+                            <form-input class="w-3/4" label="Host" type="text" placeholder="sc1.rocket.mgk.dev" name="ssh_host" v-model="form.ssh_host" :errors="$page.props.errors.ssh_host" />
                         </div>
                     </div>
                     <div class="w-full px-5 py-4 text-sm bg-gray-50">
@@ -52,7 +52,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.post(
                     this.$route('servers.store'), { ...this.form }

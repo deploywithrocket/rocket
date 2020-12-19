@@ -10,12 +10,12 @@
                 <div class="w-full px-5 py-4">
                     <p class="mb-4">Create a database on your server and set the credentials using the form below.</p>
 
-                    <form-select class="w-full mb-4" label="Connection" type="text" name="connection" v-model="form.connection" :errors="$page.errors.connection" :options="connections" />
-                    <form-input class="w-full mb-4" label="Host" type="text" name="host" v-model="form.host" :errors="$page.errors.host" />
-                    <form-input class="w-full mb-4" label="Port" type="text" name="port" v-model="form.port" :errors="$page.errors.port" />
-                    <form-input class="w-full mb-4" label="Database" type="text" name="database" v-model="form.database" :errors="$page.errors.database" />
-                    <form-input class="w-full mb-4" label="Username" type="text" name="username" v-model="form.username" :errors="$page.errors.username" />
-                    <form-input class="w-full mb-4" label="Password" type="password" name="password" v-model="form.password" :errors="$page.errors.password" />
+                    <form-select class="w-full mb-4" label="Connection" type="text" name="connection" v-model="form.connection" :errors="$page.props.errors.connection" :options="connections" />
+                    <form-input class="w-full mb-4" label="Host" type="text" name="host" v-model="form.host" :errors="$page.props.errors.host" />
+                    <form-input class="w-full mb-4" label="Port" type="text" name="port" v-model="form.port" :errors="$page.props.errors.port" />
+                    <form-input class="w-full mb-4" label="Database" type="text" name="database" v-model="form.database" :errors="$page.props.errors.database" />
+                    <form-input class="w-full mb-4" label="Username" type="text" name="username" v-model="form.username" :errors="$page.props.errors.username" />
+                    <form-input class="w-full mb-4" label="Password" type="password" name="password" v-model="form.password" :errors="$page.props.errors.password" />
                 </div>
                 <div class="w-full px-5 py-4 text-sm bg-gray-50">
                     <div class="flex justify-end">
@@ -57,7 +57,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.post(
                     this.$route('install.database.submit'), { ...this.form }

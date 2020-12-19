@@ -13,21 +13,21 @@
                 </div>
                 <form @submit.prevent="submit" class="w-full">
                     <div class="w-full px-5 py-4">
-                        <form-input class="mb-4" label="Name" placeholder="My awesome project" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
+                        <form-input class="mb-4" label="Name" placeholder="My awesome project" type="text" name="name" v-model="form.name" :errors="$page.props.errors.name" />
 
-                        <form-checkbox class="mb-4" label="This is a Laravel project" name="use_laravel_preset" v-model="form.use_laravel_preset"  :errors="$page.errors.use_laravel_preset" />
+                        <form-checkbox class="mb-4" label="This is a Laravel project" name="use_laravel_preset" v-model="form.use_laravel_preset"  :errors="$page.props.errors.use_laravel_preset" />
 
                         <div class="flex flex-row items-center mb-4">
-                            <form-input class="w-1/2" label="Repository" placeholder="mgkprod/rocket" type="text" name="repository" v-model="form.repository" :errors="$page.errors.repository" />
+                            <form-input class="w-1/2" label="Repository" placeholder="mgkprod/rocket" type="text" name="repository" v-model="form.repository" :errors="$page.props.errors.repository" />
                             <div class="px-4"></div>
-                            <form-input class="w-1/2" label="Branch" placeholder="main" type="text" name="branch" v-model="form.branch" :errors="$page.errors.branch" />
+                            <form-input class="w-1/2" label="Branch" placeholder="main" type="text" name="branch" v-model="form.branch" :errors="$page.props.errors.branch" />
                         </div>
 
-                        <form-select class="mb-4" label="Server" name="server_id" required v-model="form.server_id" :errors="$page.errors.server_id" :options="servers" />
-                        <form-input class="mb-4" label="Deploy path" type="text" placeholder="/home/websites/rocket" name="deploy_path" v-model="form.deploy_path" :errors="$page.errors.deploy_path" />
-                        <form-input class="mb-4" label="Environment" type="text" placeholder="production" name="environment" v-model="form.environment" :errors="$page.errors.environment" />
+                        <form-select class="mb-4" label="Server" name="server_id" required v-model="form.server_id" :errors="$page.props.errors.server_id" :options="servers" />
+                        <form-input class="mb-4" label="Deploy path" type="text" placeholder="/home/websites/rocket" name="deploy_path" v-model="form.deploy_path" :errors="$page.props.errors.deploy_path" />
+                        <form-input class="mb-4" label="Environment" type="text" placeholder="production" name="environment" v-model="form.environment" :errors="$page.props.errors.environment" />
 
-                        <form-input class="mb-4" label="Live URL" type="text" placeholder="https://rocket.mgk.dev" name="live_url" v-model="form.live_url" :errors="$page.errors.live_url" />
+                        <form-input class="mb-4" label="Live URL" type="text" placeholder="https://rocket.mgk.dev" name="live_url" v-model="form.live_url" :errors="$page.props.errors.live_url" />
                     </div>
                     <div class="w-full px-5 py-4 text-sm bg-gray-50">
                         <div class="flex justify-end">
@@ -65,7 +65,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.post(
                     this.$route('projects.store'), { ...this.form }

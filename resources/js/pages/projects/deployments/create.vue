@@ -18,13 +18,13 @@
                 <form @submit.prevent="submit" class="w-full">
                     <div class="w-full px-5 py-4">
                         <div class="flex flex-row items-center mb-4">
-                            <form-select class="w-1/4" label="Type" name="type" required v-model="form.type" :errors="$page.errors.type" :options="{
+                            <form-select class="w-1/4" label="Type" name="type" required v-model="form.type" :errors="$page.props.errors.type" :options="{
                                 commit: 'Commit',
                                 branch: 'Branch',
                                 tag: 'Tag',
                             }" />
                             <div class="px-4"></div>
-                            <form-input class="w-3/4" label="Target" type="text" placeholder="14ef11c3949e319acf0cfb1d4683d05746e17cef" name="target" v-model="form.target" :errors="$page.errors.target" />
+                            <form-input class="w-3/4" label="Target" type="text" placeholder="14ef11c3949e319acf0cfb1d4683d05746e17cef" name="target" v-model="form.target" :errors="$page.props.errors.target" />
                         </div>
                     </div>
                     <div class="w-full px-5 py-4 text-sm bg-gray-50">
@@ -61,7 +61,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.post(
                     this.$route('projects.deployments.store', this.project), { ...this.form }

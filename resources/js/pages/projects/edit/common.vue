@@ -19,17 +19,17 @@
                         <h2>Project settings</h2>
                     </div>
                     <div class="w-full px-5 py-4">
-                        <form-input class="mb-4" label="Name" placeholder="My awesome project" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
+                        <form-input class="mb-4" label="Name" placeholder="My awesome project" type="text" name="name" v-model="form.name" :errors="$page.props.errors.name" />
 
                         <div class="flex flex-row items-center mb-4">
-                            <form-input class="w-1/2" label="Repository" placeholder="mgkprod/rocket" type="text" name="repository" v-model="form.repository" :errors="$page.errors.repository" />
+                            <form-input class="w-1/2" label="Repository" placeholder="mgkprod/rocket" type="text" name="repository" v-model="form.repository" :errors="$page.props.errors.repository" />
                             <div class="px-4"></div>
-                            <form-input class="w-1/2" label="Branch" placeholder="main" type="text" name="branch" v-model="form.branch" :errors="$page.errors.branch" />
+                            <form-input class="w-1/2" label="Branch" placeholder="main" type="text" name="branch" v-model="form.branch" :errors="$page.props.errors.branch" />
                         </div>
 
-                        <form-checkbox class="mb-4" label="Trigger a deployment when code is pushed" name="push_to_deploy" v-model="form.push_to_deploy" :errors="$page.errors.push_to_deploy" />
+                        <form-checkbox class="mb-4" label="Trigger a deployment when code is pushed" name="push_to_deploy" v-model="form.push_to_deploy" :errors="$page.props.errors.push_to_deploy" />
 
-                        <form-input class="mb-4" label="Live URL" type="text" placeholder="https://rocket.mgk.dev" name="live_url" v-model="form.live_url" :errors="$page.errors.live_url" />
+                        <form-input class="mb-4" label="Live URL" type="text" placeholder="https://rocket.mgk.dev" name="live_url" v-model="form.live_url" :errors="$page.props.errors.live_url" />
                     </div>
                     <div class="w-full px-5 py-4 text-sm bg-gray-50">
                         <div class="flex justify-end">
@@ -42,9 +42,9 @@
                         <h2>Remote settings</h2>
                     </div>
                     <div class="w-full px-5 py-4">
-                        <form-select class="mb-4" label="Server" name="server_id" required v-model="form.server_id" :errors="$page.errors.server_id" :options="servers" />
-                        <form-input class="mb-4" label="Deploy path" type="text" placeholder="/home/websites/rocket" name="deploy_path" v-model="form.deploy_path" :errors="$page.errors.deploy_path" />
-                        <form-input class="mb-4" label="Environment" type="text" placeholder="production" name="environment" v-model="form.environment" :errors="$page.errors.environment" />
+                        <form-select class="mb-4" label="Server" name="server_id" required v-model="form.server_id" :errors="$page.props.errors.server_id" :options="servers" />
+                        <form-input class="mb-4" label="Deploy path" type="text" placeholder="/home/websites/rocket" name="deploy_path" v-model="form.deploy_path" :errors="$page.props.errors.deploy_path" />
+                        <form-input class="mb-4" label="Environment" type="text" placeholder="production" name="environment" v-model="form.environment" :errors="$page.props.errors.environment" />
                     </div>
                     <div class="w-full px-5 py-4 text-sm bg-gray-50">
                         <div class="flex justify-end">
@@ -57,7 +57,7 @@
                         <h2>Notifications</h2>
                     </div>
                     <div class="w-full px-5 py-4">
-                        <form-input class="mb-4" label="Discord Webhook" type="text" placeholder="https://discord.com/api/webhooks/..." name="discord_webhook_url" v-model="form.discord_webhook_url" :errors="$page.errors.discord_webhook_url" />
+                        <form-input class="mb-4" label="Discord Webhook" type="text" placeholder="https://discord.com/api/webhooks/..." name="discord_webhook_url" v-model="form.discord_webhook_url" :errors="$page.props.errors.discord_webhook_url" />
                     </div>
                     <div class="w-full px-5 py-4 text-sm bg-gray-50">
                         <div class="flex justify-end">
@@ -102,7 +102,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.put(
                     this.$route('projects.update.common', this.project), { ...this.form }

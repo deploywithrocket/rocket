@@ -10,10 +10,10 @@
                 <div class="w-full px-5 py-4">
                     <p class="mb-8">Create your own personal account.</p>
 
-                    <form-input class="w-full mb-4" label="Name" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
-                    <form-input class="w-full mb-4" label="Email" type="email" name="email" v-model="form.email" :errors="$page.errors.email" />
-                    <form-input class="w-full mb-4" label="Password" type="password" name="password" v-model="form.password" :errors="$page.errors.password" />
-                    <form-input class="w-full mb-4" label="Password (confirmation)" type="password" name="password_confirmation" v-model="form.password_confirmation" :errors="$page.errors.password_confirmation" />
+                    <form-input class="w-full mb-4" label="Name" type="text" name="name" v-model="form.name" :errors="$page.props.errors.name" />
+                    <form-input class="w-full mb-4" label="Email" type="email" name="email" v-model="form.email" :errors="$page.props.errors.email" />
+                    <form-input class="w-full mb-4" label="Password" type="password" name="password" v-model="form.password" :errors="$page.props.errors.password" />
+                    <form-input class="w-full mb-4" label="Password (confirmation)" type="password" name="password_confirmation" v-model="form.password_confirmation" :errors="$page.props.errors.password_confirmation" />
                 </div>
                 <div class="w-full px-5 py-4 text-sm bg-gray-50">
                     <div class="flex justify-end">
@@ -46,7 +46,7 @@
                 this.$inertia.visit(this.$route('install.github.show'))
             },
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.post(
                     this.$route('install.user.submit'), { ...this.form }

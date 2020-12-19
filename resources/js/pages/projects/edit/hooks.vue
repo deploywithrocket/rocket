@@ -165,7 +165,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.put(
                     this.$route('projects.update.hooks', this.project), { ...this.form }

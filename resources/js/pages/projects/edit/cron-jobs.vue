@@ -84,7 +84,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.put(
                     this.$route('projects.update.cron-jobs', this.project), { ...this.form }

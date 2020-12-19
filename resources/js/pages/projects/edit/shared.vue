@@ -117,7 +117,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.put(
                     this.$route('projects.update.shared', this.project), { ...this.form }

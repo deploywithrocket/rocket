@@ -10,8 +10,8 @@
                 <div class="w-full px-5 py-4">
                     <p class="mb-4">Define the name of your Rocket instance as well as the URL through which you will access it.</p>
 
-                    <form-input class="w-full mb-4" label="Name" type="text" name="name" v-model="form.name" :errors="$page.errors.name" />
-                    <form-input class="w-full mb-4" label="URL" type="text" name="url" v-model="form.url" :errors="$page.errors.url" />
+                    <form-input class="w-full mb-4" label="Name" type="text" name="name" v-model="form.name" :errors="$page.props.errors.name" />
+                    <form-input class="w-full mb-4" label="URL" type="text" name="url" v-model="form.url" :errors="$page.props.errors.url" />
                 </div>
                 <div class="w-full px-5 py-4 text-sm bg-gray-50">
                     <div class="flex justify-end">
@@ -45,7 +45,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.post(
                     this.$route('install.app.submit'), { ...this.form }

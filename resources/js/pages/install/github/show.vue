@@ -10,8 +10,8 @@
                 <div class="w-full px-5 py-4">
                     <p class="mb-8">Configure your GitHub OAuth app here. If you don't know what to fill in, please refer to the Rocket's documentation.</p>
 
-                    <form-input class="w-full mb-4" label="Client ID" type="text" name="client_id" v-model="form.client_id" :errors="$page.errors.client_id" />
-                    <form-input class="w-full mb-4" label="Client Secret" type="text" name="client_secret" v-model="form.client_secret" :errors="$page.errors.client_secret" />
+                    <form-input class="w-full mb-4" label="Client ID" type="text" name="client_id" v-model="form.client_id" :errors="$page.props.errors.client_id" />
+                    <form-input class="w-full mb-4" label="Client Secret" type="text" name="client_secret" v-model="form.client_secret" :errors="$page.props.errors.client_secret" />
                 </div>
                 <div class="w-full px-5 py-4 text-sm bg-gray-50">
                     <div class="flex justify-end">
@@ -45,7 +45,7 @@
 
         methods: {
             submit() {
-                this.$page.errors = {}
+                this.$page.props.errors = {}
 
                 this.$inertia.post(
                     this.$route('install.github.submit'), { ...this.form }

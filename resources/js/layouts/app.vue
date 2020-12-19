@@ -53,7 +53,7 @@
         </div>
 
         <footer class="w-full px-4 py-8 mt-auto text-xs text-center text-gray-400">
-            &copy; 2020-2021 - <a href="https://deploywithrocket.dev" class="hover:underline">Rocket</a> {{ $page.version }}
+            &copy; 2020-2021 - <a href="https://deploywithrocket.dev" class="hover:underline">Rocket</a> {{ $page.props.version }}
         </footer>
     </div>
 </template>
