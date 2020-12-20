@@ -2,22 +2,26 @@
 
 namespace App\Utils;
 
+use Dotenv\Dotenv;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 
 class DotEnvInterface
 {
     protected $path;
     protected $contents;
+    protected $reader;
 
     public function __construct($file = '.env')
     {
         $this->path = base_path($file);
         $this->contents = File::get($this->path);
+        $this->reader = Dotenv::parse($this->contents);
     }
 
     public function get($key)
     {
-        return env($key);
+        return Arr::get($this->reader, $key);
     }
 
     public function set($key, $value = '')
