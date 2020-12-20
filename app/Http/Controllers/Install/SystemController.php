@@ -17,7 +17,7 @@ class SystemController extends Controller
         $extensions = collect(['dom', 'fileinfo', 'filter', 'json', 'libxml', 'mbstring', 'openssl', 'pcre', 'phar', 'posix', 'tokenizer', 'xml', 'xmlwriter']);
         $extensions = $extensions->reject(fn ($ext) => extension_loaded($ext));
 
-        $permissions = collect(['storage' => '0775', 'bootstrap/cache' => '0775']);
+        $permissions = collect(['storage' => '0775', 'bootstrap/cache' => '0775', '.env' => '0775']);
         $permissions = $permissions->reject(fn ($permission, $dir) => is_writable(base_path($dir)));
 
         if (count($min_php_version) + count($extensions) + count($permissions) == 0) {
