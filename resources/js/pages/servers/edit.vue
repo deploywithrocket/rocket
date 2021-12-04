@@ -19,8 +19,8 @@
 
                         <div class="flex flex-row items-center mb-4">
                             <form-input class="w-1/4" label="User" type="text" placeholder="rocket" name="ssh_user" v-model="form.ssh_user" :errors="$page.props.errors.ssh_user" />
-                            <div class="px-4"></div>
-                            <form-input class="w-3/4" label="Address" type="text" placeholder="sc1.rocket.mgk.dev" name="ssh_host" v-model="form.ssh_host" :errors="$page.props.errors.ssh_host" />
+                            <form-input class="mx-1 w-2/4" label="Host" type="text" placeholder="sc1.rocket.mgk.dev" name="ssh_host" v-model="form.ssh_host" :errors="$page.props.errors.ssh_host" />
+                            <form-input class="w-1/4" label="Port" type="text" placeholder="22" name="ssh_port" v-model="form.ssh_port" :errors="$page.props.errors.ssh_port" />
                         </div>
 
                         <hr class="my-8">
@@ -58,6 +58,7 @@
                     name: '',
                     ssh_user: '',
                     ssh_host: '',
+                    ssh_port: '',
 
                     cmd_git: '',
                     cmd_npm: '',

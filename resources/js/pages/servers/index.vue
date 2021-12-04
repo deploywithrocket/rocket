@@ -25,7 +25,7 @@
                                 }">&bullet;</span>
                                 {{ server.name }}
                             </div>
-                            <div class="mb-4 font-mono text-sm">{{ server.ssh_user }}@{{ server.ssh_host }}</div>
+                            <div class="mb-4 font-mono text-sm">{{ server.ssh_user }}@{{ server.ssh_host }}:{{ server.ssh_port }}</div>
 
                             <div class="flex flex-row">
                                 <inertia-link class="inline-block px-4 py-2 text-sm font-semibold text-gray-600 transition duration-200 ease-in-out bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-gray-500" :href="$route('servers.edit', server)"><i class="mr-1 opacity-50 fas fa-edit"></i> Edit</inertia-link>

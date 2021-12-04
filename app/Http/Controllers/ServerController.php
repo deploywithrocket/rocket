@@ -35,6 +35,7 @@ class ServerController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'ssh_user' => ['required', 'string', 'max:255'],
             'ssh_host' => ['required', 'string', 'max:255'],
+            'ssh_port' => ['required', 'integer'],
         ]);
 
         $server = new Server();
@@ -42,6 +43,7 @@ class ServerController extends Controller
         $server->name = $request->name;
         $server->ssh_user = $request->ssh_user;
         $server->ssh_host = $request->ssh_host;
+        $server->ssh_port = $request->ssh_port;
         $server->status = 'disconnected';
         $server->save();
 
@@ -83,7 +85,8 @@ class ServerController extends Controller
         $connected = rescue(function () use ($server, &$connected_as) {
             $this->ssh = SSH::create(
                 $server->ssh_user,
-                $server->ssh_host
+                $server->ssh_host,
+                $server->ssh_port,
             )
             ->usePrivateKey(Storage::path('keys/' . $server->id))
             ->disableStrictHostKeyChecking();
@@ -122,11 +125,13 @@ class ServerController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'ssh_user' => ['required', 'string', 'max:255'],
             'ssh_host' => ['required', 'string', 'max:255'],
+            'ssh_port' => ['required', 'integer'],
         ]);
 
         $server->name = $request->name;
         $server->ssh_user = $request->ssh_user;
         $server->ssh_host = $request->ssh_host;
+        $server->ssh_port = $request->ssh_port;
         $server->cmd_git = $request->cmd_git;
         $server->cmd_npm = $request->cmd_npm;
         $server->cmd_yarn = $request->cmd_yarn;

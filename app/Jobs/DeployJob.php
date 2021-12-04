@@ -51,7 +51,8 @@ class DeployJob implements ShouldQueue
 
         $this->ssh = SSH::create(
             $this->deployment->server->ssh_user,
-            $this->deployment->server->ssh_host
+            $this->deployment->server->ssh_host,
+            $this->deployment->server->ssh_port,
         )
             ->usePrivateKey(Storage::path('keys/' . $this->deployment->server->id))
             ->disableStrictHostKeyChecking();

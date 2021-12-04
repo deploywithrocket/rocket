@@ -45,8 +45,9 @@ class ShellScriptRenderer
             'release' => $this->deployment->release,
             'ref' => $this->deployment->git_ref,
             'sha' => $this->deployment->commit['sha'],
-            'ssh_host' => $this->deployment->server->ssh_host,
             'ssh_user' => $this->deployment->server->ssh_user,
+            'ssh_host' => $this->deployment->server->ssh_host,
+            'ssh_port' => $this->deployment->server->ssh_port,
             'repository_url' => $this->deployment->project->repository_url,
             'keep_releases' => $this->deployment->project->keep_releases ?? 5,
         ];
