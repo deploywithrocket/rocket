@@ -8,7 +8,4 @@ if [ -f "package.json" ]; then
     else
         {!! $cmd_npm !!} run production
     fi
-
-    echo "Removing \"node_modules\" directory"
-    rm -rf node_modules
 fi
