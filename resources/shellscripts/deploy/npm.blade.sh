@@ -7,6 +7,6 @@ if [ -f "package.json" ]; then
         {!! $cmd_yarn !!} install --pure-lockfile --no-progress --non-interactive
     else
         echo "📦  Running npm…";
-        {!! $cmd_npm !!} install
+        {!! $cmd_npm !!} ci --no-progress --no-audit || {!! $cmd_npm !!} install --no-progress --no-audit
     fi
 fi
