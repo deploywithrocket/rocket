@@ -7,10 +7,9 @@
         <title>Laravel</title>
 
         @vite(['resources/js/app.js'])
+        @inertiaHead
     </head>
     <body class="antialiased">
-        <h1 class="text-3xl font-bold underline">
-            Hello world!
-          </h1>
+        @inertia
     </body>
 </html>
