@@ -3,13 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="/favicon.svg">
 
-        <title>{{ config('app.name') }}</title>
-
+        @routes
         @vite(['resources/js/app.js'])
         @inertiaHead
     </head>
-    <body class="antialiased">
+    <body class="flex flex-col min-h-screen antialiased">
         @inertia
     </body>
 </html>

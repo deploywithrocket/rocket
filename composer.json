@@ -6,11 +6,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "based/momentum-modal": "^0.2.0",
+        "graham-campbell/github": "^12.2",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.9",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
-        "laravel/tinker": "^2.8"
+        "laravel/socialite": "^5.6",
+        "laravel/tinker": "^2.8",
+        "phpseclib/phpseclib": "^3.0",
+        "socialiteproviders/github": "^4.1",
+        "spatie/ssh": "^1.8",
+        "tightenco/ziggy": "^1.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
