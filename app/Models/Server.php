@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Server extends Model
+class Server extends Model implements Searchable
 {
     use HasFactory, HasUlids;
 
@@ -47,5 +49,14 @@ class Server extends Model
     public function deployments()
     {
         return $this->hasMany(Deployment::class);
+    }
+
+    public function getSearchResult(): SearchResult
+    {
+        return new SearchResult(
+            $this,
+            $this->name,
+            route('servers.edit', $this)
+        );
     }
 }

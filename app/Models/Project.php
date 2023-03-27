@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Project extends Model
+class Project extends Model implements Searchable
 {
     use HasFactory, HasUlids, Notifiable;
 
@@ -87,5 +89,14 @@ class Project extends Model
         }
 
         return 'https://github.com/' . $this->repository . '.git';
+    }
+
+    public function getSearchResult(): SearchResult
+    {
+        return new SearchResult(
+            $this,
+            $this->name,
+            route('projects.show', $this)
+        );
     }
 }

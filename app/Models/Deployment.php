@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Deployment extends Model
+class Deployment extends Model implements Searchable
 {
     use HasFactory, HasUlids;
 
@@ -50,5 +52,14 @@ class Deployment extends Model
     public function getFingerprintAttribute()
     {
         return sha1($this->server->ssh_host . $this->project->deploy_path);
+    }
+
+    public function getSearchResult(): SearchResult
+    {
+        return new SearchResult(
+            $this,
+            $this->release,
+            route('projects.deployments.show', [$this->project, $this])
+        );
     }
 }

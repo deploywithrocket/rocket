@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deployment;
+use App\Models\Project;
+use App\Models\Server;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
+use Spatie\Searchable\Search;
 
 class HomeController extends Controller
 {
@@ -52,5 +57,17 @@ class HomeController extends Controller
                 ->route('home')
                 ->with('error', 'An error occured. ' . $th->getMessage());
         }
+    }
+
+    public function search(Request $request)
+    {
+        $searchResults = (new Search())
+            ->registerModel(Project::class, ['name', 'repository'])
+            ->registerModel(Server::class, ['name', 'ssh_host'])
+            ->registerModel(Deployment::class, ['release'])
+            ->search($request->q)
+            ->groupByType();
+
+        return response()->json($searchResults);
     }
 }

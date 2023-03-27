@@ -18,6 +18,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/settings', [HomeController::class, 'settings'])->name('settings');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/search', [HomeController::class, 'search'])->name('search');
 
     Route::get('/auth/github', [HomeController::class, 'redirectToProvider'])->name('auth.github');
     Route::get('/auth/github/callback', [HomeController::class, 'handleProviderCallback'])->name('auth.github.callback');
