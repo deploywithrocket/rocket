@@ -155,9 +155,9 @@ class ProjectController extends Controller
         $validator->validate();
         $this->validateRepo($request->repository, $request->branch, $validator);
 
-        $server = Server::find($request->server_id);
+        $server = Server::find($request->serverId);
         if (! $server) {
-            $validator->errors()->add('server_id', 'Server not found.');
+            $validator->errors()->add('serverId', 'Server not found.');
         }
 
         if (count($validator->errors()->messages())) {
