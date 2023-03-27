@@ -24,13 +24,24 @@ export default {
     }
   },
 
+  watch: {
+    $page: {
+      handler() { this.handleFlashMessages() },
+      deep: true,
+    },
+  },
+
   mounted() {
-    if (this.$page.props.flash.success) this.notify({ type: 'success', title: 'Success', text: this.$page.props.flash.success})
-    if (this.$page.props.flash.warning) this.notify({ type: 'warning', title: 'Warning', text: this.$page.props.flash.warning })
-    if (this.$page.props.flash.error) this.notify({ type: 'error', title: 'Error', text: this.$page.props.flash.error })
+    this.handleFlashMessages()
   },
 
   methods: {
+    handleFlashMessages() {
+      if (this.$page.props.flash.success) this.notify({ type: 'success', title: 'Success', text: this.$page.props.flash.success})
+      if (this.$page.props.flash.warning) this.notify({ type: 'warning', title: 'Warning', text: this.$page.props.flash.warning })
+      if (this.$page.props.flash.error) this.notify({ type: 'error', title: 'Error', text: this.$page.props.flash.error })
+    },
+
     notify(notification) {
       notification.id = v4()
       this.notifications.push(notification)
