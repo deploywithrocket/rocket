@@ -17,10 +17,10 @@
       <table class="w-full text-sm text-left text-gray-500 bg-white border-collapse">
         <thead class="bg-gray-50">
           <tr>
-            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Name</th>
-            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Repository</th>
-            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Branch</th>
-            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Last deployment</th>
+            <th class="px-6 py-4 font-medium text-gray-900">Name</th>
+            <th class="px-6 py-4 font-medium text-gray-900">Repository</th>
+            <th class="px-6 py-4 font-medium text-gray-900">Branch</th>
+            <th class="px-6 py-4 font-medium text-gray-900">Last deployment</th>
           </tr>
         </thead>
         <tbody class="border-t border-gray-200 divide-y divide-gray-200">

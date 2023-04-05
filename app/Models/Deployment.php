@@ -39,6 +39,13 @@ class Deployment extends Model implements Searchable
         return $this->belongsTo(Server::class);
     }
 
+    public function tasks()
+    {
+        return $this
+            ->hasMany(DeploymentTask::class)
+            ->orderBy('created_at');
+    }
+
     public function getDurationAttribute()
     {
         return rescue(fn () => $this->ended_at->diff($this->started_at)->format('%i minutes %s seconds'), 'N/A', false);

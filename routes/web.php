@@ -62,5 +62,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/{project}/deployments', [ProjectDeploymentController::class, 'store'])->name('deployments.store');
         Route::get('/{project}/deployments', [ProjectDeploymentController::class, 'index'])->name('deployments.index');
         Route::get('/{project}/deployments/{deployment}', [ProjectDeploymentController::class, 'show'])->name('deployments.show');
+        Route::get('/{project}/deployments/{deployment}/tasks/{task}/output', [ProjectDeploymentController::class, 'showTaskOutput'])->name('deployments.tasks.show-output');
     });
 });

@@ -3,41 +3,36 @@
 namespace App\Jobs;
 
 use App\Models\Deployment;
-use App\Notifications\DeploymentFailed;
-use App\Notifications\DeploymentStarted;
-use App\Notifications\DeploymentSuccessful;
+use App\Models\DeploymentTask;
 use App\Utils\ShellScriptRenderer;
+use Illuminate\Bus\Batch;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Ssh\Ssh as SSH;
-use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Support\Facades\Bus;
+use Throwable;
 
 class DeployJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $ssh;
-    protected Deployment $deployment;
-
     protected $tasks;
     protected $github_deployment_id;
 
-    public function __construct(Deployment $deployment)
-    {
-        $this->deployment = $deployment;
+    public function __construct(
+        protected Deployment $deployment
+    ) {
     }
 
-    public function handle()
+    public function handle():void
     {
         $this
             ->before()
             ->computeTasks()
-            ->runTasks()
-            ->after();
+            ->runTasks();
     }
 
     protected function before()
@@ -45,27 +40,6 @@ class DeployJob implements ShouldQueue
         $this->deployment->status = 'in_progress';
         $this->deployment->started_at = now();
         $this->deployment->save();
-
-        $this->ssh = SSH::create(
-            $this->deployment->server->ssh_user,
-            $this->deployment->server->ssh_host,
-            $this->deployment->server->ssh_port,
-        )
-            ->usePrivateKey(Storage::path('keys/' . $this->deployment->server->id))
-            ->disableStrictHostKeyChecking();
-
-        $this->github_deployment_id = rescue(function () {
-            $gh_client = $this->deployment->project->user->github()->deployments();
-            [$user, $repo] = explode('/', $this->deployment->project->repository);
-
-            return $gh_client->create($user, $repo, [
-                'ref' => $this->deployment->commit['from_ref'] ? 'refs/' . $this->deployment->commit['from_ref'] : $this->deployment->commit['sha'],
-                'environment' => $this->deployment->project->environment,
-                'auto_merge' => false,
-            ])['id'];
-        }, null, false);
-
-        $this->deployment->project->notify(new DeploymentStarted($this->deployment, $this->github_deployment_id));
 
         return $this;
     }
@@ -119,59 +93,34 @@ class DeployJob implements ShouldQueue
 
     protected function runTasks()
     {
+        $jobs = [];
+
         foreach ($this->tasks as $name => $task) {
-            $this->runTask($name);
+            $model = DeploymentTask::create([
+                'deployment_id' => $this->deployment->id,
+                'server_id' => $this->deployment->server_id,
+                'name' => $name,
+                'commands' => $task,
+            ]);
+
+            $jobs[] = (new ProcessDeploymentTaskJob($model));
         }
 
-        return $this;
-    }
+        $deployment = $this->deployment;
 
-    protected function runTask($name)
-    {
-        $this->ssh->onOutput(fn ($type, $line) => $this->appendToOutput($type, $line, $name));
-
-        $process = $this->ssh->execute($this->tasks[$name]);
-
-        if (! $process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        return $this;
-    }
-
-    protected function after()
-    {
-        $this->deployment->status = 'success';
-        $this->deployment->ended_at = now();
-        $this->deployment->save();
-
-        $this->deployment->project->notify(new DeploymentSuccessful($this->deployment, $this->github_deployment_id));
-
-        // dispatch(new PingJob($this->deployment));
+        $batch = Bus::batch([
+           [...$jobs],
+        ])->then(function (Batch $batch) use ($deployment) {
+            $deployment->status = 'success';
+            $deployment->save();
+        })->catch(function (Batch $batch, Throwable $e) use ($deployment) {
+            $deployment->status = 'error';
+            $deployment->save();
+        })->finally(function (Batch $batch) use ($deployment) {
+            $deployment->ended_at = now();
+            $deployment->save();
+        })->dispatch();
 
         return $this;
-    }
-
-    public function failed()
-    {
-        $this->deployment->status = 'error';
-        $this->deployment->ended_at = now();
-        $this->deployment->save();
-
-        $this->deployment->project->notify(new DeploymentFailed($this->deployment, $this->github_deployment_id));
-    }
-
-    protected function appendToOutput($type, $line, $name)
-    {
-        $raw_output = $this->deployment->raw_output;
-
-        if (! ($raw_output[$name] ?? null)) {
-            $raw_output[$name] = '';
-        }
-
-        $raw_output[$name] .= $line;
-        $this->deployment->raw_output = $raw_output;
-
-        $this->deployment->save();
     }
 }
