@@ -8,10 +8,10 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="w-10" />
-            <th scope="col" class="w-40 px-6 py-4 font-medium text-gray-900">Release</th>
-            <th scope="col" class="px-6 py-4 font-medium text-gray-900 w-60">Started</th>
-            <th scope="col" class="px-6 py-4 font-medium text-gray-900 w-60">Duration</th>
-            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Commit</th>
+            <th class="w-40 px-6 py-4 font-medium text-gray-900">Release</th>
+            <th class="px-6 py-4 font-medium text-gray-900 w-60">Started</th>
+            <th class="px-6 py-4 font-medium text-gray-900 w-60">Duration</th>
+            <th class="px-6 py-4 font-medium text-gray-900">Commit</th>
           </tr>
         </thead>
         <tbody class="border-t border-gray-200 divide-y divide-gray-200">

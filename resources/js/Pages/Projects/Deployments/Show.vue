@@ -59,65 +59,48 @@
     </table>
   </div>
 
-  <div v-if="deployment.status != 'queued'" class="mt-8 overflow-hidden card">
-    <div class="card-header">
-      <h2>Process output</h2>
-    </div>
+  <div class="mt-8 overflow-hidden divide-y divide-gray-200 card">
+    <table class="w-full text-sm text-left text-gray-500 bg-white border-collapse">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="w-10" />
+          <th class="w-40 px-6 py-4 font-medium text-gray-900">Step</th>
+          <th class="w-40 px-6 py-4 font-medium text-gray-900">Server</th>
+          <th class="px-6 py-4 font-medium text-gray-900 w-60">Started</th>
+          <th class="px-6 py-4 font-medium text-gray-900 w-60">Ended</th>
+          <th class="" />
+        </tr>
+      </thead>
 
-    <div class="cursor-pointer card-header hover:bg-gray-100" @click="toggle('start')">
-      <div class="flex items-center gap-2">
-        <Icon v-if="deployment.status == 'in_progress' && !deployment.raw_output.provision" icon="ri:loader-4-line" class="spin" />
-        <Icon v-else-if="deployment.status == 'error' && !deployment.raw_output.provision" icon="ri:close-line" class="text-red-500" />
-        <Icon v-else-if="deployment.raw_output.provision" icon="ri:check-line" class="text-green-500" />
-
-        <h3>🏃 start</h3>
-      </div>
-    </div>
-    <pre v-if="visible.start" class="w-full px-5 py-4 overflow-auto font-mono text-xs text-gray-200 bg-gray-800">{{ deployment.raw_output.start }}</pre>
-
-    <div class="cursor-pointer card-header hover:bg-gray-100" @click="toggle('provision')">
-      <div class="flex items-center gap-2">
-        <Icon v-if="deployment.status == 'in_progress' && !deployment.raw_output.build" icon="ri:loader-4-line" class="spin" />
-        <Icon v-else-if="deployment.status == 'error' && !deployment.raw_output.build" icon="ri:close-line" class="text-red-500" />
-        <Icon v-else-if="deployment.raw_output.build" icon="ri:check-line" class="text-green-500" />
-
-        <h3>🚚 provision</h3>
-      </div>
-    </div>
-    <pre v-if="visible.provision" class="w-full px-5 py-4 overflow-auto font-mono text-xs text-gray-200 bg-gray-800">{{ deployment.raw_output.provision }}</pre>
-
-    <div class="cursor-pointer card-header hover:bg-gray-100" @click="toggle('build')">
-      <div class="flex items-center gap-2">
-        <Icon v-if="deployment.status == 'in_progress' && !deployment.raw_output.publish" icon="ri:loader-4-line" class="spin" />
-        <Icon v-else-if="deployment.status == 'error' && !deployment.raw_output.publish" icon="ri:close-line" class="text-red-500" />
-        <Icon v-else-if="deployment.raw_output.publish" icon="ri:check-line" class="text-green-500" />
-
-        <h3>📦 build</h3>
-      </div>
-    </div>
-    <pre v-if="visible.build" class="w-full px-5 py-4 overflow-auto font-mono text-xs text-gray-200 bg-gray-800">{{ deployment.raw_output.build }}</pre>
-
-    <div class="cursor-pointer card-header hover:bg-gray-100" @click="toggle('publish')">
-      <div class="flex items-center gap-2">
-        <Icon v-if="deployment.status == 'in_progress' && !deployment.raw_output.finish" icon="ri:loader-4-line" class="spin" />
-        <Icon v-else-if="deployment.status == 'error' && !deployment.raw_output.finish" icon="ri:close-line" class="text-red-500" />
-        <Icon v-else-if="deployment.raw_output.finish" icon="ri:check-line" class="text-green-500" />
-
-        <h3>🚀 publish</h3>
-      </div>
-    </div>
-    <pre v-if="visible.publish" class="w-full px-5 py-4 overflow-auto font-mono text-xs text-gray-200 bg-gray-800">{{ deployment.raw_output.publish }}</pre>
-
-    <div class="cursor-pointer card-header hover:bg-gray-100" @click="toggle('finish')">
-      <div class="flex items-center gap-2">
-        <Icon v-if="deployment.status == 'in_progress'" icon="ri:loader-4-line" class="spin" />
-        <Icon v-if="deployment.status == 'error'" icon="ri:close-line" class="text-red-500" />
-        <Icon v-if="deployment.status == 'success'" icon="ri:check-line" class="text-green-500" />
-
-        <h3>🗑️ finish</h3>
-      </div>
-    </div>
-    <pre v-if="visible.finish" class="w-full px-5 py-4 overflow-auto font-mono text-xs text-gray-200 bg-gray-800">{{ deployment.raw_output.finish }}</pre>
+      <tbody class="border-t border-gray-200 divide-y divide-gray-200">
+        <template v-for="(tasksChunk, name) in tasks" :key="name">
+          <tr v-for="task in tasksChunk" :key="task.id">
+            <td class="py-4 pl-4">
+              <Icon v-if="task.status == 'in_progress'" icon="ri:loader-4-line" class="spin" />
+              <Icon v-else-if="task.status == 'error'" icon="ri:close-line" class="text-red-500" />
+              <Icon v-else-if="task.status == 'success'" icon="ri:check-line" class="text-green-500" />
+            </td>
+            <th class="px-6 py-4 font-medium text-gray-900">{{ taskLabels[name] }}</th>
+            <td class="px-6 py-4">{{ task.server.name }}</td>
+            <td class="px-6 py-4">
+              <template v-if="task.started_at">
+                {{ moment(task.started_at).format('L') }} {{ moment(task.started_at).format('LTS') }}
+              </template>
+              <template v-else>N/A</template>
+            </td>
+            <td class="px-6 py-4">
+              <template v-if="task.ended_at">
+                {{ moment(task.ended_at).format('L') }} {{ moment(task.ended_at).format('LTS') }}
+              </template>
+              <template v-else>N/A</template>
+            </td>
+            <td class="flex justify-end gap-1 px-6 py-4">
+              <Link :href="route('projects.deployments.tasks.show-output', { project: project, deployment: deployment, task: task })" class="btn btn-secondary btn-square" preserve-scroll><Icon icon="ri:file-text-line" /></Link>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -130,33 +113,19 @@ export default {
   props: {
     project: Object,
     deployment: Object,
+    tasks: Object,
   },
 
   data() {
     return {
-      visible: {
-        start: false,
-        provision: false,
-        build: false,
-        publish: false,
-        finish: false,
+      taskLabels: {
+        start: '🏃 Start',
+        provision: '🚚 Provision',
+        build: '📦 Build',
+        publish: '🚀 Publish',
+        finish: '🗑️ Finish',
       },
     }
-  },
-
-  mounted() {
-    if (!this.deployment.raw_output) return
-    if (this.deployment.raw_output.start && !this.deployment.raw_output.provision) this.visible.start = true
-    if (this.deployment.raw_output.provision && !this.deployment.raw_output.build) this.visible.provision = true
-    if (this.deployment.raw_output.build && !this.deployment.raw_output.publish) this.visible.build = true
-    if (this.deployment.raw_output.publish && !this.deployment.raw_output.finish) this.visible.publish = true
-    if (this.deployment.raw_output.finish && !this.deployment.status == 'success') this.visible.finish = true
-  },
-
-  methods: {
-    toggle(name) {
-      this.visible[name] = !this.visible[name]
-    },
   },
 }
 </script>

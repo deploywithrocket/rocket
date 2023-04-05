@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\DeployJob;
 use App\Models\Deployment;
+use App\Models\DeploymentTask;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -90,14 +91,37 @@ class ProjectDeploymentController extends Controller
             ->latest()
             ->paginate();
 
-        return inertia('Projects/Deployments/Index', compact('project', 'deployments'));
+        return Inertia::render('Projects/Deployments/Index', [
+            'project' => $project,
+            'deployments' => $deployments,
+        ]);
     }
 
     public function show(Project $project, Deployment $deployment)
     {
         abort_if($deployment->project_id != $project->id, 404);
-        $deployment->makeVisible(['raw_output']);
 
-        return inertia('Projects/Deployments/Show', compact('project', 'deployment'));
+        $tasks = $deployment
+            ->tasks()
+            ->with('server')
+            ->get()
+            ->groupBy('name');
+
+        return Inertia::render('Projects/Deployments/Show', [
+            'project' => $project,
+            'deployment' => $deployment,
+            'tasks' => $tasks,
+        ]);
+    }
+
+    public function showTaskOutput(Project $project, Deployment $deployment, DeploymentTask $task)
+    {
+        abort_if($deployment->project_id != $project->id, 404);
+        abort_if($task->deployment_id != $deployment->id, 404);
+
+        return Inertia::modal('Projects/Deployments/TaskOutput', [
+            'output' => $task->output,
+        ])
+        ->baseRoute('projects.deployments.show', [$project, $deployment]);
     }
 }

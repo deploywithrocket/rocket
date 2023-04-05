@@ -3,6 +3,13 @@ import { TransitionRoot, TransitionChild, Dialog, DialogPanel } from '@headlessu
 import { useModal } from 'momentum-modal'
 
 const { show, close, redirect } = useModal()
+
+defineProps({
+  dialogPanelClasses: {
+    type: String,
+    default: 'w-full max-w-lg p-6 overflow-hidden text-left align-middle transition-all transform bg-white rounded-lg shadow-xl',
+  },
+})
 </script>
 
 <template>
@@ -15,7 +22,7 @@ const { show, close, redirect } = useModal()
       <div class="fixed inset-0 overflow-y-auto">
         <div class="flex items-center justify-center min-h-full p-4 text-center">
           <TransitionChild as="template" enter="duration-200 ease-out" enter-from="opacity-0 scale-95" enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100" leave-to="opacity-0 scale-95">
-            <DialogPanel class="w-full max-w-lg p-6 overflow-hidden text-left align-middle transition-all transform bg-white rounded-lg shadow-xl">
+            <DialogPanel :class="dialogPanelClasses">
               <!-- <button type="button" class="absolute top-4 right-4 btn btn-square btn-tertiary" @click="close"><Icon icon="ri:close-line" /> </button> -->
               <slot />
             </DialogPanel>
